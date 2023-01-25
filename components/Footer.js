@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <>
       <footer className={styles.footer}>
-        Made with <img src="/netliheart.svg" alt="Netlify Logo" className={styles.logo} /> for you
+        <a className="externalLink volstrate" rel="noreferrer" href="http://www.twitter.com/volstrate" target="_blank">volstrate</a>
       </footer>
     </>
   )

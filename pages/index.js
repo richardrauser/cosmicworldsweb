@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Header from '@components/Header'
 import Footer from '@components/Footer'
+import AlienWorldzArtboard from '@components/AlienWorldzArtboard'
 
 export default function Home() {
   return (
@@ -12,9 +13,11 @@ export default function Home() {
 
       <main>
         <Header title="Alien Worldz" />
+
         <p className="description">
-          On-chain, generative NFT art offering glimpses into alien worlds.
+           On-chain, generative NFT art offering glimpses into alien worlds.
         </p>
+        <AlienWorldzArtboard/>
       </main>
 
       <Footer />

@@ -1,9 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&amp;display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+@import url(https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@300&display=swap);
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+  font-family: 'Sofia Sans Extra Condensed', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
     Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 24px;
+  background-color: rgb(103, 6, 194);
+  color: lightcyan;
 }
 
 * {
@@ -32,4 +39,32 @@ code {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+/* ---- */
+
+.alienWorldz {
+  font-family: Orbitron;
+}
+
+.volstrate {
+  font-family: 'Rajdhani';
+  font-weight: bold;
+  color: white;
+}
+
+#artboard {
+  width: 90%;
+  
+  max-width: 1000px;
+  max-height: 1000px;
+	color: gray;
+  background-color: white;
+	text-align: center;
+  margin: auto;
+}
+
+#artboardImage {
+  width: 100%;
+  height: 100%;
 }
