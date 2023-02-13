@@ -7,7 +7,7 @@ function randomIntFromInterval(randomSeed, min, max) {
     }
 
     // regen random seed here to simulate behaviour of using hashing to generated new seed
-    randomSeed = Math.trunc(Math.random() * 5_000_000);
+    // randomSeed = Math.trunc(Math.random() * 5_000_000);
 
     const value = randomSeed % (max - min) + min;
     //   var value =  Math.floor(Math.random() * (max - min + 1) + min);
@@ -15,26 +15,16 @@ function randomIntFromInterval(randomSeed, min, max) {
 }
 
 function generateRandomArtDataUri() {
-    const randomSeed = Math.trunc(Math.random() * 5_000_000);
-    const randomZoom = randomIntFromInterval(randomSeed, 0, 100);
+    // const randomSeed = Math.trunc(Math.random() * 5_000_000);
+    const randomSeed = 1234;
 
-    const tintColour = null; // getColour(randomSeed, null);
-
-    const svgString = encodeURIComponent(generateArt(randomSeed, randomZoom, tintColour, 0, 180, 25, 250, 25, 250));
+    console.log("!");
+    const svgString = encodeURIComponent(generateArt(randomSeed));
     return `data:image/svg+xml,${svgString}`;
 }
 
-function generateArt(randomSeed, zoom, tintColour, rotationDegrees, rotationVariation, widthMin, widthMax, speedMin, speedMax) {
-    console.log("Generating art: " + randomSeed + " " + zoom + " " + rotationDegrees + " "  + rotationVariation + " " + widthMin + " " + widthMax + " " + speedMin + " " + speedMax);
-
-    if (tintColour === null) {
-        tintColour = { r: 0, g: 0, b: 0, a: 0 };
-    }
-
-    const viewBoxClipRect = getViewBoxClipRect(zoom);
-    const viewBox = viewBoxClipRect[0];
-    const clipRect = viewBoxClipRect[1];
-    const rendering = rotationVariation === 0 ? 'crispEdges' : 'auto';
+function generateArt(randomSeed) {
+    console.log("Generating art: " + randomSeed);
 
     // const gradient = `<radialGradient id="planetGradient">
     //                     <stop offset="10%" stop-color="gold" />
@@ -42,136 +32,68 @@ function generateArt(randomSeed, zoom, tintColour, rotationDegrees, rotationVari
     //                   </radialGradient>`;
 
 
-    var defs = "<defs><clipPath id='masterClip'><rect " + clipRect + "/></clipPath>"
+    var defs = "<defs><clipPath id='masterClip'><rect x='0' y='0' width='1000' height='1000'/></clipPath>"
     // defs += gradient;
     defs += `</defs>`;
 
 // planets += gradient;
 
-    const shapes = getShapes(randomSeed, tintColour, rotationDegrees, rotationVariation, widthMin, widthMax, speedMin, speedMax);
+    const shapes = getShapes(randomSeed);
 
-    // const backgroundColour = "yellow";
-    const firstColour = getColour(randomSeed + 3, tintColour);
-    const secondColour = getColour(randomSeed + 3, tintColour);
-    const thirdColour = getColour(randomSeed + 3, tintColour);
-    const backgroundColour = "linear-gradient(135deg, " + firstColour + " 0%, " + secondColour + " 35%, " + thirdColour + " 100%)";
-    // const backgroundColour = "";
-    // const backgroundColour = "linear-gradient(red, yellow)";
+    const angle = randomIntFromInterval(randomSeed, 0, 360);
+    const firstColour = getColour(randomSeed + 3);
+    const secondColour = getColour(randomSeed + 3);
+    const thirdColour = getColour(randomSeed + 3);
+    const backgroundColour = `linear-gradient(${angle}deg, ${firstColour} 0%, ${secondColour} 35%, ${thirdColour} 100%)`;
 
-    return "<svg xmlns='http://www.w3.org/2000/svg' viewBox='" + viewBox + "' shape-rendering='" + rendering + "' style='background-image:" + backgroundColour + "'>" + defs + "<g clip-path='url(#masterClip)'>" + shapes + "</g></svg>";
+    return "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' style='background-image:" + backgroundColour + "'>" + defs + "<g clip-path='url(#masterClip)'>" + shapes + "</g></svg>";
 }
 
-function getViewBoxClipRect(zoom) {
-    zoom = zoom * 10;
-    const widthHeight = 500 + zoom;
-    var viewBox = "";
-    var clipRect = "";
-    var offset = (zoom - 500) / 2;
-
-    if (zoom > 500) {
-        viewBox = "-" + offset + " -" + offset + " " + widthHeight + " " + widthHeight;
-        clipRect = "x='-" + offset + "' y='-" + offset  + "' width='" + widthHeight + "' height='" + widthHeight + "'";
-        
-    } else {
-        offset = (zoom === 500 ? 0 : (500 - zoom) / 2);
-        viewBox = "" + offset + " " + offset + " " + widthHeight + " " + widthHeight;
-        clipRect = "x='" + offset + "' y='" + offset + "' width='" + widthHeight + "' height='" + widthHeight + "'";
-    }
-
-    viewBox = "0 0 1000 1000";
-    clipRect = "x='0' y='0' width='1000' height='1000'";
-    
-    console.log("View box: " + viewBox);
-    console.log("clip rect: " + clipRect);
-
-    return [viewBox, clipRect];
-}
-
-function getShapes(randomSeed, tintColour, rotationDegrees, rotationRange, widthMin, widthMax, speedMin, speedMax) {
-
-    const pinewoodShapes = `   
-    <filter id="filter">
-        <feTurbulence type="fractalNoise" baseFrequency=".3 .01"/>
-        <feColorMatrix values="0 0 0 .11 .69
-                            0 0 0 .09 .38
-                            0 0 0 .08 .14
-                            0 0 0 0 1"/>
-    </filter>
-    <rect width="100%" height="100%" opacity="50%" filter="url(#filter)"/>`;
-
+function getShapes(randomSeed) {
     const stars = getStars(randomSeed);
-    const planets = getPlanets(randomSeed, tintColour);
-    const mountain = getMountains(randomSeed, tintColour);
+    const planets = getPlanets(randomSeed);
+    const mountain = getMountains(randomSeed);
     const clouds = getClouds(randomSeed);
     const water = getWater(randomSeed);
-
-    // <polygon filter="url(#water)" opacity="50%" points="1000,950, 1000,1000 0,1000 0,900"/>
 
     var shapes = "";
     shapes += stars;
     shapes += " " + planets;
     shapes += " " + mountain;
     shapes += " " + clouds;
-    shapes +=  " " + water;
+    // shapes +=  " " + water;
 
-    return shapes;
-
-    var stripeWidth = randomIntFromInterval(randomSeed, widthMin, widthMax) * 2;
-
-    // stripeWidth = 5;
-
-    var xPos = 0;
-    var x1 = 0;
-    var y1 = 1000;
-    var x2 = 0;
-    var y2 = 1000;
-    var x3 = 1000;
-    var y3 = 1000;
-
-    while ((1000 - xPos) > 0) {
-
-
-        // if (stripeWidth > 1000 - xPos) {
-        //     stripeWidth = 1000 - xPos;
-        // } else if ((1000 - xPos) - stripeWidth < widthMin) {
-        //     stripeWidth += (1000 - xPos) - stripeWidth;
-        // }
-
-        // const rotation = getRotation(randomSeed + 1, rotationDegrees, rotationRange);
-        // const speed = randomIntFromInterval(randomSeed + 2, speedMin, speedMax) * 20;
-        const firstColour = getColour(randomSeed + 3, tintColour);
-        const secondColour = getColour(randomSeed + 13, tintColour);
-        // const colours = firstColour + ";" + secondColour + ";" + firstColour;
-    
-        // var currentRect = "<rect x='" + xPos + "' y='0' width='" + stripeWidth + "' height='1000' fill='" + firstColour + "' opacity='0.8' transform='rotate(" + rotation + " 500 500)'>";
-        // // currentRect += "<animate begin= '0s' dur='" + speed + "ms' attributeName='fill' values='" + colours + "' fill='freeze' repeatCount='indefinite'/>";
-        // currentRect += "</rect>";
-
-        var currentShape1 = "<polygon points='" + x1 + " " + y1 + ", " + x2 + " " + y2 + ", " + x3 + " " + y3 + "' fill='" + firstColour + "'/>";
-        console.log("currentShape: " + currentShape1);
-        shapes += currentShape1 + "\r\n";
-
-        var currentShape2 = "<polygon points='" + y1 + " " + x1 + ", " + y2 + " " + x2 + ", " + y3 + " " + x3 + "' fill='" + firstColour + "'/>";
-        console.log("currentShape2: " + currentShape2);
-        shapes += currentShape2 + "\r\n";
-         
-
-        y1 -= stripeWidth;
-        x3 -= stripeWidth;
-        xPos += stripeWidth;
-        randomSeed += 100;
-        // break;
-    }
- 
     return shapes;
 }
-function getPlanets(randomSeed, tintColour) {
 
-    const planetCount = randomIntFromInterval(randomSeed * 2, 0, 5);
+function getStars(randomSeed) {
+
+    const stars = `
+        <filter id="stars">
+        <feTurbulence baseFrequency="0.2"                          
+        seed="` + randomSeed + `"
+        />
+        <feColorMatrix values="0 0 0 9 -4
+                            0 0 0 9 -4
+                            0 0 0 9 -4
+                            0 0 0 0 1"/>
+        </filter>
+        <rect width="100%" height="100%" opacity="50%" filter="url(#stars)"/>
+        `;
+
+    return stars;
+}
+
+// TODO: why seed2?
+function getPlanets(seed2, tintColour) {
+
+    const planetCount = randomIntFromInterval(seed2 * 2, 0, 5);
 
     var planets = "";
 
     for (var i = 0; i < planetCount; i++) {
+        
+        const randomSeed = (seed2 * 2) + i;
 
         const radius = randomIntFromInterval(randomSeed, 20, 200);
         const x = randomIntFromInterval(randomSeed, 50, 950);
@@ -246,40 +168,27 @@ function getPlanets(randomSeed, tintColour) {
 }
 
 function getMountains(randomSeed, tintColour) {
-    const mountainColour = getColour(randomSeed + 3, tintColour);
-    const mountainColour2 = getColour(randomSeed + 5, tintColour);
-    console.log("MOUNTAIN COLOUR: " + mountainColour);
 
-    const HEIGHT = randomIntFromInterval(randomSeed, 100, 300);
-    const ITERATIONS = randomIntFromInterval(randomSeed, 5, 8);
-    const ROUGHNESS = 0.85;
+    var polygonPoints = buildLine(randomSeed, 1000, 51);
 
-    const segments = Math.pow(2, ITERATIONS);
-    // const segments = randomIntFromInterval(randomSeed, 200, 1000);
-
-    var polygonPoints = buildLine(1000, displaceMap(HEIGHT, HEIGHT / 4, ROUGHNESS, segments));
     polygonPoints = polygonPoints.join(" ");
     polygonPoints += " 1000,1000 -1,1000";
 
-    // points = `-1,329.2 39.5,265.1 50.8,274.1 61.9,253 86.9,230 98,206 124,198 131,187 137,204 165,167 
-    // 188,157 198,141 207,112 220,89 235,73 246,82 263,100 270.5,138.5 290.5,157.5 297.5,183 337,216.5 369,258.3 399,266.3 
-    // 425.7,263.7 442.3,291 449.7,280 461.7,301 501,337.7 1000,381.5 1000,1000 -1,1000 	" />`;
-
-    // points += `<polygon fill="#D3CFCF" points="140,217.7 166,171.7 193,163 197.3,149.7 204,145.3 211,112.3 222.3,92 236.7,78.7 229,107.3 
-    // 214.3,125.3 219.7,156.3 203,180.7 180,179.3`;
-    
     console.log("POINTS: \n " + polygonPoints);
+
+    const mountainColour = getColour(randomSeed + 3, tintColour);
     const midColourPoint = randomIntFromInterval(randomSeed, 10, 90);
+    const mountainColour2 = getColour(randomSeed + 5, tintColour);
 
-  const gradient = `<defs><linearGradient id="mountainGradient">
-                        <stop offset="5%" stop-color="` + mountainColour + `" />
-                        <stop offset="` + midColourPoint + `%" stop-color="` + mountainColour2 + `" />
-                        <stop offset="95%" stop-color="` + mountainColour + `" />
-                    </linearGradient></defs>`;
+    const gradient = `<defs><linearGradient id="mountainGradient">
+                            <stop offset="5%" stop-color="` + mountainColour + `" />
+                            <stop offset="` + midColourPoint + `%" stop-color="` + mountainColour2 + `" />
+                            <stop offset="95%" stop-color="` + mountainColour + `" />
+                        </linearGradient></defs>`;
 
 
-                    const baseFrequency = randomIntFromInterval(randomSeed, 1, 3);
-                    const scale = randomIntFromInterval(randomIntFromInterval, 1, 3);
+    const baseFrequency = randomIntFromInterval(randomSeed, 1, 3);
+    const scale = randomIntFromInterval(randomIntFromInterval, 1, 3);
     const filter = `<filter id='mountainFilter' x='0%' y='0%' width='100%' height="100%">
                         <feTurbulence type="fractalNoise" baseFrequency='0.0${baseFrequency}' result='noise' numOctaves="15" />\
                         <feDiffuseLighting in='noise' lighting-color='white' surfaceScale='${scale}'>
@@ -317,109 +226,65 @@ function getMountains(randomSeed, tintColour) {
                             opacity="0.7"
                             />`;
     mountain += `<polygon points="` + polygonPoints + `"
-    filter="url('#shadingFilter')"
-    opacity="0.5"
-    />`;
+                        filter="url('#shadingFilter')"
+                        opacity="0.5"
+                        />`;
 
     return mountain;
 }
 
-// generate midpoint displacement points
-function displaceMap(height, displace, roughness, power) {
-    const points = []
-  
-    // set initial left point
-    points[0] = height / 2 + (Math.random() * displace * 2) - displace
-  
-    // set initial right point
-    points[power] = height / 2 + (Math.random() * displace * 2) - displace
-    displace *= roughness
-  
-    // increase number of segments to maximum
-    for (let i = 1; i < power; i *= 2) {
-      // for each segment, find centre point
-      for (let j = (power / i) / 2; j < power; j += power / i) {
-        points[j] = ((points[j - (power / i) / 2] + points[j + (power / i) / 2]) / 2)
-        points[j] += (Math.random() * displace * 2) - displace
-      }
-  
-      // reduce random range
-      displace *= roughness
+
+function buildLine(randomSeed, width, pointCount) {
+    const yOffset = 500;
+    const interval = width / (pointCount - 1);
+
+    console.log("INTERVAL: " + interval);
+
+    var points = [];
+    var currentY = yOffset;
+
+    for (var i = 0; i <= pointCount; i++) {
+        const x = i * interval;
+
+        const yChange = randomIntFromInterval(randomSeed + i, 0, 20);
+        const up = randomIntFromInterval(randomSeed + i, 0, 100) >  50;
+
+        if (up) {
+            currentY += yChange; 
+        } else {
+            currentY -= yChange;
+        }
+
+        const point = [x, currentY];
+        console.log("POINT: " + point);
+        points.push(point);
     }
-  
-    return points
-  }
-
-// format points in [x, y] array
-function buildLine(width, points) {
-    const yOffset = 300;
-    const sep = width / (points.length - 1)
-    return points.map((val, i) => ([
-      i * sep,
-      val + yOffset
-    ]))
-  }
-
-// convert points into SVG path
-// function convertPath(width, height, points) {
-//     // add first M (move) command
-//     const first = points.shift()
-//     let path = `M ${first[0]} ${first[1]}`
-  
-//     // iterate through points adding L (line) commands to path
-//     points.forEach(val => {
-//       path += ` L ${val[0]} ${val[1]}`
-//     })
-  
-//     // close path
-//     path += ` L ${width} ${height} L 0 ${height} Z`
-  
-//     return path
-//   }
-  
-
-function getStars(randomSeed) {
-
-    const stars = `
-        <filter id="stars">
-        <feTurbulence baseFrequency="0.2"                          
-        seed="` + randomSeed + `"
-        />
-        <feColorMatrix values="0 0 0 9 -4
-                            0 0 0 9 -4
-                            0 0 0 9 -4
-                            0 0 0 0 1"/>
-        </filter>
-        <rect width="100%" height="100%" opacity="50%" filter="url(#stars)"/>
-        `;
-
-    return stars;
+    console.log("POINTS: " + points);
+    return points;
 }
+
+
 
 function getClouds(randomSeed) {
 
-    const baseFrequencyDenominator = 1000;
-    const baseFrequency1 = randomIntFromInterval(randomSeed * 2, 1, 50) / baseFrequencyDenominator;
-    const baseFrequency2 = randomIntFromInterval(randomSeed * 3, 1, 50) / baseFrequencyDenominator;
+    // const baseFrequencyDenominator = 1000;
+    // const baseFrequency1 = randomIntFromInterval(randomSeed * 2, 1, 50) / baseFrequencyDenominator;
+    // const baseFrequency2 = randomIntFromInterval(randomSeed * 3, 1, 50) / baseFrequencyDenominator;
     // const baseFrequency = baseFrequency1 + " " + baseFrequency2; 
     // const baseFrequency = "0.01 0.5";
     const baseFrequency = "0.002 0.014";
+    const opacity = randomIntFromInterval(randomSeed * 5, 30, 80);
     console.log("Base frequency: " + baseFrequency);
 
-    const matrixParam = 1; //randomIntFromInterval(randomSeed * 3, 0, 9)
     const clouds = `
-        <filter id="filter">
-            <feTurbulence type="fractalNoise" 
-                          baseFrequency="` + baseFrequency + `" 
-                          numOctaves="200" 
-                          seed="` + randomSeed + `"
+        <filter id='filter'>
+            <feTurbulence type='fractalNoise' 
+                          baseFrequency='${baseFrequency}' 
+                          numOctaves='200' 
+                          seed='${randomSeed}'
                           />
-            <feColorMatrix values="9 4 0 9 -4
-                                   3 2 ` + matrixParam + ` 2 -4
-                                   4 6 0 9 -4
-                                   0 0 0 0 1"/>
         </filter>
-        <rect width="100%" height="100%" opacity="40%" filter="url(#filter)"/>`;
+        <rect width='100%' height='100%' opacity='${opacity}%' filter='url(#filter)'/>`;
 
     return clouds;
 }
@@ -491,25 +356,6 @@ function getWater(randomSeed) {
     return water;
 }
 
-function getRotation(randomSeed, rotationDegrees, rotationRange) {
-    const randomDegrees = randomIntFromInterval(randomSeed, 0, rotationRange);
-    var rotation = 0;
-
-    if (randomDegrees === 0) {
-        rotation = rotationDegrees;
-    } else if (randomDegrees < rotationRange) {
-        rotation = 360 + rotationDegrees - randomDegrees + rotationRange / 2; 
-    } else {
-        rotation = rotationDegrees + randomDegrees - rotationRange / 2;
-    }
-
-    if (rotation > 360) {
-        rotation = rotation - 360;
-    }
-
-    return rotation;
-}
-
 function getColour(randomSeed, tintColour) {
     const redRandom = randomIntFromInterval(randomSeed, 0, 255);
     const greenRandom = randomIntFromInterval(randomSeed + 2, 0, 255);
@@ -538,7 +384,5 @@ export default function buildAlienWorld() {
     console.log("Generating artboard.. ");
     const svgDataUri = generateRandomArtDataUri();
     console.log(svgDataUri);
-    // document.body.style.backgroundImage = svgDataUri;
-    // document.getElementById("artboardImage").src = svgDataUri;
     return svgDataUri;
 }
