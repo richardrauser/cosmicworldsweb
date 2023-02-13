@@ -1,26 +1,47 @@
-// ---------------
+import { ethers, keccak256 } from 'ethers';
 
-// Generate random int, inclusive of min/max
+// Generate random int, inclusive of min/max, using same method as Solidity code
 function randomIntFromInterval(randomSeed, min, max) { 
     if (max <= min) {
         return min;
     }
 
-    // regen random seed here to simulate behaviour of using hashing to generated new seed
-    // randomSeed = Math.trunc(Math.random() * 5_000_000);
+    console.log(`RANDOM SEED: ${randomSeed}`);
+    const bigSeed = BigInt(randomSeed);
 
-    const value = randomSeed % (max - min) + min;
-    //   var value =  Math.floor(Math.random() * (max - min + 1) + min);
-      return value;
+    // const hash = ethers.solidityPackedKeccak256(["uint"], [bigSeed]);
+    const abiCoder = ethers.AbiCoder.defaultAbiCoder();
+
+    const abiCodedSeed = abiCoder.encode(["uint"], [bigSeed]);
+    const hash = keccak256(abiCodedSeed);
+
+    console.log("HASH: " + hash);
+    // const seed = parseInt(hash, 16);
+    // const seed = BigInt("0x102030405060708090a0b0c0d0e0f000");
+    const seed = BigInt(hash);
+
+    console.log("SEED: " + seed);
+    
+    const value = seed % BigInt((max - min) + min);
+
+    console.log("VALUE: " + value);
+
+    
+    // const value = seed.mod(BigNumber.from(max - min)).add(BigNumber.from(min));
+    // //   var value =  Math.floor(Math.random() * (max - min + 1) + min);
+
+    const number = Number(value);
+    console.log(`NUMBER: ${number}`)
+    return number;
+
+    // return 0;
 }
 
 function generateRandomArtDataUri() {
-    // const randomSeed = Math.trunc(Math.random() * 5_000_000);
-    const randomSeed = 1234;
+    const randomSeed = Math.trunc(Math.random() * 5_000_000);
+    // const randomSeed = 1234;
 
-    console.log("!");
-    const svgString = encodeURIComponent(generateArt(randomSeed));
-    return `data:image/svg+xml,${svgString}`;
+    return generateArt(randomSeed);
 }
 
 function generateArt(randomSeed) {
@@ -46,21 +67,25 @@ function generateArt(randomSeed) {
     const thirdColour = getColour(randomSeed + 3);
     const backgroundColour = `linear-gradient(${angle}deg, ${firstColour} 0%, ${secondColour} 35%, ${thirdColour} 100%)`;
 
-    return "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' style='background-image:" + backgroundColour + "'>" + defs + "<g clip-path='url(#masterClip)'>" + shapes + "</g></svg>";
+    const svgString = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' style='background-image:" + backgroundColour + "'>" + defs + "<g clip-path='url(#masterClip)'>" + shapes + "</g></svg>";
+    console.log(`SVG: ${svgString}`);
+    const encodedSvg = encodeURIComponent(svgString);
+
+    return `data:image/svg+xml,${encodedSvg}`;
 }
 
 function getShapes(randomSeed) {
     const stars = getStars(randomSeed);
-    const planets = getPlanets(randomSeed);
+    // const planets = getPlanets(randomSeed);
     const mountain = getMountains(randomSeed);
-    const clouds = getClouds(randomSeed);
-    const water = getWater(randomSeed);
+    // const clouds = getClouds(randomSeed);
+    // const water = getWater(randomSeed);
 
     var shapes = "";
     shapes += stars;
-    shapes += " " + planets;
+    // shapes += " " + planets;
     shapes += " " + mountain;
-    shapes += " " + clouds;
+    // shapes += " " + clouds;
     // shapes +=  " " + water;
 
     return shapes;
@@ -188,7 +213,7 @@ function getMountains(randomSeed, tintColour) {
 
 
     const baseFrequency = randomIntFromInterval(randomSeed, 1, 3);
-    const scale = randomIntFromInterval(randomIntFromInterval, 1, 3);
+    const scale = randomIntFromInterval(randomSeed, 1, 3);
     const filter = `<filter id='mountainFilter' x='0%' y='0%' width='100%' height="100%">
                         <feTurbulence type="fractalNoise" baseFrequency='0.0${baseFrequency}' result='noise' numOctaves="15" />\
                         <feDiffuseLighting in='noise' lighting-color='white' surfaceScale='${scale}'>
@@ -246,8 +271,9 @@ function buildLine(randomSeed, width, pointCount) {
     for (var i = 0; i <= pointCount; i++) {
         const x = i * interval;
 
-        const yChange = randomIntFromInterval(randomSeed + i, 0, 20);
-        const up = randomIntFromInterval(randomSeed + i, 0, 100) >  50;
+        const pointSeed = (randomSeed + i) + 1000;
+        const yChange = randomIntFromInterval(pointSeed, 0, 20);
+        const up = randomIntFromInterval(pointSeed, 0, 100) >  50;
 
         if (up) {
             currentY += yChange; 
@@ -351,8 +377,6 @@ function getWater(randomSeed) {
                 fill-opacity="0.5"/>
     `;
 
-
-
     return water;
 }
 
@@ -380,9 +404,7 @@ function getColour(randomSeed, tintColour) {
     return finalColour;
 }
 
-export default function buildAlienWorld() {
-    console.log("Generating artboard.. ");
-    const svgDataUri = generateRandomArtDataUri();
-    console.log(svgDataUri);
-    return svgDataUri;
+export default function buildAlienWorld(randomSeed) {
+    console.log(`Generating artboard for alien world with seed: ${randomSeed}`);
+    return generateRandomArtDataUri();
 }
