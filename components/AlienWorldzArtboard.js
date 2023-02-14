@@ -12,16 +12,16 @@ import buildAlienWorld from '../scripts/worldBuilder.js';
 export default function AlienWorldzArtboard() {
     // const svgDataUri = buildAlienWorld();
     
-    const randomSeed = 2233;
+    const randomSeed = 3;
 
-    const [value, setValue] = useState(buildAlienWorld());
+    const [value, setValue] = useState(buildAlienWorld(randomSeed));
 
     return(
         // <div id='artboard' onClick={() => setValue(buildAlienWorld())}>
         <div id='artboard'>
             <img id="artboardImage" src={value}></img>	
-            <Button variant="primary" onClick={() => setValue(buildAlienWorld())}>Generate</Button>
-            <Button variant="primary" onClick={() => setValue(buildAlienWorld())}>Mint</Button>
+            <Button variant="primary" onClick={() => setValue(buildAlienWorld(randomSeed))}>Generate</Button>
+            <Button variant="primary" onClick={() => setValue(buildAlienWorld(randomSeed))}>Mint</Button>
 
         </div>	
         
