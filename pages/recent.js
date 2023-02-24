@@ -11,7 +11,7 @@ export default function Recent() {
 
     useEffect(() => {
       console.log("USE EFFECT.");
-§
+
       async function fetchTokenCount() {
         const contract = await getContract();
 
