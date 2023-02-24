@@ -1,8 +1,8 @@
 
 import Button from 'react-bootstrap/Button';
 import React, {useState} from "react";
-import buildAlienWorld from '../scripts/worldBuilder.js';
-import { mintAlienWorld } from '../scripts/BlockchainAPI.js';
+import buildAlienWorld from '../utils/worldBuilder.js';
+import { mintAlienWorld } from '../utils/BlockchainAPI.js';
 
 // function update() {
 //     console.log("Updating art board..");
