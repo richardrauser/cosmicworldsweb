@@ -71,3 +71,47 @@ code {
 .btn {
   margin: 8px;
 }
+
+
+/* ----  Cards ---- */
+
+.card {
+  background-color: #777777;
+  margin: 16px;
+  border: none !important;
+}
+
+.tokenCard {
+  background-color: #777777;
+  max-width: 400px;
+  margin: auto;
+}
+
+.card-header {
+  color: #eee !important;
+  background-color: #CCC !important;
+}
+
+.card-body {
+  background-color:#DDD;
+
+}
+
+.card-header {
+  text-align: left;
+  color: #AAAAAA;
+}
+
+.card-body {
+  font-size: 18px;
+} 
+
+.cardArtwork {
+  width: 250px; 
+  height: 250px;
+  background: #CCC;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}

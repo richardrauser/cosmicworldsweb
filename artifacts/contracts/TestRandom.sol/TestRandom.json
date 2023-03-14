@@ -40,7 +40,7 @@
           "type": "uint256"
         }
       ],
-      "name": "randomIntFromInterval",
+      "name": "randomInt",
       "outputs": [
         {
           "internalType": "uint256",

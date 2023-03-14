@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react"
-import { fetchAccount } from '../utils/BlockchainAPI'
+import { fetchAccount, getContract } from '../utils/BlockchainAPI'
 
 export default function Yours() {
 
     const [address, setAddress] = useState(null);
+    const [balance, setBalance] = useState(null);
 
     useEffect(() => {
         console.log("USE EFFECT.");
         async function fetchWalletAddress() {
 
             const account = await fetchAccount();
-
+            const contract = await getContract();
+            const tokenCount = await contract.balanceOf(account);
+        
             console.log("ACCOUNT: " + account);
+            console.log("BALANCE: " + balance);
 
             setAddress(account);
+            setBalance(tokenCount);
         }
 
         fetchWalletAddress();
@@ -24,7 +29,8 @@ export default function Yours() {
     return (
         <div>
         <h1>Your Worldz</h1>
-        Your wallet address: { address == null ? "Loading.." : address }            
+        Your wallet address: { address == null ? "Loading.." : address } <br/>      
+        Your tokens: { balance == null ? "Loading.." : balance }
         </div>
     )
 

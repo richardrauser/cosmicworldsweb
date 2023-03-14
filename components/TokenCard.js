@@ -18,12 +18,15 @@ class TokenCard extends React.Component {
     }
 
     async fetchMetadata() {
-        console.log("Getting SVG for token ID: " + this.props.tokenId);
+
+      const tokenId = this.props.tokenId;
+ 
+        console.log("Getting SVG for token ID: " + tokenId);
   
         try {
           const contract = await getContract();
     
-          const metadataDataUri = await contract.tokenURI(this.props.tokenId);
+          const metadataDataUri = await contract.tokenURI(tokenId);
           
           var metadataJson = "";
 
@@ -40,10 +43,11 @@ class TokenCard extends React.Component {
           const metadataObject = JSON.parse(metadataJson);
 
           const svg = metadataObject.image.replace("data:image/svg+xml,", "");
-          const encodedSvg = encodeURIComponent(svg);
-          const svgDataUri = `data:image/svg+xml,${encodedSvg}`;
+          // const encodedSvg = encodeURIComponent(svg);
+          const svgDataUri = `data:image/svg+xml,${svg}`;
           
-          const traitsText = buildTraitsText(metadataObject);
+          // const traitsText = buildTraitsText(metadataObject);
+          const traitsText = "incredible, magical alien world";
 
           this.setState({
             loading: false,
@@ -61,14 +65,16 @@ class TokenCard extends React.Component {
       }
     
       render() {
-        const link = "/token/" + this.props.tokenId;
+
+        const tokenId = this.props.tokenId;
+        const link = "/token/" + tokenId;
 
         if (this.state.loading === true) {
               return (
-                  <Card key={this.props.tokenId} className="tokenCard">
+                  <Card key={tokenId} className="tokenCard">
                   <Card.Header>
                   {/* <Link href={link}> */}
-                  Token ID: {this.props.tokenId}
+                  Token ID: {tokenId}
                   {/* </Link> */}
                   </Card.Header>
                   <Card.Body>
@@ -86,20 +92,20 @@ class TokenCard extends React.Component {
                       
 
               return (
-                  <Card key={this.props.tokenId} className="tokenCard">
+                  <Card key={tokenId} className="tokenCard">
                       <Card.Header>
-                          <Link to= {link}>
-                            Token ID: {this.props.tokenId}
-                          </Link>
+                          {/* <Link to= {link}> */}
+                            Token ID: {tokenId}
+                          {/* </Link> */}
                       </Card.Header>
                       <Card.Body>
                       <Card.Title>
                       </Card.Title>
-                      <Link to= {link}>
+                      {/* <Link to= {link}> */}
                         <div className="cardArtwork">
-                            <img className="galleryImage" alt={ "DynaStripes token " + this.props.tokenId } src={ this.state.tokenSvgDataUri } />
+                            <img className="galleryImage" alt={ "Alien Worldz token " + tokenId } src={ this.state.tokenSvgDataUri } />
                         </div>
-                      </Link>
+                      {/* </Link> */}
                       <div className="cardTraits">
                       { this.state.traitsText }
                       </div>

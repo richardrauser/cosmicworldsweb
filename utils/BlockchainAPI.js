@@ -281,10 +281,10 @@ export async function mintAlienWorld(randomSeed) {
 
     const overrides = {
       // value: this.state.mintPrice, 
-      gasLimit: 120000
+      gasLimit: 150000
     }
     
-    console.log("!!!");
+    console.log("!!!!!");
 
     const transaction = await contractWithSigner.mint(randomSeed, overrides);
     console.log("Tx hash: " + transaction.hash);

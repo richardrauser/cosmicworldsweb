@@ -10,27 +10,27 @@ import { mintAlienWorld } from '../utils/BlockchainAPI.js';
 //     // updateArtBoard();
 // }
 
-async function mint() {
+async function mint(randomSeed) {
     console.log("Minting..");
-    await mintAlienWorld(2);
+    randomSeed = 999;
+    console.log("Random seed: " + randomSeed);
+    await mintAlienWorld(randomSeed);
 }
 
 export default function AlienWorldzArtboard() {
     // const svgDataUri = buildAlienWorld();
     
-    // const randomSeed = 5;
-    const randomSeed = Math.trunc(Math.random() * 5_000_000);
+    const randomSeed = 600;
+    //const randomSeed = Math.trunc(Math.random() * 5_000_000);
 
     const [value, setValue] = useState(buildAlienWorld(randomSeed));
 
     return(
-        // <div id='artboard' onClick={() => setValue(buildAlienWorld())}>
         <div id='artboard'>
             <img id="artboardImage" src={value}></img>	
             <Button variant="primary" onClick={() => setValue(buildAlienWorld(randomSeed))}>Generate</Button>
             <Button variant="primary" onClick={mint} randomseed={randomSeed}>Mint</Button>
 
-        </div>	
-        
+        </div>	        
     );
 }

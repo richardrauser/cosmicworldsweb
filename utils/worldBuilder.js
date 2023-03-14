@@ -24,7 +24,7 @@ function generateArt(randomSeed) {
 
     const shapes = getShapes(randomSeed);
 
-    const angle = randomIntFromInterval(randomSeed, 0, 360);
+    const angle = randomInt(randomSeed, 0, 360);
     const firstColour = randomColour(randomSeed + 3);
     const secondColour = randomColour(randomSeed + 3);
     const thirdColour = randomColour(randomSeed + 3);
@@ -42,14 +42,14 @@ function getShapes(randomSeed) {
     const planets = getPlanets(randomSeed);
     const mountain = getMountains(randomSeed);
     const clouds = getClouds(randomSeed);
-    // const water = getWater(randomSeed);
+    const water = getWater(randomSeed);
 
     var shapes = "";
     shapes += stars;
     shapes += " " + planets;
     shapes += " " + mountain;
     shapes += " " + clouds;
-    // shapes +=  " " + water;
+    shapes +=  " " + water;
 
     return shapes;
 }
@@ -74,7 +74,7 @@ function getStars(randomSeed) {
 
 function getPlanets(planetSeed, tintColour) {
 
-    const planetCount = randomIntFromInterval(planetSeed * 2, 0, 5);
+    const planetCount = randomInt(planetSeed * 2, 0, 5);
 
     var planets = "";
 
@@ -82,20 +82,20 @@ function getPlanets(planetSeed, tintColour) {
         
         const randomSeed = planetSeed * 2 + i;
 
-        const radius = randomIntFromInterval(randomSeed, 20, 200);
-        const x = randomIntFromInterval(randomSeed, 50, 950);
-        const y = randomIntFromInterval(randomSeed, 0, 500);
+        const radius = randomInt(randomSeed, 20, 200);
+        const x = randomInt(randomSeed, 50, 950);
+        const y = randomInt(randomSeed, 0, 500);
 
         const colour = randomColour(randomSeed + 10 + i, tintColour);
 
-        const stop1 = randomIntFromInterval(randomSeed, 3, 25);
+        const stop1 = randomInt(randomSeed, 3, 25);
         const colour1 = randomColour(randomSeed + i, tintColour);
-        const stop2 = randomIntFromInterval(randomSeed, 75, 97);
+        const stop2 = randomInt(randomSeed, 75, 97);
         const colour2 = randomColour(randomSeed + i + 10, tintColour);
         // const colour2 = "grey";
         
-        const fx = 50;// randomIntFromInterval(randomSeed, 1, 4) * 25;
-        const fy = 50;// randomIntFromInterval(randomSeed, 1, 4) * 25;
+        const fx = 50;// randomInt(randomSeed, 1, 4) * 25;
+        const fy = 50;// randomInt(randomSeed, 1, 4) * 25;
 
         const gradient = `<defs><radialGradient id="planetGradient` + i + `" fx="` + fx + `%" fy="` + fy + `%">
                             <stop offset="${stop1}%" stop-color="` + colour1 + `" />
@@ -109,18 +109,18 @@ function getPlanets(planetSeed, tintColour) {
 
         // from https://cloudfour.com/thinks/generating-solar-systems-part-2-filters-gradients-and-clip-paths/
           // We'll generate some random values for our turbulence
-        const fractal = randomIntFromInterval(randomSeed, 0, 10) > 5;
+        const fractal = randomInt(randomSeed, 0, 10) > 5;
         const turbulenceType = fractal ? 'fractalNoise' : 'turbulence';
         // We intentionally make the y value larger than the x value
         // to create horizontal striping patterns
-        const baseFrequencyX = randomIntFromInterval(randomSeed, 1, 4) / (radius * 2);
-        const baseFrequencyY = randomIntFromInterval(randomSeed, 2, 4) / radius;
-        const numOctaves = randomIntFromInterval(randomSeed, 3, 10);
+        const baseFrequencyX = randomInt(randomSeed, 1, 4) / (radius * 2);
+        const baseFrequencyY = randomInt(randomSeed, 2, 4) / radius;
+        const numOctaves = randomInt(randomSeed, 3, 10);
         const seed = Math.random();
 
         // And some random values for our lighting
-        const elevation = randomIntFromInterval(randomSeed, 30, 100);
-        const surfaceScale = randomIntFromInterval(randomSeed, 5, 10);
+        const elevation = randomInt(randomSeed, 30, 100);
+        const surfaceScale = randomInt(randomSeed, 5, 10);
 
         const filter = `<filter id="planetFilter${i}"> 
         <feTurbulence
@@ -164,7 +164,7 @@ function getMountains(randomSeed, tintColour) {
     console.log("POINTS: \n " + polygonPoints);
 
     const mountainColour = randomColour(randomSeed + 3, tintColour);
-    const midColourPoint = randomIntFromInterval(randomSeed, 10, 90);
+    const midColourPoint = randomInt(randomSeed, 10, 90);
     const mountainColour2 = randomColour(randomSeed + 5, tintColour);
 
     const gradient = `<defs><linearGradient id="mountainGradient">
@@ -174,8 +174,8 @@ function getMountains(randomSeed, tintColour) {
                         </linearGradient></defs>`;
 
 
-    const baseFrequency = randomIntFromInterval(randomSeed, 1, 3);
-    const scale = randomIntFromInterval(randomSeed, 1, 3);
+    const baseFrequency = randomInt(randomSeed, 1, 3);
+    const scale = randomInt(randomSeed, 1, 3);
     const filter = `<filter id='mountainFilter' x='0%' y='0%' width='100%' height="100%">
                         <feTurbulence type="fractalNoise" baseFrequency='0.0${baseFrequency}' result='noise' numOctaves="15" />\
                         <feDiffuseLighting in='noise' lighting-color='white' surfaceScale='${scale}'>
@@ -205,12 +205,14 @@ function getMountains(randomSeed, tintColour) {
     mountain += filter;
     mountain += shadingFilter;
 
+    const opacity = randomInt(randomSeed, 3, 8);    
+
     mountain += `<polygon points="` + polygonPoints + `"
                         filter="url('#mountainFilter')"
                         />`;
     mountain += `<polygon points="` + polygonPoints + `"
                             fill="url('#mountainGradient')"
-                            opacity="0.7"
+                            opacity="0.` + opacity + `"
                             />`;
     mountain += `<polygon points="` + polygonPoints + `"
                         filter="url('#shadingFilter')"
@@ -222,20 +224,19 @@ function getMountains(randomSeed, tintColour) {
 
 
 function buildLine(randomSeed, width, pointCount) {
-    const yOffset = 500;
     const interval = width / (pointCount - 1);
 
     console.log("INTERVAL: " + interval);
 
     var points = [];
-    var currentY = yOffset;
+    var currentY = 500; // starting currentY is y offset
 
     for (var i = 0; i <= pointCount; i++) {
         const x = i * interval;
 
         const pointSeed = (randomSeed + i) + 1000;
-        const yChange = randomIntFromInterval(pointSeed, 0, 20);
-        const up = randomIntFromInterval(pointSeed, 0, 100) >  50;
+        const yChange = randomInt(pointSeed, 0, 20);
+        const up = randomInt(pointSeed, 0, 100) >  50;
 
         if (up) {
             currentY += yChange; 
@@ -254,12 +255,12 @@ function buildLine(randomSeed, width, pointCount) {
 function getClouds(randomSeed) {
 
     // const baseFrequencyDenominator = 1000;
-    // const baseFrequency1 = randomIntFromInterval(randomSeed * 2, 1, 50) / baseFrequencyDenominator;
-    // const baseFrequency2 = randomIntFromInterval(randomSeed * 3, 1, 50) / baseFrequencyDenominator;
+    // const baseFrequency1 = randomInt(randomSeed * 2, 1, 50) / baseFrequencyDenominator;
+    // const baseFrequency2 = randomInt(randomSeed * 3, 1, 50) / baseFrequencyDenominator;
     // const baseFrequency = baseFrequency1 + " " + baseFrequency2; 
     // const baseFrequency = "0.01 0.5";
     const baseFrequency = "0.002 0.014";
-    const opacity = randomIntFromInterval(randomSeed * 5, 30, 80);
+    const opacity = randomInt(randomSeed * 5, 30, 80);
     console.log("Base frequency: " + baseFrequency);
 
     const clouds = `
@@ -276,65 +277,61 @@ function getClouds(randomSeed) {
 }
 
 function getWater(randomSeed) {
-    const curveCount = randomIntFromInterval(randomSeed, 1, 10);
 
     var shorelineCurves = "";
-    const segmentWidthMin = 100;
     const segmentWidthMax = 400;
     var xPos = 0;
-    var yPos = 800;
     var up = true;
 
     while (xPos < 1000) {
-        var segmentWidth = randomIntFromInterval(randomSeed + xPos, segmentWidthMin, segmentWidthMax);
+        var segmentWidth = randomInt(randomSeed + xPos, 100, 400);
         
         if (segmentWidth > 1000 - xPos) {
             segmentWidth = 1000 - xPos;
-        } else if ((1000 - xPos) - segmentWidth < segmentWidthMin) {
+        } else if ((1000 - xPos) - segmentWidth < 100) {
             segmentWidth += (1000 - xPos) - segmentWidth;
         }
 
-        const yDelta = randomIntFromInterval(randomSeed + xPos, 10, 30);
+        const yDelta = randomInt(randomSeed + xPos, 10, 30);
         const yPos = (up ? 800 - yDelta : 800 + yDelta);
         
-        const newCurve = "C " + xPos + " 800, " + (xPos + segmentWidth / 2) + " " + yPos + ", " + (xPos + segmentWidth) + " 800\n\r";
+        shorelineCurves = shorelineCurves + "C " + xPos + " 800, " + (xPos + segmentWidth / 2) + " " + yPos + ", " + (xPos + segmentWidth) + " 800\n\r";
 
-        shorelineCurves += newCurve;
         xPos += segmentWidth;
         up = !up;
     }
     console.log("SHORELINE CURVES: " + shorelineCurves);
 
-    const slope = randomIntFromInterval(randomSeed, 1, 10)
-    const baseFrequency1 = randomIntFromInterval(randomSeed * 2, 3, 9);
+    const slope = randomInt(randomSeed, 1, 10);
+    const baseFrequency1 = randomInt(randomSeed * 2, 3, 9);
     const water = `
-        <filter id="water">
-            <feTurbulence type="turbulence" 
-                          baseFrequency="0.00` + baseFrequency1 + ` .11"
-                          numOctaves="4" 
-                          seed="` + randomSeed + `"
+        <filter id='water'>
+            <feTurbulence type='turbulence' 
+                          baseFrequency='0.00` + baseFrequency1 + ` .11'
+                          numOctaves='4' 
+                          seed='` + randomSeed + `'
             />
-            <feComponentTransfer result="wave">
-                <feFuncR type="linear" slope="0.1" intercept="-0.05" />
-                <feFuncG type="gamma" 
-                        amplitude="0.75" exponent="0.6" offset="0.05" />
-                <feFuncB type="gamma" 
-                        amplitude="0.8" exponent="0.4" offset="0.05"/>
-                <feFuncA type="linear" slope="` + slope + `" />
+            <feComponentTransfer result='wave'>
+                <feFuncR type='linear' slope='0.1' intercept='-0.05' />
+                <feFuncG type='gamma' 
+                        amplitude='0.75' exponent='0.6' offset='0.05' />
+                <feFuncB type='gamma' 
+                        amplitude='0.8' exponent='0.4' offset='0.05'/>
+                <feFuncA type='linear' slope='` + slope + `' />
             </feComponentTransfer>
-            <feFlood flood-color="cyan" />
-            <feComposite in="wave" />
-            <feComposite in2="SourceAlpha" operator="in" />
+            <feFlood flood-color='cyan' />
+            <feComposite in='wave' />
+            <feComposite in2='SourceAlpha' operator='in' />
         </filter>        
-        <path d="M 0 1000
+        <path d='M 0 1000
                  L 0 800
                 ` + shorelineCurves + `
                  L 1000 800 
-                 L 1000 1000" 
-                filter="url(#water)" 
-                stroke="clear"
-                stroke-width="0" 
-                fill-opacity="0.5"/>
+                 L 1000 1000' 
+                filter='url(#water)' 
+                stroke='clear'
+                stroke-width='0' 
+                fill-opacity='0.5'/>
     `;
 
     return water;
@@ -343,7 +340,7 @@ function getWater(randomSeed) {
 // ----------- RANDOM --------------
 
 // Generate random int, inclusive of min/max, using same method as Solidity code
-function randomIntFromInterval(randomSeed, min, max) { 
+function randomInt(randomSeed, min, max) { 
     if (max <= min) {
         return min;
     }
@@ -387,11 +384,11 @@ function randomColour(randomSeed, tintColour) {
     
     console.log("RANDOM COLOUR SEED: " + randomSeed);
 
-    const redRandom = randomIntFromInterval(randomSeed, 0, 255);
-    // const greenRandom = randomIntFromInterval(randomSeed + 1, 0, 255);
-    // const blueRandom = randomIntFromInterval(randomSeed + 2, 0, 255);
-    const greenRandom = randomIntFromInterval(randomSeed + 2, 0, 255);
-    const blueRandom = randomIntFromInterval(randomSeed + 1, 0, 255);
+    const redRandom = randomInt(randomSeed, 0, 255);
+    // const greenRandom = randomInt(randomSeed + 1, 0, 255);
+    // const blueRandom = randomInt(randomSeed + 2, 0, 255);
+    const greenRandom = randomInt(randomSeed + 2, 0, 255);
+    const blueRandom = randomInt(randomSeed + 1, 0, 255);
 
     // if (tintColour == null) {
         const finalColour = "rgb(" + redRandom + ", " + greenRandom + ", " + blueRandom + ")";

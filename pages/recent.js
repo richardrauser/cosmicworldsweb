@@ -6,33 +6,35 @@ import AlienNavBar from "components/AlienNavBar";
 import TokenList from "@components/TokenList";
 
 export default function Recent() {  
-    const [mintCount, setMintCount] = useState(null);
-    const [tokenIds, setTokenIds] = useState(null);
+    // const [mintCount, setMintCount] = useState(null);
+    const [tokenIds, setTokenIds] = useState([]);
+
+    var tokens = [];
 
     useEffect(() => {
       console.log("USE EFFECT.");
 
+
       async function fetchTokenCount() {
-        const contract = await getContract();
+        // const contract = await getContract();
 
         // const ownerAddress = (await contract.owner()).toString().toLowerCase();
         // console.log("Contract owner: " + ownerAddress);
  
-        const contractAddress = await contract.getAddress();
-        console.log("Contract address: " + contractAddress);
+        // const contractAddress = await contract.getAddress();
+        // console.log("Contract address: " + contractAddress);
 
-        const tokenCount = await contract.totalSupply();
-        console.log("Token count: " + tokenCount);
+        // const tokenCount = await contract.totalSupply();
+        // console.log("Token count: " + tokenCount);
 
-        var tokens = [];
-        const maxToDisplay = 12;
-
+        // const maxToDisplay = 12;
+        
         // because tokenCount is a BigInt
-        const tokenCountInt = Number(tokenCount);
-        for (var i = tokenCountInt - 1; i >= 0 && i >= tokenCountInt - maxToDisplay; i--) {
-          console.log(i);
+        // const tokenCountInt = Number(tokenCount);
+        // for (var i = tokenCountInt - 1; i >= 0 && i >= tokenCountInt - maxToDisplay; i--) {
+          // console.log(i);
           // const tokenId = await contract.tokenByIndex(i);
-          tokens.push(i);
+          // tokens.push(i);
 
           // const metadataDataUri = await contract.tokenURI(i);
           // console.log("TOKEN URI: " + metadataDataUri);
@@ -55,18 +57,15 @@ export default function Recent() {
           //   console.log("SVG: " + svg);
           // }
 
-        }
+        // }
 
-        console.log("TOKEN IDS: " + tokens);
+//        console.log("TOKEN IDS: " + tokens);
         // setMintCount(tokenCount);
-        // setTokenIds(tokens);
+        setTokenIds(tokens);
       }
 
       fetchTokenCount();
-    });
-
-
-
+    }, []);
 
     return (
       <div>
