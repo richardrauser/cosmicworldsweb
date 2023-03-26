@@ -6,7 +6,7 @@ import TokenCard from './TokenCard';
 function TokenList(props) {
     const tokens = props.tokens;
     const listItems = tokens.map((token) =>
-      <TokenCard key={token.toString()} tokenId={token.toString()}/>
+      <TokenCard key={token.toString()} tokenid={token.toString()}/>
     )
     return (
       <div className="tokenList">

@@ -6,7 +6,7 @@ html, body {
   padding: 0;
   margin: 0;
   font-family: 'Sofia Sans Extra Condensed', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
-    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif !important;
   font-size: 24px;
   background-color: rgb(10, 10, 50) !important;
   color: lightcyan !important;
@@ -36,7 +36,7 @@ code {
 /* ---- */
 
 .cosmicWorlds {
-  font-family: Orbitron;
+  font-family: Orbitron !important;
 }
 
 .volstrate {

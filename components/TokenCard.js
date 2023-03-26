@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
@@ -19,7 +19,7 @@ class TokenCard extends React.Component {
 
     async fetchMetadata() {
 
-      const tokenId = this.props.tokenId;
+      const tokenId = this.props.tokenid;
  
         console.log("Getting SVG for token ID: " + tokenId);
   
@@ -49,8 +49,8 @@ class TokenCard extends React.Component {
 
           console.log("SVG: " + svg);
 
-          // const traitsText = buildTraitsText(metadataObject);
-          const traitsText = "incredible, magical alien world";
+          let planetCount = metadataObject.attributes.filter(attribute => attribute.trait_type == "planet count")[0].value;
+          const traitsText = "Planet count: " + planetCount;
 
           this.setState({
             loading: false,
@@ -70,7 +70,7 @@ class TokenCard extends React.Component {
     
       render() {
 
-        const tokenId = this.props.tokenId;
+        const tokenId = this.props.tokenid;
         const link = "/token/" + tokenId;
 
         if (this.state.loading === true) {

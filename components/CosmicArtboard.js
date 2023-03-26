@@ -25,6 +25,7 @@ export default function CosmicArtboard() {
     // updateSeed();
 
     const mint = async () => {
+        
         console.log("Minting..");
         console.log("Random seed: " + randomSeed);
         try {
