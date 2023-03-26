@@ -10,7 +10,7 @@ import { fetchAccountDetails, fetchCachedAccountDetails, clearCachedAccountDetai
 import '../utils/UIUtils';
 import { handleError } from '../utils/ErrorHandler';
 import * as Errors from '../utils/ErrorMessages';
-import { AlienWorldzCurrentNetworkExplorerUrl } from '../utils/Constants';
+import { CosmicWorldsCurrentNetworkExplorerUrl } from '../utils/Constants';
 import ethereum from '../images/ethereum.svg';
 import styles from '@styles/NavLoginDropdown.module.css';
 
@@ -145,7 +145,7 @@ class NavLoginDropdown extends React.Component {
         isWalletConnected: true,
         accountEthAddress: accountDetails.shortenedAddress,
         accountEthBalance: accountDetails.displayBalance.toString(),
-        etherscanUrl: AlienWorldzCurrentNetworkExplorerUrl.CurrentNetworkExplorerUrl + "address/" + accountDetails.fullAddress,
+        etherscanUrl: CosmicWorldsCurrentNetworkExplorerUrl.CurrentNetworkExplorerUrl + "address/" + accountDetails.fullAddress,
       });
 
       console.log('Address: ', accountDetails.address);

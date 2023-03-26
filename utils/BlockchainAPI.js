@@ -1,8 +1,8 @@
 
 import { ethers } from 'ethers';
-import AlienWorldz from '../artifacts/contracts/AlienWorldz.sol/AlienWorldz.json';
+import CosmicWorlds from '../contract/CosmicWorlds.json';
 import * as Errors from './ErrorMessages';
-import AlienWorldzContractAddress, { AlienWorldzCurrentNetworkID, AlienWorldzCurrentNetworkName, AlienWorldzCurrentNetworkCurrencySymbol, AlienWorldzCurrentNetworkRpcUrl, AlienWorldzCurrentNetworkExplorerUrl } from './Constants';
+import CosmicWorldsContractAddress, { CosmicWorldsCurrentNetworkID, CosmicWorldsCurrentNetworkName, CosmicWorldsCurrentNetworkCurrencySymbol, CosmicWorldsCurrentNetworkRpcUrl, CosmicWorldsCurrentNetworkExplorerUrl } from './Constants';
 import { showInfoMessage } from './UIUtils';
 import{ handleError } from './ErrorHandler';
 import detectEthereumProvider from '@metamask/detect-provider'
@@ -21,10 +21,10 @@ async function getProvider() {
   const provider = new ethers.BrowserProvider(window.ethereum);
   const network = await provider.getNetwork();
   
-  console.log("Desired chain ID: " + AlienWorldzCurrentNetworkID);
+  console.log("Desired chain ID: " + CosmicWorldsCurrentNetworkID);
   console.log("Current chain ID: " + network.chainId);
   
-  if (!network.chainId == AlienWorldzCurrentNetworkID) {
+  if (!network.chainId == CosmicWorldsCurrentNetworkID) {
     throw Error(Errors.DS_WRONG_ETH_NETWORK);
   }
 
@@ -33,27 +33,27 @@ async function getProvider() {
 
 export async function switchToCurrentNetwork() {
    // will attempt to add current network, behaviour is to switch if already present in MetaMask
-  console.log("Switching to " + AlienWorldzCurrentNetworkName + "...");
+  console.log("Switching to " + CosmicWorldsCurrentNetworkName + "...");
 
   const provider = new ethers.BrowserProvider(window.ethereum);
   const network = await provider.getNetwork();
 
-  if (network.chainId == AlienWorldzCurrentNetworkID) {
-    showInfoMessage("You're already on the " + AlienWorldzCurrentNetworkName + " network. Yay.");
+  if (network.chainId == CosmicWorldsCurrentNetworkID) {
+    showInfoMessage("You're already on the " + CosmicWorldsCurrentNetworkName + " network. Yay.");
     return;
   }
 
   const data = [{
-    chainId: "0x" + AlienWorldzCurrentNetworkID.toString(16),
-    chainName: AlienWorldzCurrentNetworkName,
+    chainId: "0x" + CosmicWorldsCurrentNetworkID.toString(16),
+    chainName: CosmicWorldsCurrentNetworkName,
     nativeCurrency:
         {
-            name: AlienWorldzCurrentNetworkCurrencySymbol,
-            symbol: AlienWorldzCurrentNetworkCurrencySymbol,
+            name: CosmicWorldsCurrentNetworkCurrencySymbol,
+            symbol: CosmicWorldsCurrentNetworkCurrencySymbol,
             decimals: 18
         },
-    rpcUrls: [AlienWorldzCurrentNetworkRpcUrl],
-    blockExplorerUrls: [AlienWorldzCurrentNetworkExplorerUrl],
+    rpcUrls: [CosmicWorldsCurrentNetworkRpcUrl],
+    blockExplorerUrls: [CosmicWorldsCurrentNetworkExplorerUrl],
   }];
 
   console.log (data);
@@ -68,16 +68,16 @@ export async function getReadOnlyContract() {
   console.log("Getting read-only contract..");
   const provider = await getProvider();
     
-  console.log("CONTRACT ADDRESS: " + AlienWorldzContractAddress);
+  console.log("CONTRACT ADDRESS: " + CosmicWorldsContractAddress);
   
-  return new ethers.Contract(AlienWorldzContractAddress, AlienWorldz.abi, provider);
+  return new ethers.Contract(CosmicWorldsContractAddress, CosmicWorlds.abi, provider);
 }
 
 export async function getReadWriteContract() {
   console.log("Getting read/write contract..");
   const provider = await getProvider();
   const signer = await provider.getSigner();
-  return new ethers.Contract(AlienWorldzContractAddress, AlienWorldz.abi, signer);
+  return new ethers.Contract(CosmicWorldsContractAddress, CosmicWorlds.abi, signer);
 }
 
 export async function isAccountConnected() {

@@ -1,57 +1,57 @@
 
-const AlienWorldzMaxTokensPerUser = 50;
-const AlienWorldzLocalhostNetwork = "localhost";
-const AlienWorldzMumbaiNetwork = "mumbai";
-const AlienWorldzPolygonNetwork = "Polygon Mainnet"; // polygon
+const CosmicWorldsMaxTokensPerUser = 50;
+const CosmicWorldsLocalhostNetwork = "localhost";
+const CosmicWorldsMumbaiNetwork = "mumbai";
+const CosmicWorldsPolygonNetwork = "Polygon Mainnet"; // polygon
 
 // Change this to control which environment you're pointing at.
-const currentNetwork = AlienWorldzLocalhostNetwork;
-// const currentNetwork = AlienWorldzMumbaiNetwork;
-// const currentNetwork = AlienWorldzPolygonNetwork;
+const currentNetwork = CosmicWorldsLocalhostNetwork;
+// const currentNetwork = CosmicWorldsMumbaiNetwork;
+// const currentNetwork = CosmicWorldsPolygonNetwork;
 
-const AlienWorldzCurrentNetworkIDKey = "AlienWorldzCurrentNetworkIDKey";
-const AlienWorldzCurrentNetworkNameKey = "AlienWorldzCurrentNetworkNameKey";
-const AlienWorldzCurrentNetworkCurrencySymbolKey = "AlienWorldzCurrentNetworkCurrencySymbolKey";
-const AlienWorldzCurrentNetworkRpcUrlKey = "AlienWorldzCurrentNetworkRpcUrlKey";
-const AlienWorldzCurrentNetworkExplorerUrlKey = "AlienWorldzCurrentNetworkExplorerUrlKey";
-const AlienWorldzContractAddressKey = "AlienWorldzContractAddressKey";
+const CosmicWorldsCurrentNetworkIDKey = "CosmicWorldsCurrentNetworkIDKey";
+const CosmicWorldsCurrentNetworkNameKey = "CosmicWorldsCurrentNetworkNameKey";
+const CosmicWorldsCurrentNetworkCurrencySymbolKey = "CosmicWorldsCurrentNetworkCurrencySymbolKey";
+const CosmicWorldsCurrentNetworkRpcUrlKey = "CosmicWorldsCurrentNetworkRpcUrlKey";
+const CosmicWorldsCurrentNetworkExplorerUrlKey = "CosmicWorldsCurrentNetworkExplorerUrlKey";
+const CosmicWorldsContractAddressKey = "CosmicWorldsContractAddressKey";
 
 
 const networkConfig = networkConfigFor(currentNetwork);
-const AlienWorldzCurrentNetworkID = networkConfig[AlienWorldzCurrentNetworkIDKey];
-const AlienWorldzCurrentNetworkName = networkConfig[AlienWorldzCurrentNetworkNameKey];
-const AlienWorldzCurrentNetworkCurrencySymbol = networkConfig[AlienWorldzCurrentNetworkCurrencySymbolKey];
-const AlienWorldzCurrentNetworkRpcUrl = networkConfig[AlienWorldzCurrentNetworkRpcUrlKey];
-const AlienWorldzCurrentNetworkExplorerUrl = networkConfig[AlienWorldzCurrentNetworkExplorerUrlKey];
-const AlienWorldzContractAddress = networkConfig[AlienWorldzContractAddressKey];
+const CosmicWorldsCurrentNetworkID = networkConfig[CosmicWorldsCurrentNetworkIDKey];
+const CosmicWorldsCurrentNetworkName = networkConfig[CosmicWorldsCurrentNetworkNameKey];
+const CosmicWorldsCurrentNetworkCurrencySymbol = networkConfig[CosmicWorldsCurrentNetworkCurrencySymbolKey];
+const CosmicWorldsCurrentNetworkRpcUrl = networkConfig[CosmicWorldsCurrentNetworkRpcUrlKey];
+const CosmicWorldsCurrentNetworkExplorerUrl = networkConfig[CosmicWorldsCurrentNetworkExplorerUrlKey];
+const CosmicWorldsContractAddress = networkConfig[CosmicWorldsContractAddressKey];
 
 function networkConfigFor(currentNetwork) { 
-    if (currentNetwork === AlienWorldzLocalhostNetwork) {
+    if (currentNetwork === CosmicWorldsLocalhostNetwork) {
         return {
-            AlienWorldzCurrentNetworkIDKey: 1337, 
-            AlienWorldzCurrentNetworkNameKey: "localhost",
-            AlienWorldzCurrentNetworkCurrencySymbolKey: "ETH",
-            AlienWorldzCurrentNetworkRpcUrlKey: "http://localhost:8545",
-            AlienWorldzCurrentNetworkExplorerUrlKey: 'https://www.superbad.com/',
-            AlienWorldzContractAddressKey: '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+            CosmicWorldsCurrentNetworkIDKey: 1337, 
+            CosmicWorldsCurrentNetworkNameKey: "localhost",
+            CosmicWorldsCurrentNetworkCurrencySymbolKey: "ETH",
+            CosmicWorldsCurrentNetworkRpcUrlKey: "http://localhost:8545",
+            CosmicWorldsCurrentNetworkExplorerUrlKey: 'https://www.superbad.com/',
+            CosmicWorldsContractAddressKey: '0x5FbDB2315678afecb367f032d93F642f64180aa3'
         }    
-    } else if (currentNetwork === AlienWorldzMumbaiNetwork) {
+    } else if (currentNetwork === CosmicWorldsMumbaiNetwork) {
         return {
-            AlienWorldzCurrentNetworkIDKey: 80001,
-            AlienWorldzCurrentNetworkNameKey: "Matic Mumbai",
-            AlienWorldzCurrentNetworkCurrencySymbolKey: "MATIC",
-            AlienWorldzCurrentNetworkRpcUrlKey: "https://rpc-mumbai.maticvigil.com/",
-            AlienWorldzCurrentNetworkExplorerUrlKey: "https://mumbai.polygonscan.com/",
-            AlienWorldzContractAddressKey: '0x694b0dC535c38bee5f168b753B60dd79AC12cc1a' //pre-opensea support: '0xfE5b53733fA92D335e08dAe84fC98f98Fb8BD535'
+            CosmicWorldsCurrentNetworkIDKey: 80001,
+            CosmicWorldsCurrentNetworkNameKey: "Matic Mumbai",
+            CosmicWorldsCurrentNetworkCurrencySymbolKey: "MATIC",
+            CosmicWorldsCurrentNetworkRpcUrlKey: "https://rpc-mumbai.maticvigil.com/",
+            CosmicWorldsCurrentNetworkExplorerUrlKey: "https://mumbai.polygonscan.com/",
+            CosmicWorldsContractAddressKey: '0x694b0dC535c38bee5f168b753B60dd79AC12cc1a' //pre-opensea support: '0xfE5b53733fA92D335e08dAe84fC98f98Fb8BD535'
         }
-    } else if (currentNetwork === AlienWorldzPolygonNetwork) {
+    } else if (currentNetwork === CosmicWorldsPolygonNetwork) {
         return {
-            AlienWorldzCurrentNetworkIDKey: 137, 
-            AlienWorldzCurrentNetworkNameKey: "Polygon Mainnet",
-            AlienWorldzCurrentNetworkCurrencySymbolKey: "MATIC",
-            AlienWorldzCurrentNetworkRpcUrlKey: "https://rpc-mainnet.maticvigil.com/",
-            AlienWorldzCurrentNetworkExplorerUrlKey: 'https://www.polygonscan.com/',
-            AlienWorldzContractAddressKey: '0x9F5C4Ea4d13339D2379412141268032DD9bC7329'
+            CosmicWorldsCurrentNetworkIDKey: 137, 
+            CosmicWorldsCurrentNetworkNameKey: "Polygon Mainnet",
+            CosmicWorldsCurrentNetworkCurrencySymbolKey: "MATIC",
+            CosmicWorldsCurrentNetworkRpcUrlKey: "https://rpc-mainnet.maticvigil.com/",
+            CosmicWorldsCurrentNetworkExplorerUrlKey: 'https://www.polygonscan.com/',
+            CosmicWorldsContractAddressKey: '0x9F5C4Ea4d13339D2379412141268032DD9bC7329'
         }        
     }
 }
@@ -59,19 +59,19 @@ function networkConfigFor(currentNetwork) {
 // ETHEREUM
 
 // Mainnet
-// const AlienWorldzCurrentNetworkID = 1; 
-// const AlienWorldzCurrentNetworkName = "Ethereum Mainnet";
-// const AlienWorldzContractAddress = '0xeD03568eaC21c1D0316c87cC09c0ce85f0000c65'; 
-// const AlienWorldzCurrentNetworkExplorerUrl = 'https://www.etherscan.io/';
+// const CosmicWorldsCurrentNetworkID = 1; 
+// const CosmicWorldsCurrentNetworkName = "Ethereum Mainnet";
+// const CosmicWorldsContractAddress = '0xeD03568eaC21c1D0316c87cC09c0ce85f0000c65'; 
+// const CosmicWorldsCurrentNetworkExplorerUrl = 'https://www.etherscan.io/';
 
 // POLYGON
 
 
-export { AlienWorldzMaxTokensPerUser,
-         AlienWorldzCurrentNetworkID, 
-         AlienWorldzCurrentNetworkName, 
-         AlienWorldzCurrentNetworkCurrencySymbol, 
-         AlienWorldzCurrentNetworkRpcUrl,
-         AlienWorldzCurrentNetworkExplorerUrl };
+export { CosmicWorldsMaxTokensPerUser,
+         CosmicWorldsCurrentNetworkID, 
+         CosmicWorldsCurrentNetworkName, 
+         CosmicWorldsCurrentNetworkCurrencySymbol, 
+         CosmicWorldsCurrentNetworkRpcUrl,
+         CosmicWorldsCurrentNetworkExplorerUrl };
 
-export default AlienWorldzContractAddress;
+export default CosmicWorldsContractAddress;

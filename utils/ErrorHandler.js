@@ -1,6 +1,6 @@
 import { showErrorMessage } from './UIUtils';
 import * as Errors from './ErrorMessages';
-import { AlienWorldzCurrentNetworkName } from './Constants';
+import { CosmicWorldsCurrentNetworkName } from './Constants';
 import { switchToCurrentNetwork } from './BlockchainAPI';
 
 export function handleError(err) {
@@ -26,7 +26,7 @@ export function handleError(err) {
       showErrorMessage("You need to connect an account via your crypto wallet before you can do that. Read the 'How to' guide for more info.");      
     } else if (err.message === Errors.DS_WRONG_ETH_NETWORK) {
 
-      const errorMessage = "You're on the wrong network. Tap to switch to " + AlienWorldzCurrentNetworkName + ", or read the 'How to' guide for more info.";
+      const errorMessage = "You're on the wrong network. Tap to switch to " + CosmicWorldsCurrentNetworkName + ", or read the 'How to' guide for more info.";
       const onClose = switchToCurrentNetwork;
       
       showErrorMessage(errorMessage, onClose);

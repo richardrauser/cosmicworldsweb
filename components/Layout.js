@@ -1,4 +1,4 @@
-import AlienNavBar from "./AlienNavBar";
+import CosmicNavBar from "./CosmicNavBar";
 import { ToastContainer, toast } from 'react-toastify'
 import Header from '@components/Header';
 import Footer from '@components/Footer';
@@ -10,7 +10,7 @@ export default function Layout(props) {
 
     return (
         <div className="layout">
-            <AlienNavBar/>
+            <CosmicNavBar/>
             <ToastContainer />
 
             <main>

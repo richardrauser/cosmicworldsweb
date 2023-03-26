@@ -108,7 +108,7 @@ class TokenCard extends React.Component {
                       {/* <Link to= {link}> */}
                         <div className="cardArtwork" tokenId={tokenId}>
                             <Link href= { "/token/" + tokenId }>
-                              <img className="galleryImage" alt={ "Alien Worldz token " + tokenId } src={ this.state.tokenSvgDataUri } />
+                              <img className="galleryImage" alt={ "Cosmic Worlds token " + tokenId } src={ this.state.tokenSvgDataUri } />
                             {/* { this.state.svg } */}
                             </Link>
                         </div>
