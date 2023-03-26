@@ -6,87 +6,39 @@ import AlienWorldzContractAddress, { AlienWorldzCurrentNetworkID, AlienWorldzCur
 import { showInfoMessage } from './UIUtils';
 import{ handleError } from './ErrorHandler';
 import detectEthereumProvider from '@metamask/detect-provider'
-
+import { formatEther } from 'ethers';
 
 // import Web3Modal from "web3modal";
 
 const AccountDetailsKey = "DS_ACCOUNT_DETAILS_KEY";
 
 async function getProvider() {
-  // const provider = ethers.getDefaultProvider('ropsten');
-  // const provider = new ethers.providers.Web3Provider(window.ethereum);
-  
-  const provider = await detectEthereumProvider();
-  
-  if (provider) {
-
-    console.log('Ethereum successfully detected!')
-
-    // From now on, this should always be true:
-    // provider === window.ethereum
-
-    // Access the decentralized web!
-
-    // Legacy providers may only have ethereum.sendAsync
-    // const chainId = await provider.request({
-    //   method: 'eth_chainId'
-    // });
-  } else {
-
-    // if the provider is not detected, detectEthereumProvider resolves to null
-    console.error('Please install MetaMask!');
-    console.log('Could not get wallet. Throwing error NO_ETH_WALLET');
+  if (!window.ethereum) {
+    console.log('No Ethereum wallet found. Throwing error NO_ETH_WALLET');
     throw Error(Errors.DS_NO_ETH_WALLET);
-  }
-  // const provider = new 
-
-  return new ethers.BrowserProvider(window.ethereum);
+  }  
   
-  // const provider = new ethers.providers.getDefaultProvider();
-  
-  // const providerOptions = {};
-  // const web3Modal = new Web3Modal({
-  //   network: "mainnet",
-  //   cacheProvider: true,
-  //   providerOptions
-  // });
-
-  
-
-  // const provider = await web3Modal.connect();
-
-  // const ethersProvider = new ethers.providers.Web3Provider(provider);
-
-  // return ethersProvider;
-  // return provider;
-}
-
-// function checkWallet() {
-//   if (typeof window.ethereum === 'undefined') {
-    // console.log('Could not get wallet. Throwing error NO_ETH_WALLET');
-//     throw Error(Errors.DS_NO_ETH_WALLET);
-//   } else {
-//     console.log('Has wallet.');
-//   }
-// }
-
-export async function isOnCorrectNetwork() {
-
-  const provider = await getProvider();
+  const provider = new ethers.BrowserProvider(window.ethereum);
   const network = await provider.getNetwork();
+  
   console.log("Desired chain ID: " + AlienWorldzCurrentNetworkID);
   console.log("Current chain ID: " + network.chainId);
   
-  return network.chainId == AlienWorldzCurrentNetworkID;
+  if (!network.chainId == AlienWorldzCurrentNetworkID) {
+    throw Error(Errors.DS_WRONG_ETH_NETWORK);
+  }
+
+  return provider;
 }
 
 export async function switchToCurrentNetwork() {
- // will attempt to add current network, behaviour is to switch if already present in MetaMask
+   // will attempt to add current network, behaviour is to switch if already present in MetaMask
   console.log("Switching to " + AlienWorldzCurrentNetworkName + "...");
-  // checkWallet();
 
-  const correctNetwork = await isOnCorrectNetwork();
-  if (correctNetwork) {
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const network = await provider.getNetwork();
+
+  if (network.chainId == AlienWorldzCurrentNetworkID) {
     showInfoMessage("You're already on the " + AlienWorldzCurrentNetworkName + " network. Yay.");
     return;
   }
@@ -104,47 +56,28 @@ export async function switchToCurrentNetwork() {
     blockExplorerUrls: [AlienWorldzCurrentNetworkExplorerUrl],
   }];
 
+  console.log (data);
+  
   const tx = await window.ethereum.request({method: 'wallet_addEthereumChain', params:data});
   if (tx) {
       console.log(tx)
   }
 }
-export async function getContract() {
-  console.log("Getting contract..");
-  // checkWallet();
-  const provider = await getProvider();
 
-  const { chainId } = await provider.getNetwork();
-  console.log("CHAIN ID: " + chainId); // 42
-  
-  if (!isOnCorrectNetwork()) {
-    throw Error(Errors.DS_WRONG_ETH_NETWORK);
-  }
+export async function getReadOnlyContract() {
+  console.log("Getting read-only contract..");
+  const provider = await getProvider();
     
   console.log("CONTRACT ADDRESS: " + AlienWorldzContractAddress);
   
-  const contract = new ethers.Contract(AlienWorldzContractAddress, AlienWorldz.abi, provider);
-  return contract;
+  return new ethers.Contract(AlienWorldzContractAddress, AlienWorldz.abi, provider);
 }
 
-export async function getSigner() {
-  console.log("Getting signer..");
-
-  // checkWallet();
+export async function getReadWriteContract() {
+  console.log("Getting read/write contract..");
   const provider = await getProvider();
-  const signer = provider.getSigner();
-  return signer;
-}
-
-export async function getContractWithSigner() {
-  console.log("Getting contract with signer..");
-  // checkWallet();
-  const provider = await getProvider();
-  const contract = new ethers.Contract(AlienWorldzContractAddress, AlienWorldz.abi, provider);
-
-  const signer = provider.getSigner();
-  const contractWithSigner = contract.connect(signer);  
-  return contractWithSigner;
+  const signer = await provider.getSigner();
+  return new ethers.Contract(AlienWorldzContractAddress, AlienWorldz.abi, signer);
 }
 
 export async function isAccountConnected() {
@@ -159,7 +92,6 @@ export async function isAccountConnected() {
 }
 
 export async function fetchAccount() {
-  // checkWallet();
 
   console.log("Fetching account..");
   const provider = await getProvider();
@@ -194,7 +126,7 @@ export async function fetchAccountDetails() {
   }
 
   const weiBalance = await provider.getBalance(account);
-  const displayBalance = Number(ethers.utils.formatEther(weiBalance)).toFixed(4);
+  const displayBalance = Number(formatEther(weiBalance)).toFixed(4);
 
   var accountDetails = new AccountDetails(shortenedAddress, fullAddress, weiBalance.toString(), displayBalance.toString());
 
@@ -252,7 +184,7 @@ export async function isCurrentAccountOwner() {
   const account = await fetchAccount();
 
   const ethAddress = account.toString().toLowerCase();
-  const contract = await getContract();
+  const contract = await getReadOnlyContract();
   const ownerAddress = (await contract.owner()).toString().toLowerCase();
   console.log("connected account address: " + ethAddress);
   console.log("owner address: " + ownerAddress);
@@ -261,45 +193,16 @@ export async function isCurrentAccountOwner() {
 } 
 
 export async function mintAlienWorld(randomSeed) {
-  try {
-    const correctNetwork = await isOnCorrectNetwork();
-    if (!correctNetwork) {    
-      console.log("Not on right network");
-      throw Error(Errors.DS_WRONG_ETH_NETWORK);
-    }
-    const contractWithSigner = await getContractWithSigner(); 
-
-    // const [account] = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    // const tokenCount = await contractWithSigner.balanceOf(account);
-    // console.log("User's token count: " + tokenCount);
-    // if (tokenCount >= AlienWorldzMaxTokensPerUser && account !== "0xBC10a3aE909B1b94f4C3E39607aD19D386dCe32a") {
-    //   showErrorMessage("You already have " + tokenCount + " AlienWorldz artworks. You've reached the mint limit of " + AlienWorldzMaxTokensPerUser + " tokens!");
-    //   return;
-    // }
-
-    console.log("Minting Alien World with seed: " + randomSeed)
-
+    console.log("Minting Alien World with seed: " + randomSeed);
+  
+    const contract = await getReadWriteContract(); 
+    
     const overrides = {
-      // value: this.state.mintPrice, 
-      gasLimit: 150000
-    }
+      gasLimit: 180000
+    };
     
     console.log("!!!!!");
 
-    const transaction = await contractWithSigner.mint(randomSeed, overrides);
+    const transaction = await contract.mint(randomSeed, overrides);
     console.log("Tx hash: " + transaction.hash);
-    this.setState({
-      doneSuccess: true,
-      txHash: transaction.hash,
-    });
-
-    toast.success("Successfully minted your AlienWorldz NFT!");
-  } catch (err) {
-    if (err.code === "UNSUPPORTED_OPERATION" && err.message.startsWith("unknown account")) {
-      showErrorMessage("You need to connect an Ethereum wallet like MetaMask.");
-    } else {
-      handleError(err);
-    }
-  }
-
 } 

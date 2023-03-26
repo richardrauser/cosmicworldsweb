@@ -2,7 +2,7 @@ import React from 'react';
 
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
-import { getContract } from '../utils/BlockchainAPI';
+import { getReadOnlyContract } from '../utils/BlockchainAPI';
 import { handleError } from '../utils/ErrorHandler';
 import Link from 'next/link'
 
@@ -24,7 +24,7 @@ class TokenCard extends React.Component {
         console.log("Getting SVG for token ID: " + tokenId);
   
         try {
-          const contract = await getContract();
+          const contract = await getReadOnlyContract();
     
           const metadataDataUri = await contract.tokenURI(tokenId);
           
@@ -42,15 +42,19 @@ class TokenCard extends React.Component {
 
           const metadataObject = JSON.parse(metadataJson);
 
+
           const svg = metadataObject.image.replace("data:image/svg+xml,", "");
-          // const encodedSvg = encodeURIComponent(svg);
-          const svgDataUri = `data:image/svg+xml,${svg}`;
-          
+          const encodedSvg = encodeURIComponent(svg);
+          const svgDataUri = `data:image/svg+xml,${encodedSvg}`;
+
+          console.log("SVG: " + svg);
+
           // const traitsText = buildTraitsText(metadataObject);
           const traitsText = "incredible, magical alien world";
 
           this.setState({
             loading: false,
+            svg: svg,
             tokenSvgDataUri: svgDataUri,
             traitsText: traitsText,
           });
@@ -102,8 +106,11 @@ class TokenCard extends React.Component {
                       <Card.Title>
                       </Card.Title>
                       {/* <Link to= {link}> */}
-                        <div className="cardArtwork">
-                            <img className="galleryImage" alt={ "Alien Worldz token " + tokenId } src={ this.state.tokenSvgDataUri } />
+                        <div className="cardArtwork" tokenId={tokenId}>
+                            <Link href= { "/token/" + tokenId }>
+                              <img className="galleryImage" alt={ "Alien Worldz token " + tokenId } src={ this.state.tokenSvgDataUri } />
+                            {/* { this.state.svg } */}
+                            </Link>
                         </div>
                       {/* </Link> */}
                       <div className="cardTraits">

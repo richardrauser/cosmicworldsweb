@@ -2,13 +2,11 @@
 const AlienWorldzMaxTokensPerUser = 50;
 const AlienWorldzLocalhostNetwork = "localhost";
 const AlienWorldzMumbaiNetwork = "mumbai";
-const AlienWorldzRinkebyNetwork = "rinkeby";
 const AlienWorldzPolygonNetwork = "Polygon Mainnet"; // polygon
 
 // Change this to control which environment you're pointing at.
 const currentNetwork = AlienWorldzLocalhostNetwork;
 // const currentNetwork = AlienWorldzMumbaiNetwork;
-// const currentNetwork = AlienWorldzRinkebyNetwork;
 // const currentNetwork = AlienWorldzPolygonNetwork;
 
 const AlienWorldzCurrentNetworkIDKey = "AlienWorldzCurrentNetworkIDKey";
@@ -33,7 +31,7 @@ function networkConfigFor(currentNetwork) {
             AlienWorldzCurrentNetworkIDKey: 1337, 
             AlienWorldzCurrentNetworkNameKey: "localhost",
             AlienWorldzCurrentNetworkCurrencySymbolKey: "ETH",
-            AlienWorldzCurrentNetworkRpcUrlKey: "",
+            AlienWorldzCurrentNetworkRpcUrlKey: "http://localhost:8545",
             AlienWorldzCurrentNetworkExplorerUrlKey: 'https://www.superbad.com/',
             AlienWorldzContractAddressKey: '0x5FbDB2315678afecb367f032d93F642f64180aa3'
         }    
@@ -55,31 +53,10 @@ function networkConfigFor(currentNetwork) {
             AlienWorldzCurrentNetworkExplorerUrlKey: 'https://www.polygonscan.com/',
             AlienWorldzContractAddressKey: '0x9F5C4Ea4d13339D2379412141268032DD9bC7329'
         }        
-    } else if (currentNetwork === AlienWorldzRinkebyNetwork) {
-        return {
-            AlienWorldzCurrentNetworkIDKey: 4, 
-            AlienWorldzCurrentNetworkNameKey: "rinkeby",
-            AlienWorldzCurrentNetworkCurrencySymbolKey: "ETH",
-            AlienWorldzCurrentNetworkRpcUrlKey: "https://rinkeby.infura.io/v3/",
-            AlienWorldzCurrentNetworkExplorerUrlKey: 'https://rinkeby.etherscan.io/',
-            AlienWorldzContractAddressKey: '0x10eF52f63160E3526cb85997169d25D2f5cD7514'
-        }
     }
 }
 
 // ETHEREUM
-
-// Rinkeby
-// const AlienWorldzCurrentNetworkID = 4; 
-// const AlienWorldzCurrentNetworkName = "Rinkeby Testnet";
-// const AlienWorldzContractAddress = '0x95C2274aCC5B0AEc7d1544d71CF4620124f6ec1c';
-// const AlienWorldzCurrentNetworkExplorerUrl = 'https://rinkeby.etherscan.io/'; 
-
-// Ropsten
-// const AlienWorldzCurrentNetworkID = 3; 
-// const AlienWorldzCurrentNetworkName = "Ropsten Testnet";
-// const AlienWorldzContractAddress = '0x379A3dA759A131504085E485a75cA2202fB80476'; 
-// const AlienWorldzCurrentNetworkExplorerUrl = 'https://ropsen.etherscan.io/'; 
 
 // Mainnet
 // const AlienWorldzCurrentNetworkID = 1; 

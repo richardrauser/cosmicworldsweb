@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { fetchAccount, getContract } from '../utils/BlockchainAPI'
+import { fetchAccount, getReadOnlyContract } from '../utils/BlockchainAPI'
 
 export default function Yours() {
 
@@ -11,7 +11,7 @@ export default function Yours() {
         async function fetchWalletAddress() {
 
             const account = await fetchAccount();
-            const contract = await getContract();
+            const contract = await getReadOnlyContract();
             const tokenCount = await contract.balanceOf(account);
         
             console.log("ACCOUNT: " + account);

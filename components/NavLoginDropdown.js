@@ -3,7 +3,7 @@ import React from 'react';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
-
+import Image from 'next/image';
 import { Wallet2 } from 'react-bootstrap-icons';
 
 import { fetchAccountDetails, fetchCachedAccountDetails, clearCachedAccountDetails } from '../utils/BlockchainAPI';
@@ -11,6 +11,8 @@ import '../utils/UIUtils';
 import { handleError } from '../utils/ErrorHandler';
 import * as Errors from '../utils/ErrorMessages';
 import { AlienWorldzCurrentNetworkExplorerUrl } from '../utils/Constants';
+import ethereum from '../images/ethereum.svg';
+import styles from '@styles/NavLoginDropdown.module.css';
 
 class NavLoginDropdown extends React.Component {
 
@@ -143,7 +145,7 @@ class NavLoginDropdown extends React.Component {
         isWalletConnected: true,
         accountEthAddress: accountDetails.shortenedAddress,
         accountEthBalance: accountDetails.displayBalance.toString(),
-        etherscanUrl: DynaStripesCurrentNetworkExplorerUrl + "address/" + accountDetails.fullAddress,
+        etherscanUrl: AlienWorldzCurrentNetworkExplorerUrl.CurrentNetworkExplorerUrl + "address/" + accountDetails.fullAddress,
       });
 
       console.log('Address: ', accountDetails.address);
@@ -166,8 +168,16 @@ class NavLoginDropdown extends React.Component {
       } else {
         return (
           <NavDropdown title="Your Details" id="basic-nav-dropdown">
-            <NavDropdown.Item href={this.state.etherscanUrl} target="_blank"><Wallet2 className='navDropdownIcon'/>{ this.state.accountEthAddress }</NavDropdown.Item>
-            <NavDropdown.Item href={this.state.etherscanUrl} target="_blank"><img src={matic} alt="matic logo" className='navDropdownIcon' />{ this.state.accountEthBalance }</NavDropdown.Item>
+            <NavDropdown.Item href={this.state.etherscanUrl} target="_blank" className={styles.item}>
+            <div className={styles.navDropdownIcon}>
+              <Wallet2 /> { this.state.accountEthAddress }              
+            </div>
+            </NavDropdown.Item>
+            <NavDropdown.Item href={this.state.etherscanUrl} target="_blank" className={styles.item}>
+              <div className={styles.navDropdownIcon}>
+                <Image src={ethereum} alt="ethereum logo" /> { this.state.accountEthBalance }
+              </div>
+            </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item onClick={this.refreshWallet}>Refresh</NavDropdown.Item>
             <NavDropdown.Item onClick={this.disconnectWallet}>Disconnect</NavDropdown.Item>

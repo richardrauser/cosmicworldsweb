@@ -18,6 +18,8 @@ export function handleError(err) {
       } else {
         showErrorMessage('Oops, an Internal JSON RPC error occurred. ');
       }
+    }else if (err.code === "ACTION_REJECTED") {
+      showErrorMessage("You rejected the transaction.");
     } else if (err.message === Errors.DS_NO_ETH_WALLET) {
       showErrorMessage("No crypto wallet detected. Please install MetaMask. Read the 'How to' guide for more info.");
     } else if (err.message === Errors.DS_NO_ETH_ACCOUNT) {
