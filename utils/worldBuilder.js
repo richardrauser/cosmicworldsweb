@@ -264,14 +264,14 @@ function getClouds(randomSeed) {
     console.log("Base frequency: " + baseFrequency);
 
     const clouds = `
-        <filter id='filter'>
+        <filter id='clouds'>
             <feTurbulence type='fractalNoise' 
                           baseFrequency='${baseFrequency}' 
                           numOctaves='200' 
                           seed='${randomSeed}'
                           />
         </filter>
-        <rect width='100%' height='100%' opacity='${opacity}%' filter='url(#filter)'/>`;
+        <rect width='100%' height='100%' opacity='${opacity}%' filter='url(#clouds)'/>`;
 
     return clouds;
 }
