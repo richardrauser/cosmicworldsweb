@@ -1,36 +1,45 @@
 import { useEffect, useState } from "react"
 import { fetchAccount, getReadOnlyContract } from '../utils/BlockchainAPI'
+import TokenList from "@components/TokenList";
 
 export default function Yours() {
 
     const [address, setAddress] = useState(null);
-    const [balance, setBalance] = useState(null);
+    const [tokenCount, setTokenCount] = useState(null);
+    const [tokenIds, setTokenIds] = useState([]);
+
+    var tokens = [];
 
     useEffect(() => {
         console.log("USE EFFECT.");
-        async function fetchWalletAddress() {
+        async function fetchData() {
 
             const account = await fetchAccount();
             const contract = await getReadOnlyContract();
             const tokenCount = await contract.balanceOf(account);
         
             console.log("ACCOUNT: " + account);
-            console.log("BALANCE: " + balance);
+            console.log("TOKEN COUNT: " + tokenCount);
 
             setAddress(account);
-            setBalance(tokenCount);
-        }
+            setTokenCount(tokenCount.toString());
 
-        fetchWalletAddress();
-    })
+            const fetchedTokenIds = await contract.tokensOfOwnerIn(account, 0, 512);
+            console.log("fetched token IDs: " + fetchedTokenIds);
+            setTokenIds(fetchedTokenIds);
+        }   
+
+        fetchData();
+    }, []);
 
 
 
     return (
         <div>
-        <h1>Your Worldz</h1>
-        Your wallet address: { address == null ? "Loading.." : address } <br/>      
-        Your tokens: { balance == null ? "Loading.." : balance }
+            <h1>Your Worldz</h1>
+            Your wallet address: { address == null ? "Loading.." : address } <br/>      
+            Your cosmic world count: { tokenCount == null ? "Loading.." : tokenCount }
+            <TokenList tokens = { tokenIds } />
         </div>
     )
 

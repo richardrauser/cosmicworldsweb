@@ -14,7 +14,7 @@ export default function Recent() {
     useEffect(() => {
       console.log("USE EFFECT.");
 
-      async function fetchTokenCount() {
+      async function fetchRecentTokens() {
 
         try {
 
@@ -73,7 +73,7 @@ export default function Recent() {
 
       }
 
-      fetchTokenCount();
+      fetchRecentTokens();
     }, []);
 
     return (

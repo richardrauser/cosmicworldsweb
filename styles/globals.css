@@ -116,5 +116,18 @@ code {
   align-items: center;
   margin: auto;
 }
+.buttonIcon {
+  /* display: inline-block; */
+  vertical-align: middle;
+}
 
+.buttonIcon img {
+  height: 100%;
+  margin: auto;
+  max-height: 24px;
+}
+
+.buttonIcon span {
+  vertical-align: middle;
+}
 

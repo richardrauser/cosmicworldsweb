@@ -16,7 +16,7 @@ function generateArt(randomSeed) {
     //                   </radialGradient>`;
 
 
-    var defs = "<defs><clipPath id='masterClip'><rect x='0' y='0' width='1000' height='1000'/></clipPath>"
+    var defs = "<defs><clipPath id='master'><rect x='0' y='0' width='1000' height='1000'/></clipPath>"
     // defs += gradient;
     defs += `</defs>`;
 
@@ -30,7 +30,7 @@ function generateArt(randomSeed) {
     const thirdColour = randomColour(randomSeed + 3);
     const backgroundColour = `linear-gradient(${angle}deg, ${firstColour} 0%, ${secondColour} 35%, ${thirdColour} 100%)`;
 
-    const svgString = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' style='background-image:" + backgroundColour + "'>" + defs + "<g clip-path='url(#masterClip)'>" + shapes + "</g></svg>";
+    const svgString = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' style='background-image:" + backgroundColour + "'>" + defs + "<g clip-path='url(#master)'>" + shapes + "</g></svg>";
     console.log(`SVG: ${svgString}`);
     const encodedSvg = encodeURIComponent(svgString);
 

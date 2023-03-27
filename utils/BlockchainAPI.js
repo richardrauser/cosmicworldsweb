@@ -192,7 +192,7 @@ export async function isCurrentAccountOwner() {
   return (ethAddress === ownerAddress);
 } 
 
-export async function mintAlienWorld(randomSeed) {
+export async function mintCosmicWorld(randomSeed) {
     console.log("Minting Alien World with seed: " + randomSeed);
   
     const contract = await getReadWriteContract(); 

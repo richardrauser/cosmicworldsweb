@@ -4,14 +4,14 @@ import { useRouter } from "next/router";
 export default function Token() {
 
     const router = useRouter();
-    const tokenId = router.query.tokenid;
+    const tokenId = router.query.id;
 
     console.log("TOKEN ID : " + tokenId);
     
     return (
         <div>
             <h1>Token # { tokenId }</h1>
-            <TokenCard tokenId={ tokenId }/>
+            <TokenCard tokenid={ tokenId }/>
         </div>
     )
 }
