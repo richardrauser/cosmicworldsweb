@@ -418,7 +418,7 @@ function randomColour(randomSeed, tintColour) {
 
 // -------------- EXTERNAL ------------------
 
-export default function buildAlienWorld(randomSeed) {
+export default function buildCosmicWorld(randomSeed) {
     console.log(`Generating artboard for alien world with seed: ${randomSeed}`);
     return generateArt(randomSeed);
 }

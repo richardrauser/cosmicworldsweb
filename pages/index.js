@@ -20,12 +20,14 @@ export default function Home() {
         <title>Cosmic Worlds</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-        <p className="description">
+      
+      <div className="contentPanel">
+      <p className={styles.description}>
            On-chain, generative NFT art offering glimpses into { adjective } cosmic worlds.
         </p>
+      </div>
 
         <CosmicArtboard/>
-
     </div>
   )
 }

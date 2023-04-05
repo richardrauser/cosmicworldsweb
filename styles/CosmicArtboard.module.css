@@ -2,3 +2,8 @@
 .keyAction {
     min-width: 100px;
   }
+
+  .detail {
+   text-align: center; 
+   color: gray;
+  }

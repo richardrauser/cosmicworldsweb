@@ -6,17 +6,17 @@ import { fetchTokenDetails, getReadOnlyContract } from '../utils/BlockchainAPI';
 import { handleError } from '../utils/ErrorHandler';
 import Link from 'next/link';
 import { useEffect } from 'react';
-import styles from "@styles/TokenCard.module.css";
+import styles from '@styles/TokenCardBig.module.css'
 
-export default function TokenCard(props) {
+export default function TokenCardBig(props) {
 
   const [loading, setLoading] = useState(false);
   const [svg, setSvg] = useState(null);
   const [tokenSvgDataUri, setTokenSvgDataUri] = useState(null);
   const [traitsText, setTraitsText] = useState(null);
   
-  const tokenId = props.tokenid;
-  console.log("rendering token card for token ID: " + tokenId);
+  const tokenId = props.id;
+  console.log("rendering TokenCardBig for token ID: " + tokenId);
   const link = "/token/" + tokenId;
 
   useEffect(() => {
@@ -37,14 +37,12 @@ export default function TokenCard(props) {
 
     fetchMetadata();
 
-  }, []);
+  });
   
   return (
       <Card key={tokenId} className={styles.tokenCard}>
         <Card.Header>
-          <a href= { link }>
           Token ID: {tokenId}
-          </a>
         </Card.Header>
         { loading ? (
 
@@ -56,9 +54,7 @@ export default function TokenCard(props) {
           ) : (
             <Card.Body>
               <div className="cardArtwork" tokenId={tokenId}>
-                <Link href= { link }>
                   <img className="tokenListImage" alt={ "Cosmic Worlds token " + tokenId } src={ tokenSvgDataUri } />
-                </Link>
               </div>  
               <div className="cardTraits">
                 { traitsText }

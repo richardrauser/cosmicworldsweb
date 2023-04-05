@@ -4,8 +4,10 @@ import { Button } from "react-bootstrap";
 import { getReadOnlyContract } from "utils/BlockchainAPI";
 import TokenList from "@components/TokenList";
 import { showErrorMessage } from "utils/UIUtils";
+import Loading from "@components/Loading";
 
 export default function Recent() {  
+    const [loading, setLoading] = useState(true);
     const [mintCount, setMintCount] = useState(null);
     const [tokenIds, setTokenIds] = useState([]);
 
@@ -63,12 +65,14 @@ export default function Recent() {
           console.log("TOKEN IDS: " + tokens);
           setMintCount(tokenCount);
           setTokenIds(tokens);
+          setLoading(false)
     
         } catch (error) {
-          const errorMessage = "An error occurred fetching token count. " + error;
+          const errorMessage = "An error occurred fetching recent NFT data. " + error;
           console.log(errorMessage);
           showErrorMessage(errorMessage);
           setMintCount("?");
+          setLoading(false)
         }
 
       }
@@ -78,17 +82,25 @@ export default function Recent() {
 
     return (
       <div>
-        {/* <AlienNavBar/> */}
 
-        <h1>Recent Worldz</h1>
+        { loading ? (
 
-        Total minted worlds: { mintCount == null ? "Loading.." : String(mintCount) }
-        <br/>
-        Token IDs: [{ tokenIds.reverse().join(', ') }]
+          <div className="contentPanel">
+          <h1>Recent Worldz</h1>
+          <Loading/>
+          </div>
 
-        <TokenList tokens = { tokenIds } />
-        {/* <Button onClick={() => setMintCount(mintCount + 1)}>Set Count</Button> */}
 
+        ) : (
+          <div>
+            <div className="contentPanel">
+              <h1>Recent Worldz</h1>
+              Total minted worlds: { mintCount == null ? "Loading.." : String(mintCount) + " / 512" } 
+            </div>
+
+            <TokenList tokens = { tokenIds } />
+          </div>
+        )}
       </div>
     )
 }

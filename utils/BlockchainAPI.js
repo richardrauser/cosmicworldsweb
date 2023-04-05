@@ -12,7 +12,16 @@ import { formatEther } from 'ethers';
 
 const AccountDetailsKey = "DS_ACCOUNT_DETAILS_KEY";
 
-async function getProvider() {
+async function getProvider(browserProvider) {
+
+  if (browserProvider === false) {
+    // this will be readonly as it is not connected to a browser's ethereum wallet.
+    // TODO: specify URLS from infura, etc to get this working: https://docs.ethers.org/v6/getting-started/#starting-connecting
+    console.log("Returning default provider..");
+    return ethers.getDefaultProvider("http://127.0.0.1:8545/");
+
+  }
+
   if (!window.ethereum) {
     console.log('No Ethereum wallet found. Throwing error NO_ETH_WALLET');
     throw Error(Errors.DS_NO_ETH_WALLET);
@@ -28,6 +37,7 @@ async function getProvider() {
     throw Error(Errors.DS_WRONG_ETH_NETWORK);
   }
 
+  console.log("Returning browser provider..");
   return provider;
 }
 
@@ -66,7 +76,7 @@ export async function switchToCurrentNetwork() {
 
 export async function getReadOnlyContract() {
   console.log("Getting read-only contract..");
-  const provider = await getProvider();
+  const provider = await getProvider(false);
     
   console.log("CONTRACT ADDRESS: " + CosmicWorldsContractAddress);
   
@@ -193,7 +203,7 @@ export async function isCurrentAccountOwner() {
 } 
 
 export async function mintCosmicWorld(randomSeed) {
-    console.log("Minting Alien World with seed: " + randomSeed);
+    console.log("Minting Cosmic World with seed: " + randomSeed);
   
     const contract = await getReadWriteContract(); 
     
@@ -206,3 +216,44 @@ export async function mintCosmicWorld(randomSeed) {
     const transaction = await contract.mint(randomSeed, overrides);
     console.log("Tx hash: " + transaction.hash);
 } 
+
+export async function fetchTokenDetails(tokenId) {
+
+  console.log("Getting metadata for token ID: " + tokenId);
+  
+    if (tokenId === undefined || tokenId === null) {
+      console.log("No token ID!");
+      return;
+    }
+    const contract = await getReadOnlyContract();
+    const metadataDataUri = await contract.tokenURI(tokenId);
+    var metadataJson = "";
+
+    if (metadataDataUri.startsWith("data:text/plain,")) {
+      metadataJson = metadataDataUri.replace("data:text/plain,", "");          
+    } else if (metadataDataUri.startsWith("data:application/json,")) {
+      metadataJson = metadataDataUri.replace("data:application/json,", "");          
+    } else if (metadataDataUri.startsWith("data:application/json;base64,")) {
+      const metadataJsonBase64Encoded = metadataDataUri.replace("data:application/json;base64,", "");          
+      let buffer = new Buffer(metadataJsonBase64Encoded, 'base64');
+
+      metadataJson = buffer.toString('utf-8');
+    }
+
+    // console.log("METADATA: " + metadataJson);
+
+    const metadataObject = JSON.parse(metadataJson);
+
+    const svg = metadataObject.image.replace("data:image/svg+xml,", "");
+    const encodedSvg = encodeURIComponent(svg);
+    const svgDataUri = `data:image/svg+xml,${encodedSvg}`;
+
+    // console.log("SVG: " + svg);
+ 
+    let planetCount = metadataObject.attributes.filter(attribute => attribute.trait_type == "planets")[0].value;
+    const traitsText = "Planet count: " + planetCount;
+
+    console.log("Returning.");
+    return { svg, svgDataUri, traitsText };
+
+}

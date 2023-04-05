@@ -1,17 +1,24 @@
 import TokenCard from "@components/TokenCard";
+import TokenCardBig from "@components/TokenCardBig";
 import { useRouter } from "next/router";
 
-export default function Token() {
+export default function Token({params}) {
 
+    console.log("PARAMS: ", JSON.stringify(params));
     const router = useRouter();
-    const tokenId = router.query.id;
+    const id = router.query.id;
 
-    console.log("TOKEN ID : " + tokenId);
+    console.log("TOKEN ID : " + id);
     
     return (
         <div>
-            <h1>Token # { tokenId }</h1>
-            <TokenCard tokenid={ tokenId }/>
+            <div className="contentPanel">
+
+                <h1>CosmicWorlds NFT</h1>
+            </div>
+            <div className="contentPanel">
+                <TokenCardBig id={ id }/>
+            </div>
         </div>
     )
 }

@@ -1,7 +1,7 @@
 
 import Button from 'react-bootstrap/Button';
-import React, {useState} from "react";
-import buildAlienWorld from '../utils/worldBuilder.js';
+import React, {useEffect, useState} from "react";
+import buildCosmicWorld from '../utils/worldBuilder.js';
 import { mintCosmicWorld } from '../utils/BlockchainAPI.js';
 import { handleError } from 'utils/ErrorHandler.js';
 import { toast } from 'react-toastify';
@@ -9,24 +9,27 @@ import Image from 'next/image';
 import { ArrowRepeat } from 'react-bootstrap-icons';
 import ethereum from '../images/ethereum-white.png';
 import styles from '@styles/CosmicArtboard.module.css';
+import Loading from './Loading.js';
 
 export default function CosmicArtboard() {
     // const svgDataUri = buildAlienWorld();
     
     const randomCeiling = 5_000_000;
-    const initialSeed = Math.trunc(Math.random() * randomCeiling);
-    const initialArt = buildAlienWorld(initialSeed);
-    const [randomSeed, setRandomSeed] = useState(initialSeed);
-    const [svg, setSvg] = useState(initialArt);
+    const [randomSeed, setRandomSeed] = useState(null);
+    const [svg, setSvg] = useState(null);
 
     const updateSeed = () => {
         const seed = Math.trunc(Math.random() * randomCeiling);
-        const svg = buildAlienWorld(seed);
+        console.log("Regerating with seed: " + seed);
+        const svg = buildCosmicWorld(seed);
         setRandomSeed(seed);
         setSvg(svg);
     };
 
-    // updateSeed();
+
+    useEffect(() => {
+        updateSeed();
+      }, []);
 
     const mint = async () => {
         
@@ -49,20 +52,31 @@ export default function CosmicArtboard() {
     };
 
     return(
-        <div id='artboard'>
-            <img id="artboardImage" src={svg}></img>	
-            <Button variant="primary" className={styles.keyAction} onClick={updateSeed}>    
-                <div className="buttonIcon">
-                <ArrowRepeat />
-                </div>
-                Generate
-            </Button>
-            <Button variant="primary"   className={styles.keyAction} onClick={mint} randomseed={randomSeed}>
-                <div className="buttonIcon">
-                    <Image src={ethereum} alt="ethereum logo" />
-                </div>
-                Mint</Button>
-
-        </div>	        
-    );
+        <div>
+        { !randomSeed || !svg ? (
+            <Loading/>
+        ) : (
+            <div>
+            <div id='artboard'>
+                <img id="artboardImage" src={svg}></img>	
+            </div>	        
+            <div className={styles.detail}>
+                Random seed: { randomSeed }<br/>
+                <Button variant="primary" className={styles.keyAction} onClick={updateSeed}>    
+                    <div className="buttonIcon">
+                    <ArrowRepeat />
+                    </div>
+                    Generate
+                </Button>
+                <Button variant="primary" className={styles.keyAction} onClick={mint} randomseed={randomSeed}>
+                    <div className="buttonIcon">
+                        <Image src={ethereum} alt="ethereum logo" />
+                    </div>
+                    Mint
+                </Button>
+            </div>
+        </div> 
+        )}
+    </div>
+   );
 }
