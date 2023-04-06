@@ -1,84 +1,67 @@
 import { ethers, keccak256 } from 'ethers';
 
-function generateRandomArtDataUri() {
+function buildDataUri() {
     const randomSeed = Math.trunc(Math.random() * 5_000_000);
     // const randomSeed = 1234;
 
-    return generateArt(randomSeed);
+    return build(randomSeed);
 }
 
-function generateArt(randomSeed) {
-    console.log("Generating art: " + randomSeed);
+function build(randomSeed) {
+    console.log("Building: " + randomSeed);
+
+    const angle = randomInt(randomSeed, 0, 360);
+    const firstColour = randomColour(randomSeed + 1);
+    const secondColour = randomColour(randomSeed + 2);
+    const thirdColour = randomColour(randomSeed + 3);
+    const backgroundColour = `linear-gradient(${angle}deg, ${firstColour} 0%, ${secondColour} 35%, ${thirdColour} 100%)`;
 
     // const gradient = `<radialGradient id="planetGradient">
     //                     <stop offset="10%" stop-color="gold" />
     //                     <stop offset="95%" stop-color="red" />
     //                   </radialGradient>`;
 
+    const defs = `<defs><clipPath id='master'><rect x='0' y='0' width='1000' height='1000'/></clipPath></defs>`;
 
-    var defs = "<defs><clipPath id='master'><rect x='0' y='0' width='1000' height='1000'/></clipPath>"
-    // defs += gradient;
-    defs += `</defs>`;
+    var shapes = "";
+    shapes += getStars(randomSeed);
+    shapes += " " + getPlanets(randomSeed);
+    shapes += " " + getMountains(randomSeed);
+    shapes += " " + getClouds(randomSeed);
+    shapes +=  " " + getWater(randomSeed);
 
-// planets += gradient;
-
-    const shapes = getShapes(randomSeed);
-
-    const angle = randomInt(randomSeed, 0, 360);
-    const firstColour = randomColour(randomSeed + 3);
-    const secondColour = randomColour(randomSeed + 3);
-    const thirdColour = randomColour(randomSeed + 3);
-    const backgroundColour = `linear-gradient(${angle}deg, ${firstColour} 0%, ${secondColour} 35%, ${thirdColour} 100%)`;
-
-    const svgString = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' style='background-image:" + backgroundColour + "'>" + defs + "<g clip-path='url(#master)'>" + shapes + "</g></svg>";
+    const svgString = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' style='background-image:${backgroundColour}'>${defs}<g clip-path='url(#mcp)'>${shapes}</g></svg>`;
     console.log(`SVG: ${svgString}`);
     const encodedSvg = encodeURIComponent(svgString);
 
     return `data:image/svg+xml,${encodedSvg}`;
 }
 
-function getShapes(randomSeed) {
-    const stars = getStars(randomSeed);
-    const planets = getPlanets(randomSeed);
-    const mountain = getMountains(randomSeed);
-    const clouds = getClouds(randomSeed);
-    const water = getWater(randomSeed);
-
-    var shapes = "";
-    shapes += stars;
-    shapes += " " + planets;
-    shapes += " " + mountain;
-    shapes += " " + clouds;
-    shapes +=  " " + water;
-
-    return shapes;
-}
-
 function getStars(randomSeed) {
 
     const stars = `
-        <filter id="stars">
-        <feTurbulence baseFrequency="0.2"                          
-        seed="` + randomSeed + `"
-        />
-        <feColorMatrix values="0 0 0 9 -4
-                            0 0 0 9 -4
-                            0 0 0 9 -4
-                            0 0 0 0 1"/>
+        <filter id='sf'>
+        <feTurbulence baseFrequency='0.2' seed='${randomSeed}'/>
+        <feColorMatrix values='0 0 0 9 -4 
+                            0 0 0 9 -4 
+                            0 0 0 9 -4 
+                            0 0 0 0 1'/>
         </filter>
-        <rect width="100%" height="100%" opacity="50%" filter="url(#stars)"/>
+        <rect width='100%' height='100%' opacity='50%' filter='url(#sf)'/>
         `;
 
     return stars;
 }
 
-function getPlanets(planetSeed, tintColour) {
+function getPlanetCount(planetSeed) {
+    return randomInt(planetSeed * 2, 0, 5);
+}
 
-    const planetCount = randomInt(planetSeed * 2, 0, 5);
+function getPlanets(planetSeed, tintColour) {
 
     var planets = "";
 
-    for (var i = 0; i < planetCount; i++) {
+    for (var i = 0; i < getPlanetCount(planetSeed); i++) {
         
         const randomSeed = planetSeed * 2 + i;
 
@@ -86,68 +69,50 @@ function getPlanets(planetSeed, tintColour) {
         const x = randomInt(randomSeed, 50, 950);
         const y = randomInt(randomSeed, 0, 500);
 
-        const colour = randomColour(randomSeed + 10 + i, tintColour);
-
         const stop1 = randomInt(randomSeed, 3, 25);
         const colour1 = randomColour(randomSeed + i, tintColour);
         const stop2 = randomInt(randomSeed, 75, 97);
         const colour2 = randomColour(randomSeed + i + 10, tintColour);
-        // const colour2 = "grey";
         
         const fx = 50;// randomInt(randomSeed, 1, 4) * 25;
         const fy = 50;// randomInt(randomSeed, 1, 4) * 25;
-
-        const gradient = `<defs><radialGradient id="planetGradient` + i + `" fx="` + fx + `%" fy="` + fy + `%">
-                            <stop offset="${stop1}%" stop-color="` + colour1 + `" />
-                            <stop offset="${stop2}%" stop-color="` + colour2 + `" />
-                          </radialGradient></defs>`;
-
-        // const filter = `<filter id='planetFilter'>
-        //     <feTurbulence type="fractalNoise" baseFrequency='0.4' result='noise' numOctaves="" />
-        //     <feComposite operator="in" in="ripples" in2="SourceGraphic"/>
-        // </filter>`;
-
+x
         // from https://cloudfour.com/thinks/generating-solar-systems-part-2-filters-gradients-and-clip-paths/
-          // We'll generate some random values for our turbulence
-        const fractal = randomInt(randomSeed, 0, 10) > 5;
-        const turbulenceType = fractal ? 'fractalNoise' : 'turbulence';
+        const turbulenceType = randomInt(randomSeed, 0, 10) > 5 ? 'fractalNoise' : 'turbulence';
         // We intentionally make the y value larger than the x value
         // to create horizontal striping patterns
-        const baseFrequencyX = randomInt(randomSeed, 1, 4) / (radius * 2);
-        const baseFrequencyY = randomInt(randomSeed, 2, 4) / radius;
+        const baseFrequencyX = Math.trunc(randomInt(randomSeed, 1, 4) * 1000 / (radius * 2));
+        const baseFrequencyY = Math.trunc(randomInt(randomSeed, 2, 4) * 1000 / radius);
         const numOctaves = randomInt(randomSeed, 3, 10);
-        const seed = Math.random();
 
         // And some random values for our lighting
         const elevation = randomInt(randomSeed, 30, 100);
         const surfaceScale = randomInt(randomSeed, 5, 10);
 
-        const filter = `<filter id="planetFilter${i}"> 
-        <feTurbulence
-          type="${turbulenceType}"
-          baseFrequency="${baseFrequencyX} ${baseFrequencyY}"
-          seed="${seed}"
-          numOctaves="${numOctaves}"
-        />
-        <feDiffuseLighting lighting-color="${colour1}" surfaceScale="${surfaceScale}">
-          <feDistantLight elevation="${elevation}" />
-        </feDiffuseLighting>
-        <feComposite operator="in" in2="SourceGraphic"/>
-      </filter>`;
+        const gradient = `<defs><radialGradient id='pg${i}' fx='${fx}%' fy='${fy}%'>
+            ${stopOffset(stop1, colour1)}
+            ${stopOffset(stop2, colour2)}
+            </radialGradient></defs>`;
+
+        const filter = `<filter id='pf${i}'> 
+            <feTurbulence
+                type='${turbulenceType}' 
+                baseFrequency='0.00${baseFrequencyX} 0.0${baseFrequencyY}' 
+                seed='${randomSeed}' 
+                numOctaves='${numOctaves}' 
+            />
+            <feDiffuseLighting lighting-color='${colour1}' surfaceScale='${surfaceScale}'>
+                <feDistantLight elevation='${elevation}' />
+            </feDiffuseLighting>
+            <feComposite operator='in' in2='SourceGraphic'/>
+        </filter>`;
+
+        console.log("PLANET FILTER: " + filter);
           
         planets += gradient;
         planets += filter;
-        planets += `<circle cx="` + x + `" 
-                            cy="` + y + `" 
-                            r="` + radius + `" 
-                            filter="url('#planetFilter` + i + `')"
-                            />`;
-        planets += `<circle cx="` + x + `" 
-                            cy="` + y + `" 
-                            r="` + radius + `" 
-                            fill="url('#planetGradient` + i + `')"
-                            opacity="0.5"
-                            />`;
+        planets += `<circle cx='${x}' cy='${y}' r='${radius}' filter='url(#pf${i})'/>
+                    <circle cx='${x}' cy='${y}' r='${radius}' fill='url(#pg${i})' opacity='50%'/>`;
         
     }
 
@@ -155,7 +120,6 @@ function getPlanets(planetSeed, tintColour) {
 }
 
 function getMountains(randomSeed, tintColour) {
-
     var polygonPoints = buildLine(randomSeed, 1000, 51);
 
     polygonPoints = polygonPoints.join(" ");
@@ -167,61 +131,49 @@ function getMountains(randomSeed, tintColour) {
     const midColourPoint = randomInt(randomSeed, 10, 90);
     const mountainColour2 = randomColour(randomSeed + 5, tintColour);
 
-    const gradient = `<defs><linearGradient id="mountainGradient">
-                            <stop offset="5%" stop-color="` + mountainColour + `" />
-                            <stop offset="` + midColourPoint + `%" stop-color="` + mountainColour2 + `" />
-                            <stop offset="95%" stop-color="` + mountainColour + `" />
-                        </linearGradient></defs>`;
+    const gradient = `<defs><linearGradient id="mg">
+        ${stopOffset(5, mountainColour)}
+        ${stopOffset(midColourPoint, mountainColour2)}
+        ${stopOffset(95, mountainColour)}
+        </linearGradient></defs>`;
 
+        // TODO: try removing diffuse lighting for cool clouds on mountain
+    const filter = `<filter id='mf' x='0%' y='0%' width='100%' height='100%'>
+                        <feTurbulence type='fractalNoise' baseFrequency='0.0${randomInt(randomSeed, 1, 3)}' result='noise' numOctaves='15'/>
+                        <feDiffuseLighting in='noise' lighting-color='white' surfaceScale='${randomInt(randomSeed, 1, 3)}'>
+                            <feDistantLight azimuth='45' elevation='10'/>
+                        </feDiffuseLighting>
+                        <feComposite operator='in' in2='SourceGraphic'/>
+                    </filter>`;
 
-    const baseFrequency = randomInt(randomSeed, 1, 3);
-    const scale = randomInt(randomSeed, 1, 3);
-    const filter = `<filter id='mountainFilter' x='0%' y='0%' width='100%' height="100%">
-                        <feTurbulence type="fractalNoise" baseFrequency='0.0${baseFrequency}' result='noise' numOctaves="15" />\
-                        <feDiffuseLighting in='noise' lighting-color='white' surfaceScale='${scale}'>
-                        <feDistantLight azimuth='45' elevation='10' />
-                    </feDiffuseLighting>
-                <feComposite operator="in" in="ripples" in2="SourceGraphic"/>
-            </filter>`;
-
-    const shadeFrequency = "0.004 0.01";
-    const matrixParam = 1;
-    const shadingFilter = `<filter id="shadingFilter">
-                            <feTurbulence type="fractalNoise" 
-                                        baseFrequency="` + shadeFrequency + `" 
-                                        numOctaves="2" 
-                                        seed="` + randomSeed + `"
+    const shadingFilter = `<filter id='msf'>
+                            <feTurbulence type='fractalNoise' 
+                                        baseFrequency='0.004 0.01' 
+                                        numOctaves='2' 
+                                        seed='` + randomSeed + `'
                                         />
-                            <feColorMatrix values="0 1 0 0 -4
-                                                1 1 0 0 -4
-                                                1 0 0 0 -4
-                                                0 1 1 0 -1"/>
-                            <feComposite operator="in" in="ripples" in2="SourceGraphic"/>
+                            <feColorMatrix values='0 1 0 0 -4 1 1 0 0 -4 1 0 0 0 -4 0 1 1 0 -1'/>
+                            <feComposite operator='in' in2='SourceGraphic'/>
                             </filter>
                         `;
     
     var mountain = "";
-    mountain += gradient;
     mountain += filter;
+    mountain += gradient;
     mountain += shadingFilter;
 
-    const opacity = randomInt(randomSeed, 3, 8);    
+    const opacity = randomInt(randomSeed, 40, 70);    
 
-    mountain += `<polygon points="` + polygonPoints + `"
-                        filter="url('#mountainFilter')"
-                        />`;
-    mountain += `<polygon points="` + polygonPoints + `"
-                            fill="url('#mountainGradient')"
-                            opacity="0.` + opacity + `"
-                            />`;
-    mountain += `<polygon points="` + polygonPoints + `"
-                        filter="url('#shadingFilter')"
-                        opacity="0.5"
-                        />`;
+    mountain += `<polygon points='${polygonPoints}' filter='url(#mf)'/>`;
+    mountain += `<polygon points='${polygonPoints}' fill='url(#mg)' opacity='${opacity}%'/>`;
+    mountain += `<polygon points='${polygonPoints}' filter='url(#msf)'/>`;
 
     return mountain;
 }
 
+function stopOffset(offset, color) {
+    return `<stop offset="${offset}%" stop-color="${color}" />`;
+}
 
 function buildLine(randomSeed, width, pointCount) {
     const interval = width / (pointCount - 1);
@@ -231,7 +183,7 @@ function buildLine(randomSeed, width, pointCount) {
     var points = [];
     var currentY = 500; // starting currentY is y offset
 
-    for (var i = 0; i <= pointCount; i++) {
+    for (var i = 0; i <= pointCount - 1; i++) {
         const x = i * interval;
 
         const pointSeed = (randomSeed + i) + 1000;
@@ -259,15 +211,15 @@ function getClouds(randomSeed) {
     // const baseFrequency2 = randomInt(randomSeed * 3, 1, 50) / baseFrequencyDenominator;
     // const baseFrequency = baseFrequency1 + " " + baseFrequency2; 
     // const baseFrequency = "0.01 0.5";
-    const baseFrequency = "0.002 0.014";
-    const opacity = randomInt(randomSeed * 5, 30, 80);
+    const baseFrequency = "0.002 0.02";
+    const opacity = randomInt(randomSeed * 5, 50, 80);
     console.log("Base frequency: " + baseFrequency);
 
     const clouds = `
         <filter id='clouds'>
             <feTurbulence type='fractalNoise' 
                           baseFrequency='${baseFrequency}' 
-                          numOctaves='200' 
+                          numOctaves='2' 
                           seed='${randomSeed}'
                           />
         </filter>
@@ -305,7 +257,7 @@ function getWater(randomSeed) {
     const slope = randomInt(randomSeed, 1, 10);
     const baseFrequency1 = randomInt(randomSeed * 2, 3, 9);
     const water = `
-        <filter id='water'>
+        <filter id='wf'>
             <feTurbulence type='turbulence' 
                           baseFrequency='0.00` + baseFrequency1 + ` .11'
                           numOctaves='4' 
@@ -328,10 +280,10 @@ function getWater(randomSeed) {
                 ` + shorelineCurves + `
                  L 1000 800 
                  L 1000 1000' 
-                filter='url(#water)' 
+                filter='url(#wf)' 
                 stroke='clear'
                 stroke-width='0' 
-                fill-opacity='0.5'/>
+                fill-opacity='70%'/>
     `;
 
     return water;
@@ -420,5 +372,5 @@ function randomColour(randomSeed, tintColour) {
 
 export default function buildCosmicWorld(randomSeed) {
     console.log(`Generating artboard for alien world with seed: ${randomSeed}`);
-    return generateArt(randomSeed);
+    return build(randomSeed);
 }
