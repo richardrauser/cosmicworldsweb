@@ -94,7 +94,7 @@ export default function Recent() {
         ) : (
           <div>
             <div className="contentPanel">
-              <h1>Recent Worldz</h1>
+              <h1>Recent Worlds</h1>
               Total minted worlds: { mintCount == null ? "Loading.." : String(mintCount) + " / 512" } 
             </div>
 

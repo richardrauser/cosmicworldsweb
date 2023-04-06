@@ -59,7 +59,7 @@ export default function Yours() {
         { loading ? (
 
             <div className="contentPanel">
-            <h1>Your Worldz</h1>
+            <h1>Your Worlds</h1>
                 <Loading/>
             </div>
          ) : (

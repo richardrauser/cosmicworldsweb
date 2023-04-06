@@ -15,7 +15,7 @@ function TokenList(props) {
         </div>
 
     ) : ( 
-      <div className="noTokens">
+      <div className="contentPanel">
         No <CosmicSpan/> yet. Go to the <Link href="/">Home page</Link> and start minting!
       </div>
     ));
