@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import styles from '@styles/TokenCardBig.module.css'
 import { ImageAlt } from 'react-bootstrap-icons';
 import Loading from './Loading';
+import OpenSeaButton from './OpenSeaButton';
 
 export default function TokenCardBig(props) {
 
@@ -71,6 +72,9 @@ export default function TokenCardBig(props) {
               </div>  
               <div className="cardTraits">
                 { traitsText }
+              </div>
+              <div className="cardButtonArea">
+                <OpenSeaButton tokenid={tokenId}/>
               </div>
             </Card.Body>
           )}

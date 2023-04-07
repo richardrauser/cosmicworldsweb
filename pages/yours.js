@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
-import { fetchAccount, getReadOnlyContract } from '../utils/BlockchainAPI'
+import { fetchAccount, getReadOnlyContract } from '../utils/BlockchainAPI';
 import TokenList from "@components/TokenList";
 import Loading from "@components/Loading";
+import { showErrorMessage } from "utils/UIUtils";
 
 export default function Yours() {
 
@@ -40,7 +41,7 @@ export default function Yours() {
                 setLoading(false);
     
             } catch (error) {
-                const errorMessage = "An error occurred fetching your NFT data. " + error;
+                const errorMessage = "An error occurred fetching your NFTs. " + error;
                 console.log(errorMessage);
                 showErrorMessage(errorMessage);
                 setTokenIds([]);

@@ -2,7 +2,7 @@
 import { ethers } from 'ethers';
 import CosmicWorlds from '../contract/CosmicWorlds.json';
 import * as Errors from './ErrorMessages';
-import CosmicWorldsContractAddress, { CosmicWorldsCurrentNetworkID, CosmicWorldsCurrentNetworkName, CosmicWorldsCurrentNetworkCurrencySymbol, CosmicWorldsCurrentNetworkRpcUrl, CosmicWorldsCurrentNetworkExplorerUrl } from './Constants';
+import { CosmicWorldsContractAddress, CosmicWorldsCurrentNetworkID, CosmicWorldsCurrentNetworkName, CosmicWorldsCurrentNetworkCurrencySymbol, CosmicWorldsCurrentNetworkRpcUrl, CosmicWorldsCurrentNetworkExplorerUrl } from './Constants';
 import { showInfoMessage } from './UIUtils';
 import{ handleError } from './ErrorHandler';
 import detectEthereumProvider from '@metamask/detect-provider'
