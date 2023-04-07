@@ -250,10 +250,10 @@ export async function fetchTokenDetails(tokenId) {
 
     // console.log("SVG: " + svg);
  
+    let seed = metadataObject.attributes.filter(attribute => attribute.trait_type == "seed")[0].value;
     let planetCount = metadataObject.attributes.filter(attribute => attribute.trait_type == "planets")[0].value;
-    const traitsText = "Planet count: " + planetCount;
 
     console.log("Returning.");
-    return { svg, svgDataUri, traitsText };
+    return { svg, svgDataUri, seed, planetCount };
 
 }

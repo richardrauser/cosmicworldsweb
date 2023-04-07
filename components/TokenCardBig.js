@@ -25,11 +25,11 @@ export default function TokenCardBig(props) {
       }
       try {
 
-        const { svg, svgDataUri, traitsText } = await fetchTokenDetails(tokenId);
+        const { svg, svgDataUri, seed, planetCount } = await fetchTokenDetails(tokenId);
         setLoading(false);
         setSvg(svg);
         setTokenSvgDataUri(svgDataUri);
-        setTraitsText(traitsText);
+        setTraitsText(`Seed: ${seed}, planet count: ${planetCount}`);
 
         } catch (error) {
           console.log("Error occurred fetching token metadata: ", error);

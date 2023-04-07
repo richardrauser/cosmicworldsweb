@@ -10,11 +10,11 @@ export default function Token() {
     const router = useRouter();
     const id = router.query.id;
     console.log("TOKEN ID : " + id);
-    const randomSeed = 2644162;
 
     const [loading, setLoading] = useState(true);
     const [soliditySvg, setSoliditySvg] = useState(null);
-    const jsSvg = buildCosmicWorld(randomSeed);
+    const [seed, setSeed] = useState(null);
+    const [jsSvg, setJsSvg] = useState(null);
   
     useEffect(() => {
         const fetchMetadata = async () =>  { 
@@ -23,9 +23,11 @@ export default function Token() {
           }
           try {
     
-            const { svg, svgDataUri, traitsText } = await fetchTokenDetails(id);
+            const { svg, svgDataUri, seed, planetCount } = await fetchTokenDetails(id);
             setLoading(false);
             setSoliditySvg(svgDataUri);
+            setSeed(seed);
+            setJsSvg(buildCosmicWorld(seed));
     
             } catch (error) {
               console.log("Error occurred fetching token metadata: ", error);
@@ -44,7 +46,7 @@ export default function Token() {
             <div className="contentPanel">
                 <h1>Debug</h1>
                 Token ID: { id } <br/>
-                Random seed: { randomSeed }
+                Random seed: { seed }
             </div>
             { loading ? ( 
                 <Loading/>

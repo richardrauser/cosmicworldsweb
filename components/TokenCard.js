@@ -11,7 +11,6 @@ import styles from "@styles/TokenCard.module.css";
 export default function TokenCard(props) {
 
   const [loading, setLoading] = useState(false);
-  const [svg, setSvg] = useState(null);
   const [tokenSvgDataUri, setTokenSvgDataUri] = useState(null);
   const [traitsText, setTraitsText] = useState(null);
   
@@ -21,19 +20,15 @@ export default function TokenCard(props) {
 
   useEffect(() => {
     const fetchMetadata = async () =>  { 
-
       try {
-
-        const { svg, svgDataUri, traitsText } = await fetchTokenDetails(tokenId)
+        const { svg, svgDataUri, seed, planetCount } = await fetchTokenDetails(tokenId)
         setLoading(false);
-        setSvg(svg);
         setTokenSvgDataUri(svgDataUri);
-        setTraitsText(traitsText);
-
-        } catch (err) {
+        setTraitsText(`Seed: ${seed}, planet count: ${planetCount}`);
+      } catch (err) {
           handleError(err);
-        }
       }
+    }
 
     fetchMetadata();
 
