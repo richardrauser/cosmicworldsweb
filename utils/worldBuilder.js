@@ -2,8 +2,6 @@ import { ethers, keccak256 } from 'ethers';
 
 function buildDataUri() {
     const randomSeed = Math.trunc(Math.random() * 5_000_000);
-    // const randomSeed = 1234;
-
     return build(randomSeed);
 }
 
@@ -16,19 +14,14 @@ function build(randomSeed) {
     const thirdColour = randomColour(randomSeed + 3);
     const backgroundColour = `linear-gradient(${angle}deg, ${firstColour} 0%, ${secondColour} 35%, ${thirdColour} 100%)`;
 
-    // const gradient = `<radialGradient id="planetGradient">
-    //                     <stop offset="10%" stop-color="gold" />
-    //                     <stop offset="95%" stop-color="red" />
-    //                   </radialGradient>`;
-
     const defs = `<defs><clipPath id='master'><rect x='0' y='0' width='1000' height='1000'/></clipPath></defs>`;
 
     var shapes = "";
     shapes += getStars(randomSeed);
     shapes += " " + getPlanets(randomSeed);
     shapes += " " + getMountains(randomSeed);
-    shapes += " " + getClouds(randomSeed);
     shapes +=  " " + getWater(randomSeed);
+    shapes += " " + getClouds(randomSeed);
 
     const svgString = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' style='background-image:${backgroundColour}'>${defs}<g clip-path='url(#mcp)'>${shapes}</g></svg>`;
     console.log(`SVG: ${svgString}`);
@@ -38,10 +31,9 @@ function build(randomSeed) {
 }
 
 function getStars(randomSeed) {
-
-    const stars = `
+    return `
         <filter id='sf'>
-        <feTurbulence baseFrequency='0.2' seed='${randomSeed}'/>
+        <feTurbulence baseFrequency='0.${randomInt(randomSeed, 15, 38)}' seed='${randomSeed}'/>
         <feColorMatrix values='0 0 0 9 -4 
                             0 0 0 9 -4 
                             0 0 0 9 -4 
@@ -49,8 +41,6 @@ function getStars(randomSeed) {
         </filter>
         <rect width='100%' height='100%' opacity='50%' filter='url(#sf)'/>
         `;
-
-    return stars;
 }
 
 function getPlanetCount(planetSeed) {
