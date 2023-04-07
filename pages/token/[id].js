@@ -13,8 +13,7 @@ export default function Token({params}) {
     return (
         <div>
             <div className="contentPanel">
-
-                <h1>CosmicWorlds NFT</h1>
+                <h1>Cosmic Worlds NFT</h1>
             </div>
             <div className="contentPanel">
                 <TokenCardBig id={ id }/>

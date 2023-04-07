@@ -5,11 +5,11 @@ import Link from 'next/link';
 
 function TokenList(props) {
     const tokens = props.tokens;
-    console.log("TOKENS: " + tokens)
     const listItems = tokens.map((token) =>
       <TokenCard key={token.toString()} tokenid={token.toString()}/>
     )
-    return ( listItems.length > 0 ? ( 
+
+    return ( tokens.length > 0 ? ( 
       <div className="tokenList">
           {listItems}
         </div>

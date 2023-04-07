@@ -7,15 +7,20 @@
   }
   
   .cardArtwork {
-    width: 90%; 
+    width: 100%; 
     background: #CCC;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: auto;
   }
+ 
   .cardArtwork img {
     width: 100%;
     height: 100%;
   }
   
+
+  .spinner {
+    margin: 24px;
+  }

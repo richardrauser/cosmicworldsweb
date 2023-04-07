@@ -109,6 +109,10 @@ code {
   font-size: 18px;
 } 
 
+.cardTraits {
+  margin: 16px;
+}
+
 .buttonIcon {
   /* display: inline-block; */
   vertical-align: middle;

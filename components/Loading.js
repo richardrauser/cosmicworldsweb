@@ -5,7 +5,9 @@ export default function Loading(props) {
     return (
         <div className={styles.loading}>
             <Spinner/>
+            <div>
             { props.loadingText != "" ? props.loadingText : "Loading.." }
+            </div>
         </div>
     )
 }
