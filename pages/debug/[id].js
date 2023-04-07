@@ -10,7 +10,7 @@ export default function Token() {
     const router = useRouter();
     const id = router.query.id;
     console.log("TOKEN ID : " + id);
-    const randomSeed = 2781322;
+    const randomSeed = 2644162;
 
     const [loading, setLoading] = useState(true);
     const [soliditySvg, setSoliditySvg] = useState(null);
@@ -43,14 +43,21 @@ export default function Token() {
         <div>
             <div className="contentPanel">
                 <h1>Debug</h1>
+                Token ID: { id } <br/>
                 Random seed: { randomSeed }
             </div>
             { loading ? ( 
                 <Loading/>
             ) : (
                 <div className={styles.debugPanel}>
-                    <img className={styles.debug} src={soliditySvg}></img>	
-                    <img className={styles.debug} src={jsSvg}></img>	
+                    <div className={styles.debug}> 
+                        Solidity
+                        <img src={soliditySvg}></img>	
+                    </div>
+                    <div className={styles.debug}> 
+                        JavaScript                
+                        <img src={jsSvg}></img>	
+                    </div>
                 </div>
              )}
         </div>
