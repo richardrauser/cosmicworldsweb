@@ -14,13 +14,13 @@ function build(randomSeed) {
     const thirdColour = randomColour(randomSeed + 3);
     const backgroundColour = `linear-gradient(${angle}deg, ${firstColour} 0%, ${secondColour} 35%, ${thirdColour} 100%)`;
 
-    const defs = `<defs><clipPath id='master'><rect x='0' y='0' width='1000' height='1000'/></clipPath></defs>`;
+    const defs = `<defs><clipPath id='mcp'><rect x='0' y='0' width='1000' height='1000'/></clipPath></defs>`;
 
     var shapes = "";
     shapes += getStars(randomSeed);
     shapes += " " + getPlanets(randomSeed);
     shapes += " " + getMountains(randomSeed);
-    shapes +=  " " + getWater(randomSeed);
+    shapes += " " + getWater(randomSeed);
     shapes += " " + getClouds(randomSeed);
 
     const svgString = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' style='background-image:${backgroundColour}'>${defs}<g clip-path='url(#mcp)'>${shapes}</g></svg>`;
@@ -206,14 +206,14 @@ function getClouds(randomSeed) {
     console.log("Base frequency: " + baseFrequency);
 
     const clouds = `
-        <filter id='clouds'>
+        <filter id='cf'>
             <feTurbulence type='fractalNoise' 
                           baseFrequency='${baseFrequency}' 
                           numOctaves='2' 
                           seed='${randomSeed}'
                           />
         </filter>
-        <rect width='100%' height='100%' opacity='${opacity}%' filter='url(#clouds)'/>`;
+        <rect width='100%' height='100%' opacity='${opacity}%' filter='url(#cf)'/>`;
 
     return clouds;
 }

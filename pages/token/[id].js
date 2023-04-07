@@ -2,9 +2,7 @@ import TokenCard from "@components/TokenCard";
 import TokenCardBig from "@components/TokenCardBig";
 import { useRouter } from "next/router";
 
-export default function Token({params}) {
-
-    console.log("PARAMS: ", JSON.stringify(params));
+export default function Token() {
     const router = useRouter();
     const id = router.query.id;
 

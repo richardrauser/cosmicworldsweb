@@ -1,11 +1,7 @@
-import React, { Fragment, useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
-import Spinner from 'react-bootstrap/Spinner';
-import { fetchTokenDetails, getReadOnlyContract } from '../utils/BlockchainAPI';
+import { fetchTokenDetails } from '../utils/BlockchainAPI';
 import { handleError } from '../utils/ErrorHandler';
-import Link from 'next/link';
-import { useEffect } from 'react';
 import styles from '@styles/TokenCardBig.module.css'
 import { ImageAlt } from 'react-bootstrap-icons';
 import Loading from './Loading';

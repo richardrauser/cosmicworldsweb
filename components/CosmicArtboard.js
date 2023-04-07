@@ -12,7 +12,6 @@ import styles from '@styles/CosmicArtboard.module.css';
 import Loading from './Loading.js';
 
 export default function CosmicArtboard() {
-    // const svgDataUri = buildAlienWorld();
     
     const randomCeiling = 5_000_000;
     const [randomSeed, setRandomSeed] = useState(null);
@@ -42,6 +41,7 @@ export default function CosmicArtboard() {
             console.log("An error occurred minting: " + error);
             console.log("Error  code: " + error.code);
             console.log("Error message: " + error.message);
+            console.log("ERROR: " + JSON.stringify(error));
                         
             if (error.code === "UNSUPPORTED_OPERATION" && err.message.startsWith("unknown account")) {
                 showErrorMessage("You need to connect an Ethereum wallet like MetaMask.");

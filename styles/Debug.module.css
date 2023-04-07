@@ -1,0 +1,12 @@
+
+.debugPanel {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.debug {
+    margin: 16px;
+    max-width: 500px;
+}
