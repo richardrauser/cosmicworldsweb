@@ -12,7 +12,7 @@ function build(randomSeed) {
     const firstColour = randomColour(randomSeed + 1);
     const secondColour = randomColour(randomSeed + 2);
     const thirdColour = randomColour(randomSeed + 3);
-    const backgroundColour = `linear-gradient(${angle}deg, ${firstColour} 0%, ${secondColour} 35%, ${thirdColour} 100%)`;
+    const bgGradient = `linear-gradient(${angle}deg, ${firstColour} 0%, ${secondColour} 35%, ${thirdColour} 100%)`;
 
     const defs = `<defs><clipPath id='mcp'><rect x='0' y='0' width='1000' height='1000'/></clipPath></defs>`;
 
@@ -23,7 +23,7 @@ function build(randomSeed) {
     shapes += " " + getWater(randomSeed);
     shapes += " " + getClouds(randomSeed);
 
-    const svgString = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' style='background-image:${backgroundColour}'>${defs}<g clip-path='url(#mcp)'>${shapes}</g></svg>`;
+    const svgString = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' style='background-image:${bgGradient}'>${defs}<g clip-path='url(#mcp)'>${shapes}</g></svg>`;
     console.log(`SVG: ${svgString}`);
     const encodedSvg = encodeURIComponent(svgString);
 
@@ -102,7 +102,7 @@ x
         planets += gradient;
         planets += filter;
         planets += `<circle cx='${x}' cy='${y}' r='${radius}' filter='url(#pf${i})'/>
-                    <circle cx='${x}' cy='${y}' r='${radius}' fill='url(#pg${i})' opacity='50%'/>`;
+                    <circle cx='${x}' cy='${y}' r='${radius}' fill='url(#pg${i})' opacity='30%'/>`;
         
     }
 
@@ -229,13 +229,23 @@ function getWater(randomSeed) {
         if (segmentWidth > 1000 - xPos) {
             segmentWidth = 1000 - xPos;
         } else if ((1000 - xPos) - segmentWidth < 100) {
+            // TODO: is there a max function in Solidity?
             segmentWidth += (1000 - xPos) - segmentWidth;
         }
 
         const yDelta = randomInt(randomSeed + xPos, 10, 30);
         const yPos = (up ? 800 - yDelta : 800 + yDelta);
         
-        shorelineCurves = shorelineCurves + "C " + xPos + " 800, " + (xPos + segmentWidth / 2) + " " + yPos + ", " + (xPos + segmentWidth) + " 800\n\r";
+        shorelineCurves = shorelineCurves + 
+            "C " + 
+            xPos + 
+            " 800, " + 
+            (xPos + segmentWidth / 2) + 
+            " " + 
+            yPos + 
+            ", " + 
+            (xPos + segmentWidth) + 
+            " 800 ";
 
         xPos += segmentWidth;
         up = !up;

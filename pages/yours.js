@@ -21,7 +21,7 @@ export default function Yours() {
                 if (!window.ethereum) {
                     setAddress("not connected");
                     setTokenCount("0");
-                    
+                    setLoading(false);
                     return;
                 }
     
