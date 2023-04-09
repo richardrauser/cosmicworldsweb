@@ -14,7 +14,7 @@ function build(randomSeed) {
     const thirdColour = randomColour(randomSeed + 3);
     const bgGradient = `linear-gradient(${angle}deg, ${firstColour} 0%, ${secondColour} 35%, ${thirdColour} 100%)`;
 
-    const defs = `<defs><clipPath id='mcp'><rect x='0' y='0' width='1000' height='1000'/></clipPath></defs>`;
+    const defs = `<defs><clipPath id='mcp'><rect x='0' y='0' width='1e3' height='1e3'/></clipPath></defs>`;
 
     var shapes = "";
     shapes += getStars(randomSeed);
@@ -23,7 +23,7 @@ function build(randomSeed) {
     shapes += " " + getWater(randomSeed);
     shapes += " " + getClouds(randomSeed);
 
-    const svgString = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' style='background-image:${bgGradient}'>${defs}<g clip-path='url(#mcp)'>${shapes}</g></svg>`;
+    const svgString = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1e3 1e3' style='background-image:${bgGradient}'>${defs}<g clip-path='url(#mcp)'>${shapes}</g></svg>`;
     console.log(`SVG: ${svgString}`);
     const encodedSvg = encodeURIComponent(svgString);
 
@@ -71,8 +71,8 @@ x
         const turbulenceType = randomInt(randomSeed, 0, 10) > 5 ? 'fractalNoise' : 'turbulence';
         // We intentionally make the y value larger than the x value
         // to create horizontal striping patterns
-        const baseFrequencyX = Math.trunc(randomInt(randomSeed, 1, 4) * 1000 / (radius * 2));
-        const baseFrequencyY = Math.trunc(randomInt(randomSeed, 2, 4) * 1000 / radius);
+        const baseFrequencyX = Math.trunc(randomInt(randomSeed, 1, 4) * 1e3 / (radius * 2));
+        const baseFrequencyY = Math.trunc(randomInt(randomSeed, 2, 4) * 1e3 / radius);
         const numOctaves = randomInt(randomSeed, 3, 10);
 
         // And some random values for our lighting
@@ -94,7 +94,12 @@ x
             <feDiffuseLighting lighting-color='${colour1}' surfaceScale='${surfaceScale}'>
                 <feDistantLight elevation='${elevation}' />
             </feDiffuseLighting>
-            <feComposite operator='in' in2='SourceGraphic'/>
+            <feComposite result='p' operator='in' in2='SourceGraphic'/>
+            <feGaussianBlur stdDeviation="8" result="b"/>
+            <feMerge>
+                <feMergeNode in="b"/>
+                <feMergeNode in="p"/>
+            </feMerge>
         </filter>`;
 
         console.log("PLANET FILTER: " + filter);
@@ -102,7 +107,7 @@ x
         planets += gradient;
         planets += filter;
         planets += `<circle cx='${x}' cy='${y}' r='${radius}' filter='url(#pf${i})'/>
-                    <circle cx='${x}' cy='${y}' r='${radius}' fill='url(#pg${i})' opacity='30%'/>`;
+                    <circle cx='${x}' cy='${y}' r='${radius}' fill='url(#pg${i})' opacity='40%'/>`;
         
     }
 
@@ -110,10 +115,10 @@ x
 }
 
 function getMountains(randomSeed, tintColour) {
-    var polygonPoints = buildLine(randomSeed, 1000, 51);
+    var polygonPoints = buildLine(randomSeed, 1e3, 51);
 
     polygonPoints = polygonPoints.join(" ");
-    polygonPoints += " 1000,1000 -1,1000";
+    polygonPoints += " 1e3,1e3 -1,1e3";
 
     console.log("POINTS: \n " + polygonPoints);
 
@@ -129,19 +134,32 @@ function getMountains(randomSeed, tintColour) {
 
         // TODO: try removing diffuse lighting for cool clouds on mountain
     const filter = `<filter id='mf' x='0%' y='0%' width='100%' height='100%'>
-                        <feTurbulence type='fractalNoise' baseFrequency='0.0${randomInt(randomSeed, 1, 3)}' result='noise' numOctaves='15'/>
-                        <feDiffuseLighting in='noise' lighting-color='white' surfaceScale='${randomInt(randomSeed, 1, 3)}'>
+                        <feTurbulence type='fractalNoise' baseFrequency='0.0${randomInt(randomSeed, 1, 3)}' numOctaves='15'/>
+                        <feDiffuseLighting lighting-color='white' surfaceScale='${randomInt(randomSeed, 1, 3)}'>
                             <feDistantLight azimuth='45' elevation='10'/>
                         </feDiffuseLighting>
-                        <feComposite operator='in' in2='SourceGraphic'/>
+                        <feComposite result='m' operator='in' in2='SourceGraphic'/>
+                        <feGaussianBlur stdDeviation='8'/>
+                        <feMerge>
+                            <feMergeNode in='m'/>
+                            <feMergeNode in='b'/>
+                        </feMerge>
                     </filter>`;
+// under gaussian blur above
+                    // <feColorMatrix type='matrix' values='
+                    // 0 0 0 0 0 
+                    // 0 0 0 0 0 
+                    // 0 0 0 0 0 
+                    // 0 0 0 0.5 0'
+                    // result = 'b'
+                    // />
 
     const shadingFilter = `<filter id='msf'>
                             <feTurbulence type='fractalNoise' 
-                                        baseFrequency='0.004 0.01' 
-                                        numOctaves='2' 
-                                        seed='` + randomSeed + `'
-                                        />
+                                baseFrequency='0.004 0.01' 
+                                numOctaves='2' 
+                                seed='${randomSeed}'
+                            />
                             <feColorMatrix values='0 1 0 0 -4 1 1 0 0 -4 1 0 0 0 -4 0 1 1 0 -1'/>
                             <feComposite operator='in' in2='SourceGraphic'/>
                             </filter>
@@ -176,7 +194,7 @@ function buildLine(randomSeed, width, pointCount) {
     for (var i = 0; i <= pointCount - 1; i++) {
         const x = i * interval;
 
-        const pointSeed = (randomSeed + i) + 1000;
+        const pointSeed = (randomSeed + i) + 1e3;
         const yChange = randomInt(pointSeed, 0, 20);
         const up = randomInt(pointSeed, 0, 100) >  50;
 
@@ -196,7 +214,7 @@ function buildLine(randomSeed, width, pointCount) {
 
 function getClouds(randomSeed) {
 
-    // const baseFrequencyDenominator = 1000;
+    // const baseFrequencyDenominator = 1e3;
     // const baseFrequency1 = randomInt(randomSeed * 2, 1, 50) / baseFrequencyDenominator;
     // const baseFrequency2 = randomInt(randomSeed * 3, 1, 50) / baseFrequencyDenominator;
     // const baseFrequency = baseFrequency1 + " " + baseFrequency2; 
@@ -223,14 +241,14 @@ function getWater(randomSeed) {
     var xPos = 0;
     var up = true;
 
-    while (xPos < 1000) {
+    while (xPos < 1e3) {
         var segmentWidth = randomInt(randomSeed + xPos, 100, 400);
         
-        if (segmentWidth > 1000 - xPos) {
-            segmentWidth = 1000 - xPos;
-        } else if ((1000 - xPos) - segmentWidth < 100) {
+        if (segmentWidth > 1e3 - xPos) {
+            segmentWidth = 1e3 - xPos;
+        } else if ((1e3 - xPos) - segmentWidth < 100) {
             // TODO: is there a max function in Solidity?
-            segmentWidth += (1000 - xPos) - segmentWidth;
+            segmentWidth += (1e3 - xPos) - segmentWidth;
         }
 
         const yDelta = randomInt(randomSeed + xPos, 10, 30);
@@ -257,29 +275,26 @@ function getWater(randomSeed) {
     
     return `
         <filter id='wf'>
-            <feTurbulence type='turbulence' 
-                          baseFrequency='0.00` + baseFrequency1 + ` .11'
+            <feTurbulence baseFrequency='0.00${baseFrequency1} .11'
                           numOctaves='4' 
-                          seed='` + randomSeed + `'
+                          seed='${randomSeed}'
             />
             <feComponentTransfer result='wave'>
                 <feFuncR type='linear' slope='0.1' intercept='-0.05' />
                 <feFuncG type='gamma' amplitude='0.75' exponent='0.6' offset='0.05' />
                 <feFuncB type='gamma' amplitude='0.8' exponent='0.4' offset='0.05'/>
-                <feFuncA type='linear' slope='` + slope + `' />
+                <feFuncA type='linear' slope='${slope}' />
             </feComponentTransfer>
             <feFlood flood-color='cyan' />
             <feComposite in='wave' />
             <feComposite in2='SourceAlpha' operator='in' />
         </filter>        
-        <path d='M 0 1000
+        <path d='M 0 1e3
                  L 0 800
                 ` + shorelineCurves + `
-                 L 1000 800 
-                 L 1000 1000' 
+                 L 1e3 800 
+                 L 1e3 1e3' 
                 filter='url(#wf)' 
-                stroke='clear'
-                stroke-width='0' 
                 fill-opacity='70%'/>
     `;
 }
