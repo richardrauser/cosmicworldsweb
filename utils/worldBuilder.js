@@ -20,7 +20,7 @@ function build(randomSeed) {
     shapes += getStars(randomSeed);
     shapes += " " + getPlanets(randomSeed);
     shapes += " " + getMountains(randomSeed);
-    shapes += " " + getWater(randomSeed);
+    // shapes += " " + getWater(randomSeed);
     shapes += " " + getClouds(randomSeed);
 
     const svgString = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1e3 1e3' style='background-image:${bgGradient}'>${defs}<g clip-path='url(#mcp)'>${shapes}</g></svg>`;
@@ -140,19 +140,19 @@ function getMountains(randomSeed, tintColour) {
                         </feDiffuseLighting>
                         <feComposite result='m' operator='in' in2='SourceGraphic'/>
                         <feGaussianBlur stdDeviation='8'/>
+                        <feColorMatrix type='matrix' values='
+                        0 0 0 0 0 
+                        0 0 0 0 0 
+                        0 0 0 0 0 
+                        0 0 0 0.5 0' 
+                        result='b'
+                        />
                         <feMerge>
                             <feMergeNode in='m'/>
                             <feMergeNode in='b'/>
                         </feMerge>
                     </filter>`;
 // under gaussian blur above
-                    // <feColorMatrix type='matrix' values='
-                    // 0 0 0 0 0 
-                    // 0 0 0 0 0 
-                    // 0 0 0 0 0 
-                    // 0 0 0 0.5 0'
-                    // result = 'b'
-                    // />
 
     const shadingFilter = `<filter id='msf'>
                             <feTurbulence type='fractalNoise' 
