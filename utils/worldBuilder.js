@@ -20,7 +20,7 @@ function build(randomSeed) {
     shapes += getStars(randomSeed);
     shapes += " " + getPlanets(randomSeed);
     shapes += " " + getMountains(randomSeed);
-    // shapes += " " + getWater(randomSeed);
+    shapes += " " + getWater(randomSeed);
     shapes += " " + getClouds(randomSeed);
 
     const svgString = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1e3 1e3' style='background-image:${bgGradient}'>${defs}<g clip-path='url(#mcp)'>${shapes}</g></svg>`;
@@ -221,7 +221,9 @@ function getClouds(randomSeed) {
     // const baseFrequency = baseFrequency1 + " " + baseFrequency2; 
     // const baseFrequency = "0.01 0.5";
     const baseFrequency = "0.002 0.02";
-    const opacity = randomInt(randomSeed * 5, 50, 80);
+    const color = randomColour(randomSeed, null);
+    const cloudOpacity = randomInt(randomSeed * 5, 50, 80);
+    const floodOpacity = randomInt(randomSeed * 6, 20, 60);
     console.log("Base frequency: " + baseFrequency);
 
     return `
@@ -229,11 +231,24 @@ function getClouds(randomSeed) {
             <feTurbulence type='fractalNoise' 
                           baseFrequency='${baseFrequency}' 
                           numOctaves='2' 
-                          seed='${randomSeed}'
+                          seed='${randomSeed}' result='t'
                           />
         </filter>
-        <rect width='100%' height='100%' opacity='${opacity}%' filter='url(#cf)'/>`;
+        <feComposite operator='in' in='t' in2='f' />
+        <rect width='100%' height='100%' opacity='${cloudOpacity}%' filter='url(#cf)'/>`;
 }
+
+{/* <feColorMatrix type='matrix' values='
+0 0 0 0.4 0 
+0 0 0 0.3 0 
+0 0 0 0.2 0 
+0 0 0 1 0' 
+result='b'
+/> */}
+
+{/* <feFlood
+flood-color='${color}'
+flood-opacity='${floodOpacity}%' result='f' />   */}
 
 function getWater(randomSeed) {
 
@@ -273,7 +288,8 @@ function getWater(randomSeed) {
 
     const slope = randomInt(randomSeed, 1, 10);
     const baseFrequency1 = randomInt(randomSeed * 2, 3, 9);
-    
+    const color = randomColour(randomSeed * 4, null);
+
     return `
         <filter id='wf'>
             <feTurbulence baseFrequency='0.00${baseFrequency1} .11'
@@ -286,19 +302,24 @@ function getWater(randomSeed) {
                 <feFuncB type='gamma' amplitude='0.8' exponent='0.4' offset='0.05'/>
                 <feFuncA type='linear' slope='${slope}' />
             </feComponentTransfer>
-            <feFlood flood-color='cyan' />
+            <feFlood flood-color='${color}' />
             <feComposite in='wave' />
             <feComposite in2='SourceAlpha' operator='in' />
-        </filter>        
-        <path d='M 0 1e3
-                 L 0 800
-                ` + shorelineCurves + `
-                 L 1e3 800 
-                 L 1e3 1e3' 
+        </filter>       
+         
+        <path d='M 0 1e3 L 0 800 ${shorelineCurves} L 1e3 800 L 1e3 1e3'
                 filter='url(#wf)' 
                 fill-opacity='70%'/>
     `;
 }
+
+// <!-- Create a dark glow effect -->
+// <feGaussianBlur stdDeviation="8" result='glow'/>
+// <feComposite in='r' in2='glow' operator="atop" result='g' />
+// <feMerge>
+//   <feMergeNode in='r'/>
+//   <feMergeNode in='g'/>
+// </feMerge>
 
 // ----------- RANDOM --------------
 
