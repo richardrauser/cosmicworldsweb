@@ -33,7 +33,7 @@ function build(randomSeed) {
 function getStars(randomSeed) {
     return `
         <filter id='sf'>
-        <feTurbulence baseFrequency='0.${randomInt(randomSeed, 15, 38)}' seed='${randomSeed}'/>
+        <feTurbulence baseFrequency='0.${randomInt(randomSeed, 15, 40)}' seed='${randomSeed}'/>
         <feColorMatrix values='0 0 0 9 -4 
                             0 0 0 9 -4 
                             0 0 0 9 -4 
@@ -84,7 +84,8 @@ x
             ${stopOffset(stop2, colour2)}
             </radialGradient></defs>`;
 
-        const filter = `<filter id='pf${i}'> 
+        // make filter bigger than planet so we don't crop blur. default is 10/120.
+        const filter = `<filter id='pf${i}' x='-25%' y='-25%' width='150%' height='150%'> 
             <feTurbulence
                 type='${turbulenceType}' 
                 baseFrequency='0.00${baseFrequencyX} 0.0${baseFrequencyY}' 
@@ -133,7 +134,7 @@ function getMountains(randomSeed, tintColour) {
         </linearGradient></defs>`;
 
         // TODO: try removing diffuse lighting for cool clouds on mountain
-    const filter = `<filter id='mf' x='0%' y='0%' width='100%' height='100%'>
+    const filter = `<filter id='mf'>
                         <feTurbulence type='fractalNoise' baseFrequency='0.0${randomInt(randomSeed, 1, 3)}' numOctaves='15'/>
                         <feDiffuseLighting lighting-color='white' surfaceScale='${randomInt(randomSeed, 1, 3)}'>
                             <feDistantLight azimuth='45' elevation='10'/>
