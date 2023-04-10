@@ -51,9 +51,9 @@ export default function TokenCard(props) {
           ) : (
             <Card.Body>
               <div className="cardArtwork" tokenId={tokenId}>
-                <Link href= { link }>
+                <a href= { link }>
                   <img className="tokenListImage" alt={ "Cosmic Worlds token " + tokenId } src={ tokenSvgDataUri } />
-                </Link>
+                </a>
               </div>  
               <div className="cardTraits">
                 { traitsText }
