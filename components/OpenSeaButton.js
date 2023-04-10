@@ -11,7 +11,9 @@ export default function OpenSeaButton(props) {
     return(
         <Button className="cardButton" href={openSeaLink}  target ="_blank" rel="noreferrer">
             <Image className="buttonLogo" alt="OpenSea logo" src={opensea}/>
+            <div>
             OpenSea
+            </div>
         </Button>
     );
 }
