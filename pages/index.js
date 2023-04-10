@@ -22,12 +22,14 @@ export default function Home() {
       </Head>
       
       <div className="contentPanel">
-      <p className={styles.description}>
+        <p className={styles.description}>
            On-chain, generative NFT art offering glimpses into { adjective } cosmic worlds.
+        </p>
+        <p className={styles.description}>
+           Coming soon!
         </p>
       </div>
 
-        <CosmicArtboard/>
     </div>
   )
 }
