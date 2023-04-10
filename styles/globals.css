@@ -117,9 +117,9 @@ code {
   text-align: center;
 }
 .cardButtonArea img {
-  margin-top: 8px !important;
-  margin-right: 8px !important;
-  height: 32px !important;
+    /* display: flex;
+    align-items: center;
+    justify-content: center;  */
 }
 
 .cardButton {
@@ -127,7 +127,8 @@ code {
 }
 .buttonIcon {
   /* display: inline-block; */
-  vertical-align: middle;
+  /* vertical-align: middle;
+  max-height: 24px !important; */
 }
 
 .buttonIcon img {
@@ -144,4 +145,5 @@ code {
   width: 100%;
   height: 100%;
 }
+
 
