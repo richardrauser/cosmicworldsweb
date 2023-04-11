@@ -271,15 +271,9 @@ function getWater(randomSeed) {
         const yPos = (up ? 800 - yDelta : 800 + yDelta);
         
         shorelineCurves = shorelineCurves + 
-            "C " + 
-            xPos + 
-            " 800, " + 
-            (xPos + segmentWidth / 2) + 
-            " " + 
-            yPos + 
-            ", " + 
-            (xPos + segmentWidth) + 
-            " 800 ";
+            `C ${xPos} 800, 
+            ${xPos + segmentWidth / 2} ${yPos}, 
+            ${xPos + segmentWidth} 800 `;
 
         xPos += segmentWidth;
         up = !up;
