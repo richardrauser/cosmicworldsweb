@@ -23,7 +23,7 @@ export default function Token() {
           }
           try {
     
-            const { svg, svgDataUri, seed, planetCount } = await fetchTokenDetails(id);
+            const { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness } = await fetchTokenDetails(id);
             setLoading(false);
             setSoliditySvg(svgDataUri);
             setSeed(seed);

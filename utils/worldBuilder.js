@@ -135,7 +135,7 @@ function getMountains(randomSeed, tintColour) {
 
         // TODO: try removing diffuse lighting for cool clouds on mountain
     const filter = `<filter id='mf'>
-                        <feTurbulence type='fractalNoise' baseFrequency='0.0${randomInt(randomSeed, 1, 3)}' numOctaves='15'/>
+                        <feTurbulence type='fractalNoise' baseFrequency='0.0${randomInt(randomSeed, 10, 30)}' numOctaves='15'/>
                         <feDiffuseLighting lighting-color='white' surfaceScale='${randomInt(randomSeed, 1, 3)}'>
                             <feDistantLight azimuth='45' elevation='10'/>
                         </feDiffuseLighting>
@@ -281,12 +281,12 @@ function getWater(randomSeed) {
     console.log("SHORELINE CURVES: " + shorelineCurves);
 
     const slope = randomInt(randomSeed, 1, 10);
-    const baseFrequency1 = randomInt(randomSeed * 2, 3, 9);
+    const baseFrequencyX = randomInt(randomSeed * 2, 2, 9);
     const color = randomColour(randomSeed * 4, null);
 
     return `
         <filter id='wf'>
-            <feTurbulence baseFrequency='0.00${baseFrequency1} .11'
+            <feTurbulence baseFrequency='0.00${baseFrequencyX} .11'
                           numOctaves='4' 
                           seed='${randomSeed}'
             />
