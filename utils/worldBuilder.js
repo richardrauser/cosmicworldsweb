@@ -124,7 +124,7 @@ function getMountains(randomSeed, tintColour) {
     console.log("POINTS: \n " + polygonPoints);
 
     const mountainColour = randomColour(randomSeed + 3, tintColour);
-    const midColourPoint = randomInt(randomSeed, 10, 90);
+    const midColourPoint = randomInt(randomSeed, 20, 80);
     const mountainColour2 = randomColour(randomSeed + 5, tintColour);
 
     const gradient = `<defs><linearGradient id="mg">
@@ -171,7 +171,7 @@ function getMountains(randomSeed, tintColour) {
     mountain += gradient;
     mountain += shadingFilter;
 
-    const opacity = randomInt(randomSeed, 40, 70);    
+    const opacity = randomInt(randomSeed, 30, 60);    
 
     mountain += `<polygon points='${polygonPoints}' filter='url(#mf)'/>`;
     mountain += `<polygon points='${polygonPoints}' fill='url(#mg)' opacity='${opacity}%'/>`;
