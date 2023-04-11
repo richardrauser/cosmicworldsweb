@@ -282,7 +282,9 @@ function getWater(randomSeed) {
 
     const slope = randomInt(randomSeed, 1, 10);
     const baseFrequencyX = randomInt(randomSeed * 2, 2, 9);
-    const color = randomColour(randomSeed * 4, null);
+    
+    const floodColor = randomColour(randomSeed * 4, null);
+    const waterBlur = randomInt(randomSeed, 1, 3);
 
     return `
         <filter id='wf'>
@@ -296,24 +298,24 @@ function getWater(randomSeed) {
                 <feFuncB type='gamma' amplitude='0.8' exponent='0.4' offset='0.05'/>
                 <feFuncA type='linear' slope='${slope}' />
             </feComponentTransfer>
-            <feFlood flood-color='${color}' />
+            <feFlood flood-color='${floodColor}' />
             <feComposite in='wave' />
             <feComposite in2='SourceAlpha' operator='in' />
-        </filter>       
+            <feGaussianBlur stdDeviation='${waterBlur}' result='glow'/>
+            <feComposite in2='glow' operator='atop' result='g' />
+            <feMerge>
+              <feMergeNode />
+              <feMergeNode />
+            </feMerge>
+        </filter>    
          
         <path d='M 0 1e3 L 0 800 ${shorelineCurves} L 1e3 800 L 1e3 1e3'
                 filter='url(#wf)' 
                 fill-opacity='70%'/>
-    `;
+        `;
 }
 
-// <!-- Create a dark glow effect -->
-// <feGaussianBlur stdDeviation="8" result='glow'/>
-// <feComposite in='r' in2='glow' operator="atop" result='g' />
-// <feMerge>
-//   <feMergeNode in='r'/>
-//   <feMergeNode in='g'/>
-// </feMerge>
+
 
 // ----------- RANDOM --------------
 
@@ -342,7 +344,7 @@ function randomInt(randomSeed, min, max) {
 
     console.log("SEED: " + seed);
     
-    const value = seed % BigInt(max - min) + BigInt(min);
+    const value = seed % BigInt(max - min + 1) + BigInt(min);
 
     console.log("VALUE: " + value);
 

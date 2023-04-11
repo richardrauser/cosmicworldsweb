@@ -252,9 +252,9 @@ export async function fetchTokenDetails(tokenId) {
  
     let seed = metadataObject.attributes.filter(attribute => attribute.trait_type == "seed")[0].value;
     let planetCount = metadataObject.attributes.filter(attribute => attribute.trait_type == "planets")[0].value;
-    let starDensity = metadataObject.attributes.filter(attribute => attribute.trait_type == "star density")[0].value;
-    let mountainRoughness = metadataObject.attributes.filter(attribute => attribute.trait_type == "mountain roughness")[0].value;
-    let waterChoppiness = metadataObject.attributes.filter(attribute => attribute.trait_type == "water choppiness")[0].value;
+    let starDensity = metadataObject.attributes.filter(attribute => attribute.trait_type == "stars")[0].value;
+    let mountainRoughness = metadataObject.attributes.filter(attribute => attribute.trait_type == "mountains")[0].value;
+    let waterChoppiness = metadataObject.attributes.filter(attribute => attribute.trait_type == "water")[0].value;
 
     console.log("Returning.");
     return { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness };
