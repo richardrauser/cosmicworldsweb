@@ -71,8 +71,8 @@ x
         const turbulenceType = randomInt(randomSeed, 0, 10) > 5 ? 'fractalNoise' : 'turbulence';
         // We intentionally make the y value larger than the x value
         // to create horizontal striping patterns
-        const baseFrequencyX = Math.trunc(randomInt(randomSeed, 1, 4) * 1e3 / (radius * 2));
-        const baseFrequencyY = Math.trunc(randomInt(randomSeed, 2, 4) * 1e3 / radius);
+        const baseFrequencyX = Math.trunc(randomInt(randomSeed, 1, 3) * 1e3 / (radius * 2));
+        const baseFrequencyY = Math.trunc(randomInt(randomSeed, 2, 3) * 1e3 / radius);
         const numOctaves = randomInt(randomSeed, 3, 10);
 
         // And some random values for our lighting
@@ -216,13 +216,13 @@ function buildLine(randomSeed, width, pointCount) {
 function getClouds(randomSeed) {
 
     // const baseFrequencyDenominator = 1e3;
-    // const baseFrequency1 = randomInt(randomSeed * 2, 1, 50) / baseFrequencyDenominator;
+    const baseFrequency1 = randomInt(randomSeed * 2, 1, 8);
     // const baseFrequency2 = randomInt(randomSeed * 3, 1, 50) / baseFrequencyDenominator;
     // const baseFrequency = baseFrequency1 + " " + baseFrequency2; 
     // const baseFrequency = "0.01 0.5";
-    const baseFrequency = "0.002 0.02";
+    const baseFrequency = `0.00${baseFrequency1} 0.02`;
     const color = randomColour(randomSeed, null);
-    const cloudOpacity = randomInt(randomSeed * 5, 50, 90);
+    const cloudOpacity = randomInt(randomSeed * 5, 60, 80);
     const r = randomInt(randomSeed + 10, 0, 9)
     const g = randomInt(randomSeed + 20, 0, 9)
     const b = randomInt(randomSeed + 30, 0, 9)

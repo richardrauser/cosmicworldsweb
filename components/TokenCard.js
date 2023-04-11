@@ -21,10 +21,10 @@ export default function TokenCard(props) {
   useEffect(() => {
     const fetchMetadata = async () =>  { 
       try {
-        const { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness } = await fetchTokenDetails(tokenId)
+        const { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness, cloudType } = await fetchTokenDetails(tokenId)
         setLoading(false);
         setTokenSvgDataUri(svgDataUri);
-        setTraitsText(`Seed: ${seed}, planets: ${planetCount}, stars: ${starDensity}, mountains: ${mountainRoughness}, water: ${waterChoppiness}`);
+        setTraitsText(`Seed: ${seed}, planets: ${planetCount}, stars: ${starDensity}, mountains: ${mountainRoughness}, water: ${waterChoppiness}, clouds: ${cloudType}`);
       } catch (err) {
           handleError(err);
       }

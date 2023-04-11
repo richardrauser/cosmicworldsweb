@@ -255,8 +255,9 @@ export async function fetchTokenDetails(tokenId) {
     let starDensity = metadataObject.attributes.filter(attribute => attribute.trait_type == "stars")[0].value;
     let mountainRoughness = metadataObject.attributes.filter(attribute => attribute.trait_type == "mountains")[0].value;
     let waterChoppiness = metadataObject.attributes.filter(attribute => attribute.trait_type == "water")[0].value;
+    let cloudType = metadataObject.attributes.filter(attribute => attribute.trait_type == "clouds")[0].value;
 
     console.log("Returning.");
-    return { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness };
+    return { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness, cloudType };
 
 }

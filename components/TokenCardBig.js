@@ -25,11 +25,11 @@ export default function TokenCardBig(props) {
       }
       try {
 
-        const { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness } = await fetchTokenDetails(tokenId);
+        const { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness, cloudType } = await fetchTokenDetails(tokenId);
         setLoading(false);
         setSvg(svg);
         setTokenSvgDataUri(svgDataUri);
-        setTraitsText(`Seed: ${seed}, planet count: ${planetCount}, stars: ${starDensity}, mountains: ${mountainRoughness}, water: ${waterChoppiness}`);
+        setTraitsText(`Seed: ${seed}, planet count: ${planetCount}, stars: ${starDensity}, mountains: ${mountainRoughness}, water: ${waterChoppiness}, clounds: ${cloudType}`);
 
         } catch (error) {
           console.log("Error occurred fetching token metadata: ", error);
