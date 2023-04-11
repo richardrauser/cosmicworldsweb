@@ -222,33 +222,33 @@ function getClouds(randomSeed) {
     // const baseFrequency = "0.01 0.5";
     const baseFrequency = "0.002 0.02";
     const color = randomColour(randomSeed, null);
-    const cloudOpacity = randomInt(randomSeed * 5, 50, 80);
-    const floodOpacity = randomInt(randomSeed * 6, 20, 60);
-    console.log("Base frequency: " + baseFrequency);
-
+    const cloudOpacity = randomInt(randomSeed * 5, 50, 90);
+    const r = randomInt(randomSeed + 10, 0, 9)
+    const g = randomInt(randomSeed + 20, 0, 9)
+    const b = randomInt(randomSeed + 30, 0, 9)
     return `
         <filter id='cf'>
             <feTurbulence type='fractalNoise' 
                           baseFrequency='${baseFrequency}' 
                           numOctaves='2' 
-                          seed='${randomSeed}' result='t'
-                          />
+                          seed='${randomSeed}'
+                          result='t'
+            />
+            <feColorMatrix type='matrix' values='
+                          0 0 0 0.${r} 0 
+                          0 0 0 0.${g} 0 
+                          0 0 0 0.${b} 0 
+                          0 0 0 1 0' 
+            /> 
         </filter>
-        <feComposite operator='in' in='t' in2='f' />
         <rect width='100%' height='100%' opacity='${cloudOpacity}%' filter='url(#cf)'/>`;
 }
 
-{/* <feColorMatrix type='matrix' values='
-0 0 0 0.4 0 
-0 0 0 0.3 0 
-0 0 0 0.2 0 
-0 0 0 1 0' 
-result='b'
-/> */}
 
 {/* <feFlood
 flood-color='${color}'
 flood-opacity='${floodOpacity}%' result='f' />   */}
+
 
 function getWater(randomSeed) {
 
