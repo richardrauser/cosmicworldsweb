@@ -1,0 +1,10 @@
+{
+    "name": "Cosmic Worlds",
+    "description": "Cosmic Worlds: generative, on-chain NFT art offering glimpses into alternate existence. 100% on-chain, zero backend. 😎",
+    "image": "https://www.dynastripes.xyz/storefront.png",
+    "external_link": "https://cosmicworlds.xyz",
+    "seller_fee_basis_points": 25,
+    "fee_recipient": "0xBC10a3aE909B1b94f4C3E39607aD19D386dCe32a" 
+  }
+
+
