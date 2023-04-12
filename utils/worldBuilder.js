@@ -268,10 +268,10 @@ function getWater(randomSeed) {
     var shorelineCurves = "";
     const segmentWidthMax = 400;
     var xPos = 0;
-    var up = true;
+    var up = randomInt(randomSeed, 0, 1) > 0;;
 
     while (xPos < 1e3) {
-        var segmentWidth = randomInt(randomSeed + xPos, 150, 350);
+        var segmentWidth = randomInt(randomSeed + xPos, 150, 300);
         
         if (segmentWidth > 1e3 - xPos) {
             segmentWidth = 1e3 - xPos;
