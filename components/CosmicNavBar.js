@@ -12,6 +12,14 @@ export default function CosmicNavBar() {
                 <Navbar.Brand href="/" className="cosmicWorlds">Cosmic Worlds</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="me-auto">
+                    <Nav.Link href="/recent">Recent Worlds</Nav.Link>
+                    <Nav.Link href="/yours">Your Worlds</Nav.Link>
+                    <Nav.Link href="/about">About</Nav.Link>
+                </Nav>
+                <Nav>
+                    <NavLoginDropdown />
+                </Nav>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
