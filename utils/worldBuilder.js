@@ -44,7 +44,20 @@ function getStars(randomSeed) {
 }
 
 function getPlanetCount(planetSeed) {
-    return randomInt(planetSeed * 2, 0, 5);
+    const percent = randomInt(planetSeed * 2, 0, 100);
+    if (percent < 5) {
+        return 0;
+    } else if (percent < 15) {
+        return 1;
+    } else if (percent < 40) {
+        return 2;
+    } else if (percent < 85) {
+        return 3
+    } else if (percent < 95) {
+        return 4;
+    } else  {
+        return 5;
+    }
 }
 
 function getPlanets(planetSeed, tintColour) {
@@ -258,7 +271,7 @@ function getWater(randomSeed) {
     var up = true;
 
     while (xPos < 1e3) {
-        var segmentWidth = randomInt(randomSeed + xPos, 100, 400);
+        var segmentWidth = randomInt(randomSeed + xPos, 150, 350);
         
         if (segmentWidth > 1e3 - xPos) {
             segmentWidth = 1e3 - xPos;
