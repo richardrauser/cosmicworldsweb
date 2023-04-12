@@ -18,10 +18,10 @@ export default function Layout(props) {
                 <meta name="twitter:title" content="Cosmic Worlds - alien landscapes on the Ethereum blockchain!" />
                 <meta name="twitter:description" content="On-chain, generative cosmic worlds on the Ethereum blockchain." />
                 <meta name="twitter:creator" content="@volstrate"/>
-                <meta name="twitter:image" content="http://cosmicworlds.xyz/images/cosmicWorld.png" />
+                <meta name="twitter:image" content="https://cosmicworlds.xyz/images/cosmicWorld.png" />
                 <meta property="og:title" content="Cosmic Worlds - alien landscapes on the Ethereum blockchain!" />
-                <meta property="og:url" content="http://cosmicworlds.xyz/" />
-                <meta property="og:image" content="http://cosmicworlds.xyz/images/cosmicWorld.png" />
+                <meta property="og:url" content="https://cosmicworlds.xyz/" />
+                <meta property="og:image" content="https://cosmicworlds.xyz/images/cosmicWorld.png" />
                 <meta property="og:description" content="Description Here" />
             </Head>
             <CosmicNavBar/>
