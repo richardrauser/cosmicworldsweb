@@ -1,8 +1,7 @@
 import Head from 'next/head'
-import CosmicArtboard from '@components/CosmicArtboard'
 import styles from '@styles/Home.module.css';
-import { useEffect, useState } from 'react';
-
+import Image from 'next/image';
+// import { cosmicAnimation } from '../images/cosmicWorldsAnimation500px.gif';
 export default function Home() {
 
   // const [adjective, setAdjective] = useState("");
@@ -22,12 +21,22 @@ export default function Home() {
       </Head>
       
       <div className="contentPanel">
-      <p className={styles.description}>
+        <p className={styles.description}>
            On-chain, generative NFT art offering glimpses into { adjective } cosmic worlds.
         </p>
       </div>
 
-        <CosmicArtboard/>
+
+      <div className="animationPanel">
+          <img className="animationImage" src="/images/cosmicWorldsAnimation500px.gif" alt="Cosmic Worlds animation" />
+      </div>
+        
+      <div className="contentPanel">
+        <p className={styles.description}>
+           Coming soon!
+        </p>
+      </div>
+
     </div>
   )
 }
