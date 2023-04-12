@@ -2,4 +2,10 @@
 .navBar {
     background: linear-gradient(0deg, rgba(70,70,150,1) 0%, rgba(100,100,200,1) 35%, rgba(200,200,255,1) 100%);
 }
-  
+
+@media screen and (max-width: 700px) {
+    .cosmicWorlds {
+        font-family: Orbitron !important;
+        font-size: 12pt !important;
+    }
+}

@@ -1,10 +1,9 @@
 
 import { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
 import { getReadOnlyContract } from "utils/BlockchainAPI";
 import TokenList from "@components/TokenList";
-import { showErrorMessage } from "utils/UIUtils";
 import Loading from "@components/Loading";
+import { handleError } from "utils/ErrorHandler";
 
 export default function Recent() {  
     const [loading, setLoading] = useState(true);
@@ -26,7 +25,7 @@ export default function Recent() {
           // console.log("Contract owner: " + ownerAddress);
    
           const contractAddress = await contract.getAddress();
-          console.log("Contract address: " + contractAddress);
+          console.log("fetchRecentTokens: Contract address: " + contractAddress);
   
           const tokenCount = await contract.totalSupply();
           console.log("Token count: " + tokenCount);
@@ -70,7 +69,8 @@ export default function Recent() {
         } catch (error) {
           const errorMessage = "An error occurred fetching recent NFT data. " + error;
           console.log(errorMessage);
-          showErrorMessage(errorMessage);
+          handleError(error);
+          // showErrorMessage(errorMessage);
           setMintCount("?");
           setLoading(false)
         }
@@ -95,7 +95,7 @@ export default function Recent() {
           <div>
             <div className="contentPanel">
               <h1>Recent Worlds</h1>
-              Total minted worlds: { mintCount == null ? "Loading.." : String(mintCount) + " / 512" } 
+              Total minted worlds: { mintCount == null ? "Loading.." : String(mintCount) + " / 512. These are the most recent 12!" } 
             </div>
 
             <TokenList tokens = { tokenIds } />

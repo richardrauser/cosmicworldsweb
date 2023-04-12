@@ -18,8 +18,11 @@ async function getProvider(browserProvider) {
     // this will be readonly as it is not connected to a browser's ethereum wallet.
     // TODO: specify URLS from infura, etc to get this working: https://docs.ethers.org/v6/getting-started/#starting-connecting
     console.log("Returning default provider..");
-    return ethers.getDefaultProvider("http://127.0.0.1:8545/");
-
+    if (CosmicWorldsCurrentNetworkName == "localhost") {
+      return ethers.getDefaultProvider("http://127.0.0.1:8545/");
+    } else {
+      return new ethers.JsonRpcProvider(CosmicWorldsCurrentNetworkRpcUrl);
+    }
   }
 
   if (!window.ethereum) {
@@ -76,7 +79,7 @@ export async function switchToCurrentNetwork() {
 
 export async function getReadOnlyContract() {
   console.log("Getting read-only contract..");
-  const provider = await getProvider(false);
+  const provider = await getProvider(true);
     
   console.log("CONTRACT ADDRESS: " + CosmicWorldsContractAddress);
   
@@ -122,7 +125,7 @@ export async function fetchAccount() {
 }
 
 export async function fetchAccountDetails() {
-  console.log("Fetching account details..");
+  console.log("Fetching account details from blockchain..");
     
   const account = await fetchAccount();
   const provider = await getProvider();
@@ -182,25 +185,25 @@ class AccountDetails {
 }
   
 
-export async function isCurrentAccountOwner() {
-  console.log("Checking current account owner status..");
+// export async function isCurrentAccountOwner() {
+//   console.log("Checking current account owner status..");
 
-  const connected = await isAccountConnected();
-  if (!connected) {
-    console.log("NOT CONNECTED.");
-    return false;
-  }
+//   const connected = await isAccountConnected();
+//   if (!connected) {
+//     console.log("NOT CONNECTED.");
+//     return false;
+//   }
 
-  const account = await fetchAccount();
+//   const account = await fetchAccount();
 
-  const ethAddress = account.toString().toLowerCase();
-  const contract = await getReadOnlyContract();
-  const ownerAddress = (await contract.owner()).toString().toLowerCase();
-  console.log("connected account address: " + ethAddress);
-  console.log("owner address: " + ownerAddress);
+//   const ethAddress = account.toString().toLowerCase();
+//   const contract = await getReadOnlyContract();
+//   const ownerAddress = (await contract.owner()).toString().toLowerCase();
+//   console.log("connected account address: " + ethAddress);
+//   console.log("owner address: " + ownerAddress);
 
-  return (ethAddress === ownerAddress);
-} 
+//   return (ethAddress === ownerAddress);
+// } 
 
 export async function mintCosmicWorld(randomSeed) {
     console.log("Minting Cosmic World with seed: " + randomSeed);

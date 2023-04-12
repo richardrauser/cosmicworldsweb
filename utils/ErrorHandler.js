@@ -21,9 +21,9 @@ export function handleError(err) {
     }else if (err.code === "ACTION_REJECTED") {
       showErrorMessage("You rejected the transaction.");
     } else if (err.message === Errors.DS_NO_ETH_WALLET) {
-      showErrorMessage("No crypto wallet detected. Please install MetaMask. Read the 'How to' guide for more info.");
+      showErrorMessage("No crypto wallet detected. Please install MetaMask.");
     } else if (err.message === Errors.DS_NO_ETH_ACCOUNT) {
-      showErrorMessage("You need to connect an account via your crypto wallet before you can do that. Read the 'How to' guide for more info.");      
+      showErrorMessage("You need to connect an account via your crypto wallet before you can do that.");      
     } else if (err.message === Errors.DS_WRONG_ETH_NETWORK) {
 
       const errorMessage = "You're on the wrong network. Tap to switch to " + CosmicWorldsCurrentNetworkName + ", or read the 'How to' guide for more info.";

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
-import { fetchAccount, getReadOnlyContract } from '../utils/BlockchainAPI';
+import { fetchAccount, getReadOnlyContract, getReadWriteContract } from '../utils/BlockchainAPI';
 import TokenList from "@components/TokenList";
 import Loading from "@components/Loading";
-import { showErrorMessage } from "utils/UIUtils";
+import { handleError } from "utils/ErrorHandler";
 
 export default function Yours() {
 
@@ -26,7 +26,7 @@ export default function Yours() {
                 }
     
                 const account = await fetchAccount();
-                const contract = await getReadOnlyContract();
+                const contract = await getReadWriteContract();
                 const tokenCount = await contract.balanceOf(account);
             
                 console.log("ACCOUNT: " + account);
@@ -43,8 +43,9 @@ export default function Yours() {
             } catch (error) {
                 const errorMessage = "An error occurred fetching your NFTs. " + error;
                 console.log(errorMessage);
-                showErrorMessage(errorMessage);
+                handleError(error);
                 setTokenIds([]);
+                setTokenCount("?");
                 setLoading(false)
             }
         }   
