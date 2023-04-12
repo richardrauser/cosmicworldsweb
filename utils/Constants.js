@@ -1,6 +1,7 @@
 
 const CosmicWorldsMaxTokensPerUser = 50;
 const CosmicWorldsLocalhostNetwork = "localhost";
+const CosmicWorldSepoliaNetwork = "sepolia";
 const CosmicWorldMainnetNetwork = "mainnet";
 
 // Change this to control which environment you're pointing at.
@@ -32,6 +33,16 @@ function networkConfigFor(currentNetwork) {
             CosmicWorldsCurrentNetworkExplorerUrlKey: 'https://www.superbad.com/',
             CosmicWorldsContractAddressKey: '0x5FbDB2315678afecb367f032d93F642f64180aa3'
         }    
+    } else if (currentNetwork === CosmicWorldSepoliaNetwork) {
+        return {
+            CosmicWorldsCurrentNetworkIDKey: 11155111,
+            CosmicWorldsCurrentNetworkNameKey: "Sepolia",
+            CosmicWorldsCurrentNetworkCurrencySymbolKey: "SepoliaETH",
+            // TODO: RPC URL
+            CosmicWorldsCurrentNetworkRpcUrlKey: "",
+            CosmicWorldsCurrentNetworkExplorerUrlKey: "https://sepolia.etherscan.io/",
+            CosmicWorldsContractAddressKey: ""
+        }        
     } else if (currentNetwork === CosmicWorldMainnetNetwork) {
         return {
             CosmicWorldsCurrentNetworkIDKey: 1,
@@ -40,7 +51,7 @@ function networkConfigFor(currentNetwork) {
             // TODO: RPC URL
             CosmicWorldsCurrentNetworkRpcUrlKey: "",
             CosmicWorldsCurrentNetworkExplorerUrlKey: "https://www.etherscan.io/",
-            CosmicWorldsContractAddressKey: "0xeD03568eaC21c1D0316c87cC09c0ce85f0000c65"
+            CosmicWorldsContractAddressKey: ""
         }        
     }
 }
