@@ -9,7 +9,7 @@ export default function CosmicNavBar() {
     return (        
         <Navbar fixed="top" expand="lg" className={styles.navBar}>
             <Container>
-                <Navbar.Brand href="/" className="cosmicWorlds">Cosmic Worlds</Navbar.Brand>
+                <Navbar.Brand href="/" className={styles.cosmicLogotype}>Cosmic Worlds</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
