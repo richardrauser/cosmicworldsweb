@@ -72,8 +72,9 @@ export default function CosmicArtboard() {
                     <div className="buttonIcon">
                         <Image src={ethereum} alt="ethereum logo" />
                     </div>
-                    Mint
-                </Button>
+                    Mint for free
+                </Button><br/>
+                (only pay gas)
             </div>
         </div> 
         )}
