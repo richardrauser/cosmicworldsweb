@@ -146,7 +146,17 @@ code {
   height: 100%;
 }
 
-
-.animation {
+.animationPanel {
+  margin: auto;
+  width: 90%;
   text-align: center;
+  max-width: 800px;
+  margin: 24px auto;
+
+}
+
+.animationImage {
+  margin: auto;
+  width: 90%;
+  max-width: 500px;
 }

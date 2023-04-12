@@ -24,10 +24,14 @@ export default function Home() {
         <p className={styles.description}>
            On-chain, generative NFT art offering glimpses into { adjective } cosmic worlds.
         </p>
-        <div className="animation">
-          <img width="500px" height="500px" src="/images/cosmicWorldsAnimation500px.gif" alt="Cosmic Worlds animation" />
-        </div>
+      </div>
+
+
+      <div className="animationPanel">
+          <img className="animationImage" src="/images/cosmicWorldsAnimation500px.gif" alt="Cosmic Worlds animation" />
+      </div>
         
+      <div className="contentPanel">
         <p className={styles.description}>
            Coming soon!
         </p>
