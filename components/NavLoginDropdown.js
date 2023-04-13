@@ -42,16 +42,19 @@ class NavLoginDropdown extends React.Component {
 
       window.ethereum.on('accountsChanged', (accounts) => {
         clearCachedAccountDetails();
-        this.fetchAccountDetails();
+        this.disconnectWallet();
+        // Is this causing multiple reloads?!
+        // this.fetchAccountDetails();
       });
       
-      window.ethereum.on('chainChanged', (chainId) => {
-        // Handle the new chain.
-        // Correctly handling chain changes can be complicated.
-        // We recommend reloading the page unless you have good reason not to.
-        window.location.reload();
-        this.disconnectWallet();
-      });
+      // Is this causing multiple reloads?!
+      // window.ethereum.on('chainChanged', (chainId) => {
+      //   // Handle the new chain.
+      //   // Correctly handling chain changes can be complicated.
+      //   // We recommend reloading the page unless you have good reason not to.
+      //   // window.location.reload();
+      //   this.disconnectWallet();
+      // });
 
 
       const cachedDetails = fetchCachedAccountDetails();
