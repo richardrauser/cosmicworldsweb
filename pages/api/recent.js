@@ -15,4 +15,4 @@
     // var recentNfts = (supply <= 5) ? allNfts.nfts : allNfts.nfts.slice(supply - 5);
 
     // res.status(200).json({ totalSupply: supply, recent: recentNfts });
-}
+// }
