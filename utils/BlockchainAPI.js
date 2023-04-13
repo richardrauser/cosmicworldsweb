@@ -18,11 +18,11 @@ async function getProvider(browserProvider) {
     // this will be readonly as it is not connected to a browser's ethereum wallet.
     // TODO: specify URLS from infura, etc to get this working: https://docs.ethers.org/v6/getting-started/#starting-connecting
     console.log("Returning default provider..");
-    if (CosmicWorldsCurrentNetworkName == "localhost") {
-      return ethers.getDefaultProvider("http://127.0.0.1:8545/");
-    } else {
-      return new ethers.JsonRpcProvider(CosmicWorldsCurrentNetworkRpcUrl);
-    }
+    // if (CosmicWorldsCurrentNetworkName == "localhost") {
+    //   return ethers.getDefaultProvider("http://127.0.0.1:8545/");
+    // } else {
+    //   return new ethers.JsonRpcProvider(CosmicWorldsCurrentNetworkRpcUrl);
+    // }
   }
 
   if (!window.ethereum) {
@@ -204,6 +204,27 @@ class AccountDetails {
 
 //   return (ethAddress === ownerAddress);
 // } 
+
+export async function mintTenCosmicWorlds() {
+  console.log("Minting 10 Cosmic Worlds..");
+
+  const contract = await getReadWriteContract(); 
+  
+  const overrides = {
+    gasLimit: 580000
+  };
+  
+  var seeds = [];
+
+  for (let i = 0; i < 10; i++) {
+      console.log(`Generating seed ${i}...`);
+      const seed = Math.trunc(Math.random() * 5_000_000);
+      seeds.push(seed);
+  }
+
+  const transaction = await contract.mintMany(seeds, overrides);
+  console.log("Tx hash: " + transaction.hash);
+}
 
 export async function mintCosmicWorld(randomSeed) {
     console.log("Minting Cosmic World with seed: " + randomSeed);

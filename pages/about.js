@@ -1,7 +1,6 @@
 import CosmicSpan from "@components/CosmicSpan";
 import { CosmicWorldsContractAddress, CosmicWorldsCurrentNetworkExplorerUrl } from "utils/Constants";
-import etherscan from '../public/images/etherscan-logo.svg';
-
+import styles from '@styles/About.module.css';
 
 export default function About() {
 
@@ -10,8 +9,23 @@ export default function About() {
     return (
         <div className="contentPanel">
             <h1>About</h1>
+            <div className={styles.imagesPanel}>
+              <ul className={styles.images}>
+                  <li><img src="images/samples/cosmicWorld1.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld2.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld3.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld4.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld5.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld6.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld7.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld8.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld9.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld10.svg"/></li>
+              </ul>
+
+            </div>
             <p>
-              <CosmicSpan/> invites you into an alternate dimension of alien planes, alternate existences and elevated, psychedelic landscapes. Each cosmic world features up to 5 planets (or none at all!), with starscapes of various densities, mountains that can appear rugged or soft, and clouds of various types. Shimmering chemical pools lie at the mountains' base.
+              <CosmicSpan/> invites you into an alternate dimension of alien planes, alternate existences and elevated, psychedelic landscapes. Each cosmic world features up to 5 planets (or none at all!), with starscapes of various densities, mountains that appear rugged or soft, and clouds of various types. Shimmering chemical pools lie at the mountains' base.
             </p>
             <p>
               <CosmicSpan/> is 100% on-chain NFT art rendered from the blockchain by Solidity code.

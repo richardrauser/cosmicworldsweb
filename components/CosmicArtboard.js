@@ -2,7 +2,7 @@
 import Button from 'react-bootstrap/Button';
 import React, {useEffect, useState} from "react";
 import buildCosmicWorld from '../utils/worldBuilder.js';
-import { mintCosmicWorld } from '../utils/BlockchainAPI.js';
+import { mintCosmicWorld, mintTenCosmicWorlds } from '../utils/BlockchainAPI.js';
 import { handleError } from 'utils/ErrorHandler.js';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
@@ -10,6 +10,7 @@ import { ArrowRepeat } from 'react-bootstrap-icons';
 import ethereum from '../images/ethereum-white.png';
 import styles from '@styles/CosmicArtboard.module.css';
 import Loading from './Loading.js';
+import { Hearts } from 'react-bootstrap-icons';
 
 export default function CosmicArtboard() {
     
@@ -30,7 +31,7 @@ export default function CosmicArtboard() {
         updateSeed();
       }, []);
 
-    const mint = async () => {
+      const mint = async () => {
         
         console.log("Minting..");
         console.log("Random seed: " + randomSeed);
@@ -38,16 +39,18 @@ export default function CosmicArtboard() {
             await mintCosmicWorld(randomSeed);
             toast.success("Successfully minted your Cosmic Worlds NFT!");
         } catch (error)  {
-            console.log("An error occurred minting: " + error);
-            console.log("Error  code: " + error.code);
-            console.log("Error message: " + error.message);
-            console.log("ERROR: " + JSON.stringify(error));
-                        
-            if (error.code === "UNSUPPORTED_OPERATION" && err.message.startsWith("unknown account")) {
-                showErrorMessage("You need to connect an Ethereum wallet like MetaMask.");
-            } else {
-                handleError(error);
-            }            
+            console.log("Error Minting: " + JSON.stringify(error));                        
+            handleError(error);
+        }       
+    };
+
+    const mintTen = async () => {
+                try {
+            await mintTenCosmicWorlds();
+            toast.success("Successfully minted 10 Cosmic Worlds NFTs!");
+        } catch (error)  {
+            console.log("Error Minting: " + JSON.stringify(error));
+            handleError(error);
         }       
     };
 
@@ -74,7 +77,14 @@ export default function CosmicArtboard() {
                     </div>
                     Mint for free
                 </Button><br/>
-                (only pay gas)
+                (only pay gas)<br/>
+                <Button variant="primary" className={styles.keyAction} onClick={mintTen} randomseed={randomSeed}>
+                    <div className="buttonIcon">
+                        <Hearts />
+                    </div>
+                    Mint 10 randoms
+                </Button><br/>
+                (huge gas savings)<br/>
             </div>
         </div> 
         )}
