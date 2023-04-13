@@ -57,8 +57,8 @@ export default function CosmicArtboard() {
             <Loading/>
         ) : (
             <div>
-            <div id='artboard'>
-                <img id="artboardImage" src={svg}></img>	
+            <div className={styles.artboard}>
+                <img className={styles.artboardImage} src={svg}></img>	
             </div>	        
             <div className={styles.detail}>
                 Random seed: { randomSeed }<br/>
