@@ -6,10 +6,10 @@ const CosmicWorldsGoerliNetwork = "goerli";
 const CosmicWorldMainnetNetwork = "mainnet";
 
 // Change this to control which environment you're pointing at.
-// const currentNetwork = CosmicWorldsLocalhostNetwork;
+const currentNetwork = CosmicWorldsLocalhostNetwork;
 // const currentNetwork = CosmicWorldsGoerliNetwork;
 // const currentNetwork = CosmicWorldsSepoliaNetwork;
-const currentNetwork = CosmicWorldMainnetNetwork;
+// const currentNetwork = CosmicWorldMainnetNetwork;
 
 const CosmicWorldsCurrentNetworkIDKey = "CosmicWorldsCurrentNetworkIDKey";
 const CosmicWorldsCurrentNetworkNameKey = "CosmicWorldsCurrentNetworkNameKey";

@@ -205,6 +205,27 @@ class AccountDetails {
 //   return (ethAddress === ownerAddress);
 // } 
 
+export async function mintTenCosmicWorlds() {
+  console.log("Minting 10 Cosmic Worlds..");
+
+  const contract = await getReadWriteContract(); 
+  
+  const overrides = {
+    gasLimit: 580000
+  };
+  
+  var seeds = [];
+
+  for (let i = 0; i < 10; i++) {
+      console.log(`Generating seed ${i}...`);
+      const seed = Math.trunc(Math.random() * 5_000_000);
+      seeds.push(seed);
+  }
+
+  const transaction = await contract.mintMany(seeds, overrides);
+  console.log("Tx hash: " + transaction.hash);
+}
+
 export async function mintCosmicWorld(randomSeed) {
     console.log("Minting Cosmic World with seed: " + randomSeed);
   
@@ -262,5 +283,34 @@ export async function fetchTokenDetails(tokenId) {
 
     console.log("Returning.");
     return { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness, cloudType };
+}
 
+export async function fetchRecentNfts() {
+  const contract = await getReadOnlyContract();
+
+  // const ownerAddress = (await contract.owner()).toString().toLowerCase();
+  // console.log("Contract owner: " + ownerAddress);
+
+  const contractAddress = await contract.getAddress();
+  console.log("fetchRecentTokens: Contract address: " + contractAddress);
+
+  const tokenCount = await contract.totalSupply();
+  console.log("Token count: " + tokenCount);
+
+  const maxToDisplay = 12;
+
+  var tokens = [];
+  
+  // because tokenCount is a BigInt
+  const tokenCountInt = Number(tokenCount);
+  for (var i = tokenCountInt - 1; i >= 0 && i >= tokenCountInt - maxToDisplay; i--) {
+    console.log(i);
+    // const tokenId = await contract.tokenByIndex(i);
+    tokens.push(i);
+
+    const metadataDataUri = await contract.tokenURI(i);
+    console.log("TOKEN URI: " + metadataDataUri);
+  }
+  
+  return tokens;
 }
