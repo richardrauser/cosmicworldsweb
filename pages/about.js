@@ -11,7 +11,7 @@ export default function About() {
         <div className="contentPanel">
             <h1>About</h1>
             <p>
-              <CosmicSpan/> invites you into an alternate dimension of alien planes, alternate existences and elevated, psychedelic landscapes. Each cosmic world features up to 5 planets (or none at all!), with starscapes of various densities, mountains of that appear rugged or soft, and clouds of various types. Shimmering chemical pools lie at the mountains' base.
+              <CosmicSpan/> invites you into an alternate dimension of alien planes, alternate existences and elevated, psychedelic landscapes. Each cosmic world features up to 5 planets (or none at all!), with starscapes of various densities, mountains that can appear rugged or soft, and clouds of various types. Shimmering chemical pools lie at the mountains' base.
             </p>
             <p>
               <CosmicSpan/> is 100% on-chain NFT art rendered from the blockchain by Solidity code.
