@@ -25,7 +25,7 @@ export default function About() {
 
             </div>
             <p>
-              <CosmicSpan/> invites you into alternate dimensions composed of alien planes and elevated, psychedelic landscapes. Each cosmic world features up to 5 planets (or none at all!), with starscapes of various densities, mountains of that appear rugged or soft, and clouds of various types. Shimmering chemical pools lie at the mountains' base, inviting you for an interstellar skinnydip (though it would no doubt be your last!)
+              <CosmicSpan/> invites you into alternate dimensions composed of colorful alien planes and elevated psychedelic landscapes. Each cosmic world features up to 5 planets (or none at all!), with starscapes of various densities, mountains of that appear rugged or soft, and clouds of various types. Shimmering chemical pools lie at the mountains' base, inviting you for an interstellar skinnydip (though it would no doubt be your last!)
             </p>
             <h1>100% On-chain</h1>
             <p>

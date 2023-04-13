@@ -285,6 +285,14 @@ export async function fetchTokenDetails(tokenId) {
     return { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness, cloudType };
 }
 
+export async function fetchTotalSupply() {
+  const contract = await getReadOnlyContract();
+  const tokenCount = await contract.totalSupply();
+  console.log("Token count: " + tokenCount);
+
+  return tokenCount;
+}
+
 export async function fetchRecentNfts() {
   const contract = await getReadOnlyContract();
 
@@ -311,6 +319,6 @@ export async function fetchRecentNfts() {
     const metadataDataUri = await contract.tokenURI(i);
     console.log("TOKEN URI: " + metadataDataUri);
   }
-  
+
   return tokens;
 }

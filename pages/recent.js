@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { fetchRecentNfts, getReadOnlyContract } from "utils/BlockchainAPI";
+import { fetchRecentNfts, fetchTotalSupply } from "utils/BlockchainAPI";
 import TokenList from "@components/TokenList";
 import Loading from "@components/Loading";
 import { handleError } from "utils/ErrorHandler";
@@ -20,9 +20,11 @@ export default function Recent() {
         try {
 
           const tokens = await fetchRecentNfts();
+          const totalSupply = await fetchTotalSupply();
+
           console.log("TOKEN IDS: " + tokens);
           // TO
-          // setMintCount(tokenCount);
+          setMintCount(totalSupply);
           setTokenIds(tokens);
           setLoading(false)
     
@@ -30,7 +32,6 @@ export default function Recent() {
           const errorMessage = "An error occurred fetching recent NFT data. " + error;
           console.log(errorMessage);
           handleError(error);
-          // showErrorMessage(errorMessage);
           setMintCount("?");
           setLoading(false)
         }
