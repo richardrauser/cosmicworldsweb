@@ -1,9 +1,7 @@
-import { CosmicWorldsContractAddress } from '../../utils/Constants';
+// import { CosmicWorldsContractAddress } from '../../utils/Constants';
 // import {Alchemy, Network} from '@alch/alchemy-web3';
-import fetchRecentNfts from '../../utils/BlockchainAPI.js';
 
-
-export default async function handler(req, res) {
+// export default async function handler(req, res) {
 //   const settings = {
 //     apiKey: process.env['ALCHEMY_API_KEY'],
 //     network: Network.ETH_MAINNET,

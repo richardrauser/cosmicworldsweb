@@ -18,11 +18,11 @@ async function getProvider(browserProvider) {
     // this will be readonly as it is not connected to a browser's ethereum wallet.
     // TODO: specify URLS from infura, etc to get this working: https://docs.ethers.org/v6/getting-started/#starting-connecting
     console.log("Returning default provider..");
-    if (CosmicWorldsCurrentNetworkName == "localhost") {
-      return ethers.getDefaultProvider("http://127.0.0.1:8545/");
-    } else {
-      return new ethers.JsonRpcProvider(CosmicWorldsCurrentNetworkRpcUrl);
-    }
+    // if (CosmicWorldsCurrentNetworkName == "localhost") {
+    //   return ethers.getDefaultProvider("http://127.0.0.1:8545/");
+    // } else {
+    //   return new ethers.JsonRpcProvider(CosmicWorldsCurrentNetworkRpcUrl);
+    // }
   }
 
   if (!window.ethereum) {

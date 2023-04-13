@@ -1,7 +1,6 @@
 import CosmicSpan from "@components/CosmicSpan";
 import { CosmicWorldsContractAddress, CosmicWorldsCurrentNetworkExplorerUrl } from "utils/Constants";
-import etherscan from '../public/images/etherscan-logo.svg';
-
+import styles from '@styles/About.module.css';
 
 export default function About() {
 
@@ -10,6 +9,21 @@ export default function About() {
     return (
         <div className="contentPanel">
             <h1>About</h1>
+            <div className={styles.imagesPanel}>
+              <ul className={styles.images}>
+                  <li><img src="images/samples/cosmicWorld1.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld2.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld3.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld4.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld5.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld6.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld7.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld8.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld9.svg"/></li>
+                  <li><img src="/images/samples/cosmicWorld10.svg"/></li>
+              </ul>
+
+            </div>
             <p>
               <CosmicSpan/> invites you into alternate dimensions composed of alien planes and elevated, psychedelic landscapes. Each cosmic world features up to 5 planets (or none at all!), with starscapes of various densities, mountains of that appear rugged or soft, and clouds of various types. Shimmering chemical pools lie at the mountains' base, inviting you for an interstellar skinnydip (though it would no doubt be your last!)
             </p>
@@ -23,9 +37,13 @@ export default function About() {
             </h3>
 
             <p>
-              The verified <CosmicSpan/> smart contract can be viewed on <a href={ contractAddress } target="_blank" rel="noreferrer"> 
+              The verified <CosmicSpan/> smart contract operates on the Ethereum blockchain can be viewed on <a href={ contractAddress } target="_blank" rel="noreferrer"> 
               <img className="etherscan" alt="etherscan logo" src="/images/etherscan-logo.svg" />
               </a>                     
+            </p>
+            <p>
+              It is a customised version of <a href="https://www.erc721a.org/" target="_blank" rel="noreferrer">Azuki's ERC-721A</a> which offers extremely high gas efficency, especially on multiple mints,
+              enabling the ability to batch mint 10 NFTs for the cost of around 3 individual mints.
             </p>
 
             <h3>
