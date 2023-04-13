@@ -15,10 +15,11 @@ ul.images {
   
   ul.images li {
     flex: 0 0 auto;
-    width: 232px;
+    width: 200px;
     height: 200px;
+    margin: 0 16px;
   }
-  
+
   ul.images li img {
     max-width: 100%;
     max-height: 100%;
