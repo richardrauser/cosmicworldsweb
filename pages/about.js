@@ -42,9 +42,13 @@ export default function About() {
             </h3>
 
             <p>
-              The verified <CosmicSpan/> smart contract can be viewed on <a href={ contractAddress } target="_blank" rel="noreferrer"> 
+              The verified <CosmicSpan/> smart contract operates on the Ethereum blockchain can be viewed on <a href={ contractAddress } target="_blank" rel="noreferrer"> 
               <img className="etherscan" alt="etherscan logo" src="/images/etherscan-logo.svg" />
               </a>                     
+            </p>
+            <p>
+              It is a customised version of <a href="https://www.erc721a.org/" target="_blank" rel="noreferrer">Azuki's ERC-721A</a> which offers extremely high gas efficency, especially on multiple mints,
+              enabling the ability to batch mint 10 NFTs for the cost of around 3 individual mints.
             </p>
 
             <h3>

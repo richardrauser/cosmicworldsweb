@@ -84,7 +84,7 @@ export default function CosmicArtboard() {
                     </div>
                     Mint 10 randoms
                 </Button><br/>
-                (huge gas savings)<br/>
+                (huge savings- 10 NFTs for the gas cost of 3 single mints)<br/>
             </div>
         </div> 
         )}
