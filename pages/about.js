@@ -27,14 +27,21 @@ export default function About() {
             <p>
               <CosmicSpan/> invites you into alternate dimensions composed of colorful alien planes and elevated psychedelic landscapes. Each cosmic world features up to 5 planets (or none at all!), with starscapes of various densities, mountains of that appear rugged or soft, and clouds of various types. Shimmering chemical pools lie at the mountains' base, inviting you for an interstellar skinnydip (though it would no doubt be your last!)
             </p>
-            <h1>100% On-chain</h1>
+            <h2>Artwork generation</h2>
+            <p>
+              <CosmicSpan/> uses the W3C SVG standard to create infinitely scalable vector graphics and makes liberal use of SVG filters to create
+              the rich textures for the various elements of each artwork. The SVG for each worlds is only arond 6kb!
+              In order to generate the world, a random seed is passed by the user's web browser to the Cosmic Worlds smart contract at mint time, from which all other numbers are derived in order to create a randomised world. No seed can be used more than once.
+            </p>
+            <h2>100% on-chain</h2>
             <p>
               <CosmicSpan/> is 100% on-chain NFT art rendered from the blockchain by Solidity code. The metadata is on-chain too! No backend, no IPFS, no Arweave, no cross-platform risk-- everything you need to create a Cosmic World is on the Ethereum blockchain.
               Each Cosmic World artwork is an SVG image that is displayable in any modern web browser or imaging software.
+              When an artwork is requested from the contract, the seed is used to generate the SVG code on the fly for the world that is returned by the contract.
             </p>
-            <h3>
+            <h2>
                 Smart contract
-            </h3>
+            </h2>
 
             <p>
               The verified <CosmicSpan/> smart contract operates on the Ethereum blockchain can be viewed on <a href={ contractAddress } target="_blank" rel="noreferrer"> 
