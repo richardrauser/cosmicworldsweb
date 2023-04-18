@@ -19,9 +19,13 @@ export default function TokenCard(props) {
   const link = "/token/" + tokenId;
 
   useEffect(() => {
+    
     const fetchMetadata = async () =>  { 
       try {
-        const { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness, cloudType } = await fetchTokenDetails(tokenId)
+        const response = await fetch("/api/metadata/" + tokenId);
+        let body = await response.json();
+        const { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness, cloudType } = body.tokenDetails;
+
         setLoading(false);
         setTokenSvgDataUri(svgDataUri);
         setTraitsText(`Seed: ${seed}, planets: ${planetCount}, stars: ${starDensity}, mountains: ${mountainRoughness}, water: ${waterChoppiness}, clouds: ${cloudType}`);

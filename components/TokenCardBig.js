@@ -25,7 +25,10 @@ export default function TokenCardBig(props) {
       }
       try {
 
-        const { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness, cloudType } = await fetchTokenDetails(tokenId);
+        const response = await fetch("/api/metadata/" + tokenId);
+        let body = await response.json();
+        const { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness, cloudType } = body.tokenDetails;
+
         setLoading(false);
         setSvg(svg);
         setTokenSvgDataUri(svgDataUri);
@@ -42,7 +45,6 @@ export default function TokenCardBig(props) {
       }
 
     fetchMetadata();
-
   });
   
   return (

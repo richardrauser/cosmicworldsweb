@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { fetchRecentNfts, fetchTotalSupply } from "utils/BlockchainAPI";
+import { fetchRecentTokenIds, fetchTotalSupply } from "utils/BlockchainAPI";
 import TokenList from "@components/TokenList";
 import Loading from "@components/Loading";
 import { handleError } from "utils/ErrorHandler";
@@ -13,17 +13,23 @@ export default function Recent() {
     var tokens = [];
 
     useEffect(() => {
-      console.log("USE EFFECT.");
 
       async function fetchRecentTokens() {
-
         try {
 
-          const tokens = await fetchRecentNfts();
-          const totalSupply = await fetchTotalSupply();
+          const response = await fetch("/api/recent");
+          let body = await response.json();
 
-          console.log("TOKEN IDS: " + tokens);
-          // TO
+          if (response.status != 200) {
+            console.log("RESPONSE STATUS CODE: " + response.status)    
+            console.log("Fetch recent error: " + body.error)
+            showErrorMessage("An error occurred fetching recent NFTs. " + body.error)    
+            return;
+          }
+
+          const totalSupply = await body.totalSupply;
+          const tokens = await body.recent;
+
           setMintCount(totalSupply);
           setTokenIds(tokens);
           setLoading(false)

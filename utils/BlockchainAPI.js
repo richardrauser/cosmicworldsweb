@@ -12,18 +12,19 @@ import { formatEther } from 'ethers';
 
 const AccountDetailsKey = "DS_ACCOUNT_DETAILS_KEY";
 
-async function getProvider(browserProvider) {
+async function getProvider() {
+  console.log("Returning default provider..");
 
-  if (browserProvider === false) {
+  console.log("Current network: " + CosmicWorldsCurrentNetworkName);
+
+    if (CosmicWorldsCurrentNetworkName == "localhost") {
     // this will be readonly as it is not connected to a browser's ethereum wallet.
     // TODO: specify URLS from infura, etc to get this working: https://docs.ethers.org/v6/getting-started/#starting-connecting
-    console.log("Returning default provider..");
-    // if (CosmicWorldsCurrentNetworkName == "localhost") {
-    //   return ethers.getDefaultProvider("http://127.0.0.1:8545/");
-    // } else {
+      return ethers.getDefaultProvider("http://127.0.0.1:8545/");
+    } 
+    // else {
     //   return new ethers.JsonRpcProvider(CosmicWorldsCurrentNetworkRpcUrl);
     // }
-  }
 
   if (!window.ethereum) {
     console.log('No Ethereum wallet found. Throwing error NO_ETH_WALLET');
@@ -281,7 +282,6 @@ export async function fetchTokenDetails(tokenId) {
     let waterChoppiness = metadataObject.attributes.filter(attribute => attribute.trait_type == "water")[0].value;
     let cloudType = metadataObject.attributes.filter(attribute => attribute.trait_type == "clouds")[0].value;
 
-    console.log("Returning.");
     return { svg, svgDataUri, seed, planetCount, starDensity, mountainRoughness, waterChoppiness, cloudType };
 }
 
@@ -293,11 +293,8 @@ export async function fetchTotalSupply() {
   return tokenCount;
 }
 
-export async function fetchRecentNfts() {
+export async function fetchRecentTokenIds() {
   const contract = await getReadOnlyContract();
-
-  // const ownerAddress = (await contract.owner()).toString().toLowerCase();
-  // console.log("Contract owner: " + ownerAddress);
 
   const contractAddress = await contract.getAddress();
   console.log("fetchRecentTokens: Contract address: " + contractAddress);
@@ -315,9 +312,6 @@ export async function fetchRecentNfts() {
     console.log(i);
     // const tokenId = await contract.tokenByIndex(i);
     tokens.push(i);
-
-    const metadataDataUri = await contract.tokenURI(i);
-    console.log("TOKEN URI: " + metadataDataUri);
   }
 
   return tokens;

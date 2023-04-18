@@ -1,18 +1,17 @@
-// import { CosmicWorldsContractAddress } from '../../utils/Constants';
-// import {Alchemy, Network} from '@alch/alchemy-web3';
+import { fetchRecentTokenIds, fetchTotalSupply } from '../../utils/BlockchainAPI';
 
-// export default async function handler(req, res) {
-//   const settings = {
-//     apiKey: process.env['ALCHEMY_API_KEY'],
-//     network: Network.ETH_MAINNET,
-//   };
-//   const alchemy = new Alchemy(settings);
+export default async function handler(req, res) {
 
-    // const supply = 12; allNfts.nfts.length;
-    // const recentNfts = await fetchRecentNfts();
+    try {
+        const totalSupply = await fetchTotalSupply();
+            const recentTokenIds = await fetchRecentTokenIds();
 
- 
-    // var recentNfts = (supply <= 5) ? allNfts.nfts : allNfts.nfts.slice(supply - 5);
-
-    // res.status(200).json({ totalSupply: supply, recent: recentNfts });
-// }
+        res.status(200).json({ 
+            totalSupply: Number(totalSupply),
+            recent: recentTokenIds 
+        });    
+    } catch (error) {
+        console.log("Error fetching total supply: " + error);
+        res.status(500).json({ error: error });
+    }
+}
