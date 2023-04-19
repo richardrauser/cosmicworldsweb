@@ -1,5 +1,5 @@
 
-import { ethers } from 'ethers';
+import { ethers, JsonRpcProvider } from 'ethers';
 import CosmicWorlds from '../contract/CosmicWorlds.json';
 import * as Errors from './ErrorMessages';
 import { CosmicWorldsContractAddress, CosmicWorldsCurrentNetworkID, CosmicWorldsCurrentNetworkName, CosmicWorldsCurrentNetworkCurrencySymbol, CosmicWorldsCurrentNetworkRpcUrl, CosmicWorldsCurrentNetworkExplorerUrl } from './Constants';
@@ -13,35 +13,54 @@ import { formatEther } from 'ethers';
 const AccountDetailsKey = "DS_ACCOUNT_DETAILS_KEY";
 
 async function getProvider() {
-  console.log("Returning default provider..");
+    console.log("Returning default provider..");
 
-  console.log("Current network: " + CosmicWorldsCurrentNetworkName);
+    console.log("Current network: " + CosmicWorldsCurrentNetworkName);
 
-    if (CosmicWorldsCurrentNetworkName == "localhost") {
-    // this will be readonly as it is not connected to a browser's ethereum wallet.
-    // TODO: specify URLS from infura, etc to get this working: https://docs.ethers.org/v6/getting-started/#starting-connecting
-      return ethers.getDefaultProvider("http://127.0.0.1:8545/");
-    } 
-    // else {
-    //   return new ethers.JsonRpcProvider(CosmicWorldsCurrentNetworkRpcUrl);
-    // }
+    let provider;
 
-  if (!window.ethereum) {
-    console.log('No Ethereum wallet found. Throwing error NO_ETH_WALLET');
-    throw Error(Errors.DS_NO_ETH_WALLET);
-  }  
-  
-  const provider = new ethers.BrowserProvider(window.ethereum);
+    if (typeof window === 'undefined') {
+        console.log("No window.. not in browser.");
+        // return new ethers.JsonRpcProvider("https://api.mycryptoapi.comx/eth");
+        if (CosmicWorldsCurrentNetworkName == "localhost") {
+            // console.log("Returning JsonRpcProvider..");
+            // this will be readonly as it is not connected to a browser's ethereum wallet.
+            // TODO: specify URLS from infura, etc to get this working: https://docs.ethers.org/v6/getting-started/#starting-connecting
+            // provider = new ethers.JsonRpcProvider();
+
+            console.log("returning default provider pointing locally");
+            // provider = ethers.getDefaultProvider("http://localhost:8545");
+            // provider = ethers.getDefaultProvider("http://127.0.0.1:8545/");
+            provider = new ethers.JsonRpcProvider(); // will point locally
+            console.log("got default provider.");
+
+        } else {
+            console.log("Returning Alchemy provider");
+            provider = new ethers.AlchemyProvider(CosmicWorldsCurrentNetworkID, process.env.ALCHEMY_API_KEY);
+        }
+    } else {
+        console.log("Have window.. in browser.");
+        if (!window.ethereum) {
+            console.log('No Ethereum wallet found. Throwing error NO_ETH_WALLET');
+            throw Error(Errors.DS_NO_ETH_WALLET);
+        }  
+        provider = new ethers.BrowserProvider(window.ethereum);
+  }
+
+  console.log("Got provider.. now checking network.");
+
+  // Check we are on expected network
   const network = await provider.getNetwork();
   
   console.log("Desired chain ID: " + CosmicWorldsCurrentNetworkID);
   console.log("Current chain ID: " + network.chainId);
   
-  if (!network.chainId == CosmicWorldsCurrentNetworkID) {
+  if (network.chainId != CosmicWorldsCurrentNetworkID) {
+    console.log("Wrong network!");
     throw Error(Errors.DS_WRONG_ETH_NETWORK);
   }
 
-  console.log("Returning browser provider..");
+  console.log("Returning provider..");
   return provider;
 }
 
@@ -80,7 +99,7 @@ export async function switchToCurrentNetwork() {
 
 export async function getReadOnlyContract() {
   console.log("Getting read-only contract..");
-  const provider = await getProvider(true);
+  const provider = await getProvider();
     
   console.log("CONTRACT ADDRESS: " + CosmicWorldsContractAddress);
   
@@ -287,6 +306,7 @@ export async function fetchTokenDetails(tokenId) {
 
 export async function fetchTotalSupply() {
   const contract = await getReadOnlyContract();
+  console.log("Got contract.");
   const tokenCount = await contract.totalSupply();
   console.log("Token count: " + tokenCount);
 

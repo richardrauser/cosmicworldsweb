@@ -4,6 +4,7 @@ import { fetchRecentTokenIds, fetchTotalSupply } from "utils/BlockchainAPI";
 import TokenList from "@components/TokenList";
 import Loading from "@components/Loading";
 import { handleError } from "utils/ErrorHandler";
+import { showErrorMessage } from "utils/UIUtils";
 
 export default function Recent() {  
     const [loading, setLoading] = useState(true);
@@ -22,8 +23,10 @@ export default function Recent() {
 
           if (response.status != 200) {
             console.log("RESPONSE STATUS CODE: " + response.status)    
-            console.log("Fetch recent error: " + body.error)
-            showErrorMessage("An error occurred fetching recent NFTs. " + body.error)    
+            console.log("Fetch recent error: " + JSON.stringify(body))
+            handleError(body.error)    
+            setMintCount("?");
+            setLoading(false);
             return;
           }
 
@@ -32,14 +35,14 @@ export default function Recent() {
 
           setMintCount(totalSupply);
           setTokenIds(tokens);
-          setLoading(false)
+          setLoading(false);
     
         } catch (error) {
           const errorMessage = "An error occurred fetching recent NFT data. " + error;
           console.log(errorMessage);
           handleError(error);
           setMintCount("?");
-          setLoading(false)
+          setLoading(false);
         }
 
       }

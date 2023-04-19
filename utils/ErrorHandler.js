@@ -27,8 +27,9 @@ export function handleError(err) {
     } else if (err.message === Errors.DS_NO_ETH_ACCOUNT) {
       showErrorMessage("You need to connect an account via your crypto wallet before you can do that.");      
     } else if (err.message === Errors.DS_WRONG_ETH_NETWORK) {
-      const errorMessage = "You're on the wrong network. Tap to switch to " + CosmicWorldsCurrentNetworkName + ", or read the 'How to' guide for more info.";
-      const onClose = switchToCurrentNetwork;
+      const errorMessage = "You're on the wrong network. Please switch to " + CosmicWorldsCurrentNetworkName + ".";
+      // const onClose = switchToCurrentNetwork;
+      const onClose = null;
       showErrorMessage(errorMessage, onClose);
     } else if (err.code != null) {
       showErrorMessage('An error occurred: (' + err.code + ') ' + err.message);
