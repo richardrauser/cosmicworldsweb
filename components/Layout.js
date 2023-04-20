@@ -19,8 +19,12 @@ export default function Layout(props) {
         const showAlert = mobile() && noWallet; 
         setMetaMaskAlert(showAlert);
     }, []);
-    
+
+    // doesn't work! Wants to open app store
+    // const cosmicLink = "https://metamask.app.link/dapp/cosmicworlds.xyz";
     const cosmicLink = "dapp://cosmicworlds.xyz";
+
+
 
     return (
         <div className="layout">
