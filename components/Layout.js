@@ -19,6 +19,8 @@ export default function Layout(props) {
         const showAlert = mobile() && noWallet; 
         setMetaMaskAlert(showAlert);
     }, []);
+    
+    const cosmicLink = "dapp://cosmicworlds.xyz";
 
     return (
         <div className="layout">
@@ -40,7 +42,7 @@ export default function Layout(props) {
 
             <main> 
                 { metaMaskAlert &&
-                    <a href="https://metamask.app.link/dapp/cosmicworlds.xyz" target="_blank" rel="noopener noreferrer">
+                    <a href={ cosmicLink } target="_blank" rel="noopener noreferrer">
                         <Alert>
                             <img className="metamask" alt="MetaMask logo" src="/images/MetaMaskFox.svg" />
 
