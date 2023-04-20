@@ -10,10 +10,15 @@ import styles from "@styles/TokenCard.module.css";
 
 export default function TokenCard(props) {
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [tokenSvgDataUri, setTokenSvgDataUri] = useState(null);
-  const [traitsText, setTraitsText] = useState(null);
-  
+  const [seed, setSeed] = useState(null);
+  const [planetCount, setPlanetCount] = useState(null);
+  const [starDensity, setStarDensity] = useState(null);
+  const [mountainRoughness, setMountainRoughness] = useState(null);
+  const [waterChoppiness, setWaterChoppiness] = useState(null);
+  const [cloudType, setCloudType] = useState(null);
+
   const tokenId = props.tokenid;
   console.log("rendering token card for token ID: " + tokenId);
   const link = "/token/" + tokenId;
@@ -21,6 +26,7 @@ export default function TokenCard(props) {
   useEffect(() => {
     
     const fetchMetadata = async () =>  { 
+      setLoading(true);
       try {
         const response = await fetch("/api/metadata/" + tokenId);
         let body = await response.json();
@@ -28,7 +34,12 @@ export default function TokenCard(props) {
 
         setLoading(false);
         setTokenSvgDataUri(svgDataUri);
-        setTraitsText(`Seed: ${seed}, planets: ${planetCount}, stars: ${starDensity}, mountains: ${mountainRoughness}, water: ${waterChoppiness}, clouds: ${cloudType}`);
+        setSeed(seed);
+        setPlanetCount(planetCount);
+        setStarDensity(starDensity);
+        setMountainRoughness(mountainRoughness);
+        setWaterChoppiness(waterChoppiness);
+        setCloudType(cloudType);
       } catch (err) {
           handleError(err);
       }
@@ -46,21 +57,25 @@ export default function TokenCard(props) {
           </a>
         </Card.Header>
         { loading ? (
-
             <Card.Body>
-              <div className={styles.cardArtwork}> 
+              <div className={styles.cardSpinner}> 
                 <Spinner animation="grow" />
               </div>   
             </Card.Body>
           ) : (
             <Card.Body>
-              <div className="cardArtwork" tokenId={tokenId}>
+              <div className={styles.cardArtwork}>
                 <a href= { link }>
                   <img className="tokenListImage" alt={ "Cosmic Worlds token " + tokenId } src={ tokenSvgDataUri } />
                 </a>
               </div>  
               <div className="cardTraits">
-                { traitsText }
+                Seed: { seed } <br />
+                Planets: { planetCount } <br /> 
+                Stars: { starDensity } <br />
+                Mountains: { mountainRoughness } <br />
+                Water: { waterChoppiness } <br />
+                Clouds: { cloudType } <br />
               </div>
             </Card.Body>
           )}
