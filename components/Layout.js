@@ -3,11 +3,22 @@ import { ToastContainer } from 'react-toastify'
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import 'react-toastify/dist/ReactToastify.css';
-import React from "react";
+import React, { useEffect } from "react";
 import Head from 'next/head';
+var mobile = require('is-mobile');
+import { Alert } from "react-bootstrap";
+import { useState } from "react";
 
 export default function Layout(props) {
     const { children } = props;
+
+    const [metaMaskAlert, setMetaMaskAlert] = useState(false);
+
+    useEffect(() => {
+        const noWallet = window.ethereum == null;
+        const showAlert = mobile() && noWallet; 
+        setMetaMaskAlert(showAlert);
+    }, []);
 
     return (
         <div className="layout">
@@ -27,7 +38,16 @@ export default function Layout(props) {
             <CosmicNavBar/>
             <ToastContainer />
 
-            <main>
+            <main> 
+                { metaMaskAlert &&
+                    <a href="https://metamask.app.link/dapp/cosmicworlds.xyz">
+                        <Alert>
+                            <img className="metamask" alt="MetaMask logo" src="/images/MetaMaskFox.svg" />
+
+                            Open in MetaMask
+                        </Alert>                    
+                    </a>
+                }
                 {React.cloneElement(children)}
             </main>
             <Footer />

@@ -148,3 +148,12 @@ code {
 .etherscan {
   height: 20px;
 }
+
+img.metamask {
+  height: 20px;
+  margin-right: 8px;
+}
+
+a:link {
+  text-decoration: none;
+}
