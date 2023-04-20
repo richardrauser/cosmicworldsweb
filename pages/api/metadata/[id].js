@@ -4,7 +4,7 @@ import fs from "fs";
 export default async function handler(req, res) {
     try {
         const tokenId = req.query.id;
-        const fileName = "public/metadata/" + tokenId + ".json";
+        const fileName = "metadata/" + tokenId + ".json";
 
         let details;
 
