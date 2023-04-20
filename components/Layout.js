@@ -49,7 +49,6 @@ export default function Layout(props) {
                     <a href={ cosmicLink } target="_blank" rel="noopener noreferrer">
                         <Alert>
                             <img className="metamask" alt="MetaMask logo" src="/images/MetaMaskFox.svg" />
-
                             Open in MetaMask
                         </Alert>                    
                     </a>
