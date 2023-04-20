@@ -40,7 +40,7 @@ export default function Layout(props) {
 
             <main> 
                 { metaMaskAlert &&
-                    <a href="https://metamask.app.link/dapp/cosmicworlds.xyz" target="_blank">
+                    <a href="https://metamask.app.link/dapp/cosmicworlds.xyz" target="_blank" rel="noopener noreferrer">
                         <Alert>
                             <img className="metamask" alt="MetaMask logo" src="/images/MetaMaskFox.svg" />
 
