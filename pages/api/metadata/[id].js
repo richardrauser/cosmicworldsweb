@@ -15,10 +15,10 @@ export default async function handler(req, res) {
         } else {
             console.log("File not found with name: " + fileName + " Reading from blockchain...");
             details = await fetchTokenDetails(tokenId);
+            console.log("Writing token details to file: " + fileName);
             fs.writeFileSync(fileName, JSON.stringify(details));
         }
-
-        console.log("Returning token details: " + details);
+        
         res.status(200).json({ 
             tokenDetails: details
         });    
