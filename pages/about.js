@@ -45,9 +45,8 @@ export default function About() {
 
             <p>
               The verified <CosmicSpan/> smart contract operates on the Ethereum blockchain can be viewed on <a href={ etherscanLink } target="_blank" rel="noreferrer"> 
-              <img className="etherscan" alt="etherscan logo" src="/images/etherscan-logo.svg" />. 
-              </a>                     
-              The contract address is: <a href={ etherscanLink } target="_blank" rel="noreferrer">{ CosmicWorldsContractAddress }</a>.
+              <img className="etherscan" alt="etherscan logo" src="/images/etherscan-logo.svg" /> 
+              </a>. The contract address is: <a href={ etherscanLink } target="_blank" rel="noreferrer">{ CosmicWorldsContractAddress }</a>.
             </p>
             <p>
               It is a customised version of <a href="https://www.erc721a.org/" target="_blank" rel="noreferrer">Azuki's ERC-721A</a> which offers extremely high gas efficency, especially on multiple mints,
