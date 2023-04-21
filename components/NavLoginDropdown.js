@@ -24,7 +24,7 @@ export default function NavLoginDropdown(props) {
   const [etherscanUrl, setEtherscanUrl] = React.useState("");
 
   const connectWallet = async () => {
-    // console.log("Attempting to connect wallet..");
+    console.log("Attempting to connect wallet..");
     // const metaMaskUnlocked = (await window.ethereum._metamask.isUnlocked());
     // console.log("Metamask unlocked? " + metaMaskUnlocked);
 
@@ -37,6 +37,7 @@ export default function NavLoginDropdown(props) {
         updateAccountDetails(accountDetails);    
       } catch (err) {
         console.log("ERROR: " + err.message);
+        // fail silenlty
         handleError(err);
       }
     // }
@@ -49,15 +50,15 @@ export default function NavLoginDropdown(props) {
     setAccountEthBalance("");
     setEtherscanUrl("");
 
-    const connected = await hasAccount();
-
-    if (!connected) {
-        console.log("Not connected..")
-        updateAccountDetails(null);
-        return;
-    }
-
     try {
+        const connected = await hasAccount();
+
+        if (!connected) {
+            console.log("Not connected..")
+            updateAccountDetails(null);
+            return;
+        }
+    
         const cachedDetails = fetchCachedAccountDetails();
         if (cachedDetails !== undefined && cachedDetails !== null) {
           console.log("Got address (" + cachedDetails.address + ") and balance (" + cachedDetails.displayBalance + ").");
@@ -114,24 +115,26 @@ export default function NavLoginDropdown(props) {
 
     useEffect(() => {
 
-        window.ethereum.on('accountsChanged', (accounts) => {
-            console.log("Accounts changed.");
-            clearCachedAccountDetails();
-            disconnectWallet();
+        if (window.etherum != null) {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                console.log("Accounts changed.");
+                clearCachedAccountDetails();
+                disconnectWallet();
+                // Is this causing multiple reloads?!
+                fetchDetails();
+            });
+            
             // Is this causing multiple reloads?!
-            fetchDetails();
-        });
-        
-        // Is this causing multiple reloads?!
-        window.ethereum.on('chainChanged', (chainId) => {
-            console.log("Chain changed.");
-            // Handle the new chain.
-            // Correctly handling chain changes can be complicated.
-            // We recommend reloading the page unless you have good reason not to.
-            clearCachedAccountDetails();
-            disconnectWallet();
-            window.location.reload();
-        });  
+            window.ethereum.on('chainChanged', (chainId) => {
+                console.log("Chain changed.");
+                // Handle the new chain.
+                // Correctly handling chain changes can be complicated.
+                // We recommend reloading the page unless you have good reason not to.
+                clearCachedAccountDetails();
+                disconnectWallet();
+                window.location.reload();
+            });      
+        }
     
         async function fetchData() {
             await fetchDetails();
