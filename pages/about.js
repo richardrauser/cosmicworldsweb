@@ -4,7 +4,7 @@ import styles from '@styles/About.module.css';
 
 export default function About() {
 
-  const contractAddress = CosmicWorldsCurrentNetworkExplorerUrl + "address/" + CosmicWorldsContractAddress;
+  const etherscanLink = CosmicWorldsCurrentNetworkExplorerUrl + "address/" + CosmicWorldsContractAddress;
 
     return (
         <div className="contentPanel">
@@ -44,9 +44,10 @@ export default function About() {
             </h2>
 
             <p>
-              The verified <CosmicSpan/> smart contract operates on the Ethereum blockchain can be viewed on <a href={ contractAddress } target="_blank" rel="noreferrer"> 
-              <img className="etherscan" alt="etherscan logo" src="/images/etherscan-logo.svg" />. The contract address is: 0xFc0d97b66F3A1D9B97d6414c7b3d9431714C7B98
+              The verified <CosmicSpan/> smart contract operates on the Ethereum blockchain can be viewed on <a href={ etherscanLink } target="_blank" rel="noreferrer"> 
+              <img className="etherscan" alt="etherscan logo" src="/images/etherscan-logo.svg" />. 
               </a>                     
+              The contract address is: <a href={ etherscanLink } target="_blank" rel="noreferrer">{ CosmicWorldsContractAddress }</a>.
             </p>
             <p>
               It is a customised version of <a href="https://www.erc721a.org/" target="_blank" rel="noreferrer">Azuki's ERC-721A</a> which offers extremely high gas efficency, especially on multiple mints,
