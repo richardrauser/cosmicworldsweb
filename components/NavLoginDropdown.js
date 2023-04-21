@@ -151,7 +151,7 @@ export default function NavLoginDropdown(props) {
     return (
         <div>
         { isLoading ? (
-            <Spinner animation="grow" variant="dark" />
+            <Spinner />
         ) : (
             <div> 
                 {!isWalletInstalled ? (

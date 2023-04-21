@@ -59,7 +59,7 @@ export default function TokenCard(props) {
         { loading ? (
             <Card.Body>
               <div className={styles.cardSpinner}> 
-                <Spinner animation="grow" />
+                <Spinner />
               </div>   
             </Card.Body>
           ) : (
