@@ -37,7 +37,6 @@ export default function NavLoginDropdown(props) {
         updateAccountDetails(accountDetails);    
       } catch (err) {
         console.log("ERROR: " + err.message);
-        // fail silenlty
         handleError(err);
       }
     // }
@@ -72,7 +71,7 @@ export default function NavLoginDropdown(props) {
       
       } catch (error) {
         console.log("Error occurred fetching account details. " + error);
-
+        setIsLoading(false);
         handleError(error);
         updateAccountDetails(null);
       };

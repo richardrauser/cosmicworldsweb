@@ -125,13 +125,16 @@ export async function isAccountConnected() {
 }
 
 export async function hasAccount() {
+  console.log("Checking if user has account..");
   if (!window.ethereum) {
     console.log('No Ethereum wallet found.');
     return false;
   }  
 
   const provider = await getProvider();
-  return provider.hasSigner();
+  const hasAccount = provider.hasSigner();
+  console.log("Has account: " + hasAccount);
+  return hasAccount;
 }
 
 export async function fetchAccount() {
