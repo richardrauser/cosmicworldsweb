@@ -8,6 +8,7 @@ import Head from 'next/head';
 var mobile = require('is-mobile');
 import { Alert } from "react-bootstrap";
 import { useState } from "react";
+import { Analytics } from '@vercel/analytics/react';
 
 export default function Layout(props) {
     const { children } = props;
@@ -39,6 +40,7 @@ export default function Layout(props) {
                 <meta property="og:image" content="https://cosmicworlds.xyz/images/cosmicWorld.png" />
                 <meta property="og:description" content="Description Here" />
             </Head>
+            <Analytics />
             <CosmicNavBar/>
             <ToastContainer />
 
