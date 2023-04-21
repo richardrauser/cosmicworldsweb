@@ -265,7 +265,7 @@ export async function mintCosmicWorld(randomSeed) {
     const contract = await getReadWriteContract(); 
     
     const overrides = {
-      gasLimit: 180000
+      gasLimit: 140000
     };
     
     console.log("!!!!!");
