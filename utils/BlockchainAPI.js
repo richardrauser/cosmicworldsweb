@@ -124,6 +124,11 @@ export async function isAccountConnected() {
   return true;
 }
 
+export async function hasAccount() {
+  const provider = await getProvider();
+  return provider.hasSigner();
+}
+
 export async function fetchAccount() {
 
   console.log("Fetching account..");

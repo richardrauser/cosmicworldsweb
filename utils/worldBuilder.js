@@ -24,7 +24,7 @@ function build(randomSeed) {
     shapes += " " + getClouds(randomSeed);
 
     const svgString = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1e3 1e3' style='background-image:${bgGradient}'>${defs}<g clip-path='url(#mcp)'>${shapes}</g></svg>`;
-    console.log(`SVG: ${svgString}`);
+    // console.log(`SVG: ${svgString}`);
     const encodedSvg = encodeURIComponent(svgString);
 
     return `data:image/svg+xml,${encodedSvg}`;
@@ -116,7 +116,7 @@ x
             </feMerge>
         </filter>`;
 
-        console.log("PLANET FILTER: " + filter);
+        // console.log("PLANET FILTER: " + filter);
           
         planets += gradient;
         planets += filter;
@@ -134,7 +134,7 @@ function getMountains(randomSeed, tintColour) {
     polygonPoints = polygonPoints.join(" ");
     polygonPoints += " 1e3,1e3 -1,1e3";
 
-    console.log("POINTS: \n " + polygonPoints);
+    // console.log("POINTS: \n " + polygonPoints);
 
     const mountainColour = randomColour(randomSeed + 3, tintColour);
     const midColourPoint = randomInt(randomSeed, 20, 80);
@@ -200,7 +200,7 @@ function stopOffset(offset, color) {
 function buildLine(randomSeed, width, pointCount) {
     const interval = width / (pointCount - 1);
 
-    console.log("INTERVAL: " + interval);
+    // console.log("INTERVAL: " + interval);
 
     var points = [];
     var currentY = 500; // starting currentY is y offset
@@ -219,10 +219,10 @@ function buildLine(randomSeed, width, pointCount) {
         }
 
         const point = [x, currentY];
-        console.log("POINT: " + point);
+        // console.log("POINT: " + point);
         points.push(point);
     }
-    console.log("POINTS: " + points);
+    // console.log("POINTS: " + points);
     return points;
 }
 
@@ -291,7 +291,7 @@ function getWater(randomSeed) {
         xPos += segmentWidth;
         up = !up;
     }
-    console.log("SHORELINE CURVES: " + shorelineCurves);
+    // console.log("SHORELINE CURVES: " + shorelineCurves);
 
     const slope = randomInt(randomSeed, 1, 10);
     const baseFrequencyX = randomInt(randomSeed * 2, 2, 9);
@@ -338,9 +338,9 @@ function randomInt(randomSeed, min, max) {
         return min;
     }
 
-    console.log(`RANDOM SEED: ${randomSeed}`);
-    console.log(`MIN: ${min}`);
-    console.log(`MAX: ${max}`);
+    // console.log(`RANDOM SEED: ${randomSeed}`);
+    // console.log(`MIN: ${min}`);
+    // console.log(`MAX: ${max}`);
     
     const bigSeed = BigInt(randomSeed);
 
@@ -350,23 +350,23 @@ function randomInt(randomSeed, min, max) {
     const abiCodedSeed = abiCoder.encode(["uint"], [bigSeed]);
     const hash = keccak256(abiCodedSeed);
 
-    console.log("HASH: " + hash);
+    // console.log("HASH: " + hash);
     // const seed = parseInt(hash, 16);
     // const seed = BigInt("0x102030405060708090a0b0c0d0e0f000");
     const seed = BigInt(hash);
 
-    console.log("SEED: " + seed);
+    // console.log("SEED: " + seed);
     
     const value = seed % BigInt(max - min + 1) + BigInt(min);
 
-    console.log("VALUE: " + value);
+    // console.log("VALUE: " + value);
 
     
     // const value = seed.mod(BigNumber.from(max - min)).add(BigNumber.from(min));
     // //   var value =  Math.floor(Math.random() * (max - min + 1) + min);
 
     const number = Number(value);
-    console.log(`NUMBER: ${number}`)
+    // console.log(`NUMBER: ${number}`)
     return number;
 
     // return 0;
@@ -375,7 +375,7 @@ function randomInt(randomSeed, min, max) {
 
 function randomColour(randomSeed, tintColour) {
     
-    console.log("RANDOM COLOUR SEED: " + randomSeed);
+    // console.log("RANDOM COLOUR SEED: " + randomSeed);
 
     const redRandom = randomInt(randomSeed, 0, 255);
     // const greenRandom = randomInt(randomSeed + 1, 0, 255);
@@ -386,7 +386,7 @@ function randomColour(randomSeed, tintColour) {
     // if (tintColour == null) {
         const finalColour = "rgb(" + redRandom + ", " + greenRandom + ", " + blueRandom + ")";
 
-        console.log("FINAL COLOUR: " + finalColour);
+        // console.log("FINAL COLOUR: " + finalColour);
 
         return finalColour;
     // }

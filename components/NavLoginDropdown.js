@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Spinner from 'react-bootstrap/Spinner';
@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Image from 'next/image';
 import { Wallet2 } from 'react-bootstrap-icons';
 
-import { fetchAccountDetails, fetchCachedAccountDetails, clearCachedAccountDetails } from '../utils/BlockchainAPI';
+import { fetchAccountDetails, fetchCachedAccountDetails, clearCachedAccountDetails, hasAccount } from '../utils/BlockchainAPI';
 import '../utils/UIUtils';
 import { handleError } from '../utils/ErrorHandler';
 import * as Errors from '../utils/ErrorMessages';
@@ -14,181 +14,172 @@ import { CosmicWorldsCurrentNetworkExplorerUrl } from '../utils/Constants';
 import ethereum from '../images/ethereum.svg';
 import styles from '@styles/NavLoginDropdown.module.css';
 
-class NavLoginDropdown extends React.Component {
+export default function NavLoginDropdown(props) {
 
-  constructor(props) {
-    super(props);
-    
-    this.state = {
-      isLoading: false,
-      isWalletConnected: false
-    };        
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [isWalletConnected, setIsWalletConnected] = React.useState(false);
+  const [isWalletInstalled, setIsWalletInstalled] = React.useState(false);
+  const [accountEthAddress, setAccountEthAddress] = React.useState("");
+  const [accountEthBalance, setAccountEthBalance] = React.useState("");
+  const [etherscanUrl, setEtherscanUrl] = React.useState("");
 
-    this.connectWallet = this.connectWallet.bind(this);
-    this.disconnectWallet = this.disconnectWallet.bind(this);
-    this.refreshWallet = this.refreshWallet.bind(this);
-    this.fetchAccountDetails = this.fetchAccountDetails.bind(this);
-  }
-  
-    componentDidMount() {
-      if (typeof window.ethereum === 'undefined') {
-        this.setState({
-          isLoading: false,
-          isWalletConnected: false,
-          isWalletInstalled: (window.ethereum === undefined) ? false : true
-        });
-        return;
-      }
+  const connectWallet = async () => {
+    // console.log("Attempting to connect wallet..");
+    // const metaMaskUnlocked = (await window.ethereum._metamask.isUnlocked());
+    // console.log("Metamask unlocked? " + metaMaskUnlocked);
 
-      window.ethereum.on('accountsChanged', (accounts) => {
-        clearCachedAccountDetails();
-        this.disconnectWallet();
-        // Is this causing multiple reloads?!
-        // this.fetchAccountDetails();
-      });
-      
-      // Is this causing multiple reloads?!
-      // window.ethereum.on('chainChanged', (chainId) => {
-      //   // Handle the new chain.
-      //   // Correctly handling chain changes can be complicated.
-      //   // We recommend reloading the page unless you have good reason not to.
-      //   // window.location.reload();
-      //   this.disconnectWallet();
-      // });
-
-
-      const cachedDetails = fetchCachedAccountDetails();
-
-      if (cachedDetails !== undefined && cachedDetails !== null) {
-        console.log("Got address (" + cachedDetails.address + ") and balance (" + cachedDetails.displayBalance + ").");
-        this.updateAccountDetails(cachedDetails);
-      } else {
-        this.setState({
-          isLoading: false,
-          isWalletConnected: false
-        });        
-      }
-    }
-
-    // componentWillUnmount() {
-    //   // window.ethereum.removeListener('accountsChanged', func);
-    //   // window.ethereum.removeListener('chainChanged', func);
-    // }
-
-    
-    async connectWallet() {
-      // console.log("Attempting to connect wallet..");
-      // const metaMaskUnlocked = (await window.ethereum._metamask.isUnlocked());
-      // console.log("Metamask unlocked? " + metaMaskUnlocked);
-
-      // if (window.ethereum.isMetaMask && !metaMaskUnlocked) {
-      //   console.log("Metamask lockiepooed.");
-      //   showErrorMessage("Please unlock MetaMask.");
-      // } else {
-        // try {
-          this.fetchAccountDetails();
-        // } catch (err) {
-        //   console.log("ERROR: " + err.message);
-
-        //   handleError(err);
-        // }
-      // }
-    }
-
-    disconnectWallet() {
-      console.log("Disconnecting wallet..");
-
-      clearCachedAccountDetails();
-
-      this.setState({
-        isLoading: false,
-        isWalletConnected: false,
-        accountEthAddress: "",
-        accountEthBalance: "",
-        etherscanUrl: ""  
-      });
-    }
-
-    refreshWallet() {
-      this.fetchAccountDetails();
-    }
-
-    async fetchAccountDetails() {
-
-      this.setState({
-        isLoading: true,
-        isWalletInstalled: true,
-        isWalletConnected: false,
-        accountEthAddress: "",
-        accountEthBalance: "",
-        etherscanUrl: ""  
-      });
-
+    // if (window.ethereum.isMetaMask && !metaMaskUnlocked) {
+    //   console.log("Metamask lockiepooed.");
+    //   showErrorMessage("Please unlock MetaMask.");
+    // } else {
       try {
         const accountDetails = await fetchAccountDetails();
-
-        this.updateAccountDetails(accountDetails);
-      
+        updateAccountDetails(accountDetails);    
       } catch (err) {
-        console.log("Error occurred fetching account details.");
-
+        console.log("ERROR: " + err.message);
         handleError(err);
+      }
+    // }
+  }
 
-        this.setState({
-          isLoading: false,
-          isWalletInstalled: (err.message === Errors.DS_NO_ETH_WALLET) ? false : true,
-          isWalletConnected: false
-        });
+  const fetchDetails = async () => {
+
+    setIsLoading(true);
+    setAccountEthAddress("");
+    setAccountEthBalance("");
+    setEtherscanUrl("");
+
+    const connected = await hasAccount();
+
+    if (!connected) {
+        console.log("Not connected..")
+        updateAccountDetails(null);
+        return;
+    }
+
+    try {
+        const cachedDetails = fetchCachedAccountDetails();
+        if (cachedDetails !== undefined && cachedDetails !== null) {
+          console.log("Got address (" + cachedDetails.address + ") and balance (" + cachedDetails.displayBalance + ").");
+          updateAccountDetails(cachedDetails);
+          return;
+        }
+
+        
+        const accountDetails = await fetchAccountDetails();
+        updateAccountDetails(accountDetails);
+      
+      } catch (error) {
+        console.log("Error occurred fetching account details. " + error);
+
+        handleError(error);
+        updateAccountDetails(null);
       };
     }
 
-    updateAccountDetails(accountDetails) {
-      this.setState({
-        isLoading: false,
-        isWalletConnected: true,
-        accountEthAddress: accountDetails.shortenedAddress,
-        accountEthBalance: accountDetails.displayBalance.toString(),
-        etherscanUrl: CosmicWorldsCurrentNetworkExplorerUrl.CurrentNetworkExplorerUrl + "address/" + accountDetails.fullAddress,
-      });
-
-      console.log('Address: ', accountDetails.address);
-      console.log('Balance: ', accountDetails.displayBalance);
+    const disconnectWallet = () => {
+        console.log("Disconnecting wallet..");
+        clearCachedAccountDetails();
+        updateAccountDetails(null);
     }
-  
-    render() {
-      if (this.state.isLoading) {
-        return (
-          <Spinner animation="grow" variant="dark" />
-          );
-      } else if (this.state.isWalletInstalled !== undefined && !this.state.isWalletInstalled) {
-        return (
-            <Button target="_blank" href="https://metamask.io">Install MetaMask</Button>
-        );
-      } else if (!this.state.isWalletConnected) {
-        return (
-        <Button onClick={ this.connectWallet }>Connect wallet</Button>
-        );
-      } else {
-        return (
-          <NavDropdown title="Your Details" id="basic-nav-dropdown">
-            <NavDropdown.Item href={this.state.etherscanUrl} target="_blank" className={styles.item}>
-            <div className={styles.navDropdownIcon}>
-              <Wallet2 /> { this.state.accountEthAddress }              
+
+    const refreshWallet = () => {
+        fetchDetails();
+    }
+
+    const updateAccountDetails = (accountDetails) => {
+        console.log("Updating account details..");
+        const hasWallet = window.ethereum !== undefined && window.ethereum !== null;
+        setIsLoading(false);
+        if (accountDetails != null && hasWallet) {
+            console.log("Has details and wallet.");
+            setIsWalletInstalled(true);
+            setIsWalletConnected(true);
+            setAccountEthAddress(accountDetails.shortenedAddress);
+            setAccountEthBalance(accountDetails.displayBalance.toString());
+            setEtherscanUrl(CosmicWorldsCurrentNetworkExplorerUrl.CurrentNetworkExplorerUrl + "address/" + accountDetails.fullAddress);
+
+            console.log('Address: ', accountDetails.address);
+            console.log('Balance: ', accountDetails.displayBalance);
+        } else {
+            console.log("No details or wallet.");
+            setIsWalletInstalled(hasWallet);
+            setIsWalletConnected(false);
+            setAccountEthAddress("");
+            setAccountEthBalance("");
+            setEtherscanUrl("");
+        }
+    }
+
+
+    useEffect(() => {
+
+        window.ethereum.on('accountsChanged', (accounts) => {
+            console.log("Accounts changed.");
+            clearCachedAccountDetails();
+            disconnectWallet();
+            // Is this causing multiple reloads?!
+            fetchDetails();
+        });
+        
+        // Is this causing multiple reloads?!
+        window.ethereum.on('chainChanged', (chainId) => {
+            console.log("Chain changed.");
+            // Handle the new chain.
+            // Correctly handling chain changes can be complicated.
+            // We recommend reloading the page unless you have good reason not to.
+            clearCachedAccountDetails();
+            disconnectWallet();
+            window.location.reload();
+        });  
+    
+        async function fetchData() {
+            await fetchDetails();
+        }
+        fetchData();
+    }, []);
+
+
+    // if (typeof window.ethereum === 'undefined') { 
+    //     setIsLoading(false);
+    //     setIsWalletInstalled(false);
+    // }
+
+
+    return (
+        <div>
+        { isLoading ? (
+            <Spinner animation="grow" variant="dark" />
+        ) : (
+            <div> 
+                {!isWalletInstalled ? (
+                    <Button target="_blank" href="https://metamask.io">Install MetaMask</Button>
+                    ) : (
+                        <div>
+                            {!isWalletConnected ? ( 
+                                <Button onClick={ connectWallet }>Connect wallet</Button>
+                            ) : ( 
+                                <NavDropdown title="Your Details" id="basic-nav-dropdown">
+                                <NavDropdown.Item href={etherscanUrl} target="_blank" className={styles.item}>
+                                <div className={styles.navDropdownIcon}>
+                                    <Wallet2 /> { accountEthAddress }              
+                                </div>
+                                </NavDropdown.Item>
+                                <NavDropdown.Item href={etherscanUrl} target="_blank" className={styles.item}>
+                                    <div className={styles.navDropdownIcon}>
+                                    <Image src={ethereum} alt="ethereum logo" /> { accountEthBalance }
+                                    </div>
+                                </NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item onClick={refreshWallet}>Refresh</NavDropdown.Item>
+                                <NavDropdown.Item onClick={disconnectWallet}>Disconnect</NavDropdown.Item>
+                                </NavDropdown>
+                            )}
+                        </div>
+                    )
+                }
             </div>
-            </NavDropdown.Item>
-            <NavDropdown.Item href={this.state.etherscanUrl} target="_blank" className={styles.item}>
-              <div className={styles.navDropdownIcon}>
-                <Image src={ethereum} alt="ethereum logo" /> { this.state.accountEthBalance }
-              </div>
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item onClick={this.refreshWallet}>Refresh</NavDropdown.Item>
-            <NavDropdown.Item onClick={this.disconnectWallet}>Disconnect</NavDropdown.Item>
-          </NavDropdown>
-        );
-      }
-    }
-  
+        )}
+        </div>
+    );   
   }
-
-  export default NavLoginDropdown;
