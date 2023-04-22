@@ -21,3 +21,8 @@
     margin: auto;
     max-height: 16px;
 }
+
+.spinnerContainer {
+    width: 100%;
+    text-align: center;
+}

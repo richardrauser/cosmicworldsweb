@@ -72,7 +72,10 @@ export default function NavLoginDropdown(props) {
       } catch (error) {
         console.log("Error occurred fetching account details. " + error);
         setIsLoading(false);
-        handleError(error);
+        // only display error if wallet is connected
+        if (isWalletConnected == true) {
+            handleError(error);
+        }
         updateAccountDetails(null);
       };
     }
@@ -131,7 +134,9 @@ export default function NavLoginDropdown(props) {
                 // We recommend reloading the page unless you have good reason not to.
                 clearCachedAccountDetails();
                 disconnectWallet();
-                window.location.reload();
+
+                // Is this causing multiple reloads?!
+                // window.location.reload();
             });      
         }
     
@@ -151,7 +156,9 @@ export default function NavLoginDropdown(props) {
     return (
         <div>
         { isLoading ? (
-            <Spinner />
+            <div className={styles.spinnerContainer}>
+                {/* <Spinner variant='dark' /> */}
+            </div>
         ) : (
             <div> 
                 {!isWalletInstalled ? (
