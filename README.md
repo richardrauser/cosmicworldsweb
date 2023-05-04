@@ -1,5 +1,5 @@
 # Cosmic Worlds Web
-Cmosic Worlds Web is a [Next.js](https://nextjs.org/) v12 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and set up to be instantly deployed.
+Cosmic Worlds Web is a [Next.js](https://nextjs.org/) v12 project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and set up to be instantly deployed. It is the web front-end to the Cosmic Worlds generative NFT art project that can be found at https://cosmicworlds.xyz
 
 ## Table of Contents:
 
