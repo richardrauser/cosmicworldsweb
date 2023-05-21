@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 export default function OpenSeaButton(props) {
 
-    const openSeaLink = "https://opensea.io/assets/" + CosmicWorldsContractAddress + "/" + props.tokenid;
+    const openSeaLink = "https://opensea.io/assets/ethereum/" + CosmicWorldsContractAddress + "/" + props.tokenid;
 
     return(
         <Button className="cardButton" href={openSeaLink}  target ="_blank" rel="noreferrer">
