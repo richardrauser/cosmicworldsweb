@@ -32,7 +32,7 @@ export default function TokenCardBig(props) {
         setLoading(false);
         setSvg(svg);
         setTokenSvgDataUri(svgDataUri);
-        setTraitsText(`Seed: ${seed}, planet count: ${planetCount}, stars: ${starDensity}, mountains: ${mountainRoughness}, water: ${waterChoppiness}, clounds: ${cloudType}`);
+        setTraitsText(`Seed: ${seed}, planet count: ${planetCount}, stars: ${starDensity}, mountains: ${mountainRoughness}, water: ${waterChoppiness}, clouds: ${cloudType}`);
 
         } catch (error) {
           console.log("Error occurred fetching token metadata: ", error);
