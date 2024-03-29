@@ -316,6 +316,8 @@ export async function fetchTokenDetails(tokenId) {
   const metadataDataUri = await contract.tokenURI(tokenId);
   var metadataJson = "";
 
+  console.log("METADATA URI: " + metadataDataUri);
+
   if (metadataDataUri.startsWith("data:text/plain,")) {
     metadataJson = metadataDataUri.replace("data:text/plain,", "");
   } else if (metadataDataUri.startsWith("data:application/json,")) {
