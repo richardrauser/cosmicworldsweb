@@ -87,33 +87,43 @@ function legacyWalletList() {
 }
 
 function legacyWalletName(provider) {
-  if (provider.isMetaMask) {
-    return "MetaMask";
+  if (provider.isRabby) {
+    return "Rabby";
+  }
+  if (provider.isPhantom) {
+    return "Phantom";
   }
   if (provider.isCoinbaseWallet) {
     return "Coinbase Wallet";
   }
-  if (provider.isRabby) {
-    return "Rabby";
+  if (provider.isBraveWallet) {
+    return "Brave Wallet";
+  }
+  if (provider.isTrust || provider.isTrustWallet) {
+    return "Trust Wallet";
+  }
+  // Checked last: wallets that wrap another provider often keep isMetaMask
+  // set for compatibility, so a more specific flag is the better signal.
+  if (provider.isMetaMask) {
+    return "MetaMask";
   }
   return "Injected wallet";
 }
 
 async function candidateWallets() {
-  const candidates = await announcedWalletList();
+  const announced = await announcedWalletList();
 
-  for (const candidate of legacyWalletList()) {
-    // Wallets that announced themselves via EIP-6963 also inject into
-    // window.ethereum, so don't consider the same provider twice.
-    const alreadyKnown = candidates.some(
-      (known) => known.provider === candidate.provider
-    );
-    if (!alreadyKnown) {
-      candidates.push(candidate);
-    }
+  // EIP-6963 is authoritative whenever any wallet answers it. Whatever holds
+  // window.ethereum is then either one of these wallets or a multiplexer
+  // proxying to one, so listing it as well just duplicates an entry - and it
+  // can't be deduplicated by object identity, because a proxy is a different
+  // object that still reports the wallet's own flags (isMetaMask and friends).
+  if (announced.length > 0) {
+    return announced;
   }
 
-  return candidates;
+  // No announcements, so fall back to whatever is injected.
+  return legacyWalletList();
 }
 
 // The chain a wallet is currently on, or null if it isn't an Ethereum
