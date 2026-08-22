@@ -7,10 +7,12 @@ import {
   CosmicWorldsCurrentNetworkName,
   CosmicWorldsCurrentNetworkCurrencySymbol,
   CosmicWorldsCurrentNetworkRpcUrl,
+  CosmicWorldsCurrentNetworkAlchemyHost,
   CosmicWorldsCurrentNetworkExplorerUrl,
 } from "./Constants";
 import { showInfoMessage } from "./UIUtils";
 import { formatEther } from "ethers";
+import { getWalletProvider, hasInjectedWallet } from "./WalletProvider";
 
 const AccountDetailsKey = "DS_ACCOUNT_DETAILS_KEY";
 
@@ -37,18 +39,24 @@ async function getProvider() {
       console.log("got default provider.");
     } else {
       console.log("Returning Alchemy provider");
-      provider = new ethers.AlchemyProvider(
-        CosmicWorldsCurrentNetworkID,
-        process.env.ALCHEMY_API_KEY
+      // Not ethers' AlchemyProvider: on this version it still points mainnet
+      // at the retired eth-mainnet.alchemyapi.io host, which no longer
+      // resolves (getaddrinfo ENOTFOUND). Build the current URL instead.
+      const apiKey = process.env.ALCHEMY_API_KEY;
+      if (!apiKey) {
+        throw Error(Errors.DS_NO_RPC_API_KEY);
+      }
+      provider = new ethers.JsonRpcProvider(
+        "https://" + CosmicWorldsCurrentNetworkAlchemyHost + "/v2/" + apiKey,
+        CosmicWorldsCurrentNetworkID
       );
     }
   } else {
     console.log("Have window.. in browser.");
-    if (!window.ethereum) {
-      console.log("No Ethereum wallet found. Throwing error NO_ETH_WALLET");
-      throw Error(Errors.DS_NO_ETH_WALLET);
-    }
-    provider = new ethers.BrowserProvider(window.ethereum);
+    // Picks a wallet that can actually speak Ethereum, rather than whichever
+    // extension happened to claim window.ethereum.
+    const wallet = await getWalletProvider();
+    provider = new ethers.BrowserProvider(wallet);
   }
 
   console.log("Got provider.. now checking network.");
@@ -69,11 +77,15 @@ async function getProvider() {
 }
 
 export async function switchToCurrentNetwork() {
-  // will attempt to add current network, behaviour is to switch if already present in MetaMask
+  // will attempt to switch to the current network, adding it to the wallet
+  // first if it isn't known there yet.
   console.log("Switching to " + CosmicWorldsCurrentNetworkName + "...");
 
-  const provider = new ethers.BrowserProvider(window.ethereum);
+  const wallet = await getWalletProvider();
+  const provider = new ethers.BrowserProvider(wallet);
   const network = await provider.getNetwork();
+
+  const chainId = "0x" + CosmicWorldsCurrentNetworkID.toString(16);
 
   if (network.chainId == CosmicWorldsCurrentNetworkID) {
     showInfoMessage(
@@ -84,9 +96,22 @@ export async function switchToCurrentNetwork() {
     return;
   }
 
+  try {
+    await wallet.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId }],
+    });
+    return;
+  } catch (error) {
+    // 4902: the wallet doesn't know this chain yet, so add it below.
+    if (error.code !== 4902) {
+      throw error;
+    }
+  }
+
   const data = [
     {
-      chainId: "0x" + CosmicWorldsCurrentNetworkID.toString(16),
+      chainId,
       chainName: CosmicWorldsCurrentNetworkName,
       nativeCurrency: {
         name: CosmicWorldsCurrentNetworkCurrencySymbol,
@@ -100,7 +125,7 @@ export async function switchToCurrentNetwork() {
 
   console.log(data);
 
-  const tx = await window.ethereum.request({
+  const tx = await wallet.request({
     method: "wallet_addEthereumChain",
     params: data,
   });
@@ -135,24 +160,18 @@ export async function getReadWriteContract() {
 
 export async function isAccountConnected() {
   const provider = await getProvider();
-  const [account] = await provider.listAccounts();
-
-  console.log("isAccountConnected, account: " + account);
-  if (account === undefined || account === null) {
-    return false;
-  }
-  return true;
+  return await provider.hasSigner();
 }
 
 export async function hasAccount() {
   console.log("Checking if user has account..");
-  if (!window.ethereum) {
+  if (!(await hasInjectedWallet())) {
     console.log("No Ethereum wallet found.");
     return false;
   }
 
   const provider = await getProvider();
-  const hasAccount = provider.hasSigner();
+  const hasAccount = await provider.hasSigner();
   console.log("Has account: " + hasAccount);
   return hasAccount;
 }
@@ -160,14 +179,13 @@ export async function hasAccount() {
 export async function fetchAccount() {
   console.log("Fetching account..");
   const provider = await getProvider();
-  // var [account] = await provider.listAccounts();
-  var account = await provider.account;
+
+  // Already-authorized accounts first, so we only prompt when we have to.
+  var [account] = await provider.send("eth_accounts", []);
 
   console.log("GOT ACCOUNT: " + account);
   if (account === undefined || account === null) {
-    [account] = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
+    [account] = await provider.send("eth_requestAccounts", []);
 
     console.log("ACCOUNT FROM ETH_REQUESTACCOUNTS: " + account);
   }

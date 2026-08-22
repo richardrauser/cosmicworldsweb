@@ -15,6 +15,7 @@ const CosmicWorldsCurrentNetworkIDKey = "CosmicWorldsCurrentNetworkIDKey";
 const CosmicWorldsCurrentNetworkNameKey = "CosmicWorldsCurrentNetworkNameKey";
 const CosmicWorldsCurrentNetworkCurrencySymbolKey = "CosmicWorldsCurrentNetworkCurrencySymbolKey";
 const CosmicWorldsCurrentNetworkRpcUrlKey = "CosmicWorldsCurrentNetworkRpcUrlKey";
+const CosmicWorldsCurrentNetworkAlchemyHostKey = "CosmicWorldsCurrentNetworkAlchemyHostKey";
 const CosmicWorldsCurrentNetworkExplorerUrlKey = "CosmicWorldsCurrentNetworkExplorerUrlKey";
 const CosmicWorldsContractAddressKey = "CosmicWorldsContractAddressKey";
 
@@ -23,6 +24,7 @@ const CosmicWorldsCurrentNetworkID = networkConfig[CosmicWorldsCurrentNetworkIDK
 const CosmicWorldsCurrentNetworkName = networkConfig[CosmicWorldsCurrentNetworkNameKey];
 const CosmicWorldsCurrentNetworkCurrencySymbol = networkConfig[CosmicWorldsCurrentNetworkCurrencySymbolKey];
 const CosmicWorldsCurrentNetworkRpcUrl = networkConfig[CosmicWorldsCurrentNetworkRpcUrlKey];
+const CosmicWorldsCurrentNetworkAlchemyHost = networkConfig[CosmicWorldsCurrentNetworkAlchemyHostKey];
 const CosmicWorldsCurrentNetworkExplorerUrl = networkConfig[CosmicWorldsCurrentNetworkExplorerUrlKey];
 const CosmicWorldsContractAddress = networkConfig[CosmicWorldsContractAddressKey];
 
@@ -33,6 +35,7 @@ function networkConfigFor(currentNetwork) {
             CosmicWorldsCurrentNetworkNameKey: "localhost",
             CosmicWorldsCurrentNetworkCurrencySymbolKey: "ETH",
             CosmicWorldsCurrentNetworkRpcUrlKey: "http://localhost:8545",
+            CosmicWorldsCurrentNetworkAlchemyHostKey: null,
             CosmicWorldsCurrentNetworkExplorerUrlKey: 'https://www.superbad.com/',
             CosmicWorldsContractAddressKey: '0x5FbDB2315678afecb367f032d93F642f64180aa3'
         }    
@@ -43,6 +46,7 @@ function networkConfigFor(currentNetwork) {
             CosmicWorldsCurrentNetworkCurrencySymbolKey: "GoerliETH",
             // TODO: RPC URL
             CosmicWorldsCurrentNetworkRpcUrlKey: "https://goerli.infura.io",
+            CosmicWorldsCurrentNetworkAlchemyHostKey: "eth-goerli.g.alchemy.com",
             CosmicWorldsCurrentNetworkExplorerUrlKey: "https://goerli.etherscan.io/",
             CosmicWorldsContractAddressKey: ""
         }        
@@ -53,6 +57,7 @@ function networkConfigFor(currentNetwork) {
             CosmicWorldsCurrentNetworkCurrencySymbolKey: "SepoliaETH",
             // TODO: RPC URL
             CosmicWorldsCurrentNetworkRpcUrlKey: "https://sepolia.infura.io",
+            CosmicWorldsCurrentNetworkAlchemyHostKey: "eth-sepolia.g.alchemy.com",
             CosmicWorldsCurrentNetworkExplorerUrlKey: "https://sepolia.etherscan.io/",
             CosmicWorldsContractAddressKey: "0xFc0d97b66F3A1D9B97d6414c7b3d9431714C7B98"
         }        
@@ -61,8 +66,8 @@ function networkConfigFor(currentNetwork) {
             CosmicWorldsCurrentNetworkIDKey: 1,
             CosmicWorldsCurrentNetworkNameKey: "Ethereum Mainnet",
             CosmicWorldsCurrentNetworkCurrencySymbolKey: "ETH",
-            // TODO: RPC URL
-            CosmicWorldsCurrentNetworkRpcUrlKey: "https://mainnet.infura.io/v3/",
+            CosmicWorldsCurrentNetworkRpcUrlKey: "https://cloudflare-eth.com",
+            CosmicWorldsCurrentNetworkAlchemyHostKey: "eth-mainnet.g.alchemy.com",
             CosmicWorldsCurrentNetworkExplorerUrlKey: "https://www.etherscan.io/",
             CosmicWorldsContractAddressKey: "0xFc0d97b66F3A1D9B97d6414c7b3d9431714C7B98"
         }        
@@ -74,6 +79,7 @@ export { CosmicWorldsMaxTokensPerUser,
          CosmicWorldsCurrentNetworkName, 
          CosmicWorldsCurrentNetworkCurrencySymbol, 
          CosmicWorldsCurrentNetworkRpcUrl,
+         CosmicWorldsCurrentNetworkAlchemyHost,
          CosmicWorldsCurrentNetworkExplorerUrl,
          CosmicWorldsContractAddress
          };

@@ -9,6 +9,7 @@ var mobile = require('is-mobile');
 import { Alert } from "react-bootstrap";
 import { useState } from "react";
 import { Analytics } from '@vercel/analytics/react';
+import { hasInjectedWallet } from '../utils/WalletProvider';
 
 export default function Layout(props) {
     const { children } = props;
@@ -16,9 +17,12 @@ export default function Layout(props) {
     const [metaMaskAlert, setMetaMaskAlert] = useState(false);
 
     useEffect(() => {
-        const noWallet = window.ethereum == null;
-        const showAlert = mobile() && noWallet; 
-        setMetaMaskAlert(showAlert);
+        async function checkForWallet() {
+            const noWallet = !(await hasInjectedWallet());
+            const showAlert = mobile() && noWallet;
+            setMetaMaskAlert(showAlert);
+        }
+        checkForWallet();
     }, []);
 
     // doesn't work! Wants to open app store

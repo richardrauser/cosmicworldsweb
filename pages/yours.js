@@ -3,6 +3,7 @@ import { fetchAccount, getReadOnlyContract, getReadWriteContract } from '../util
 import TokenList from "@components/TokenList";
 import Loading from "@components/Loading";
 import { handleError } from "utils/ErrorHandler";
+import { hasInjectedWallet } from "utils/WalletProvider";
 
 export default function Yours() {
 
@@ -18,7 +19,7 @@ export default function Yours() {
         async function fetchData() {
 
             try {
-                if (!window.ethereum) {
+                if (!(await hasInjectedWallet())) {
                     setAddress("not connected");
                     setTokenCount("0");
                     setLoading(false);
