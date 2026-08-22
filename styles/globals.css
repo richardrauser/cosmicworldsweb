@@ -124,6 +124,7 @@ code {
   height: 100%;
   margin: auto;
   max-height: 24px;
+  width: auto;
 }
 
 .buttonIcon span {
