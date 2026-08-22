@@ -317,8 +317,6 @@ export async function mintCosmicWorld(randomSeed) {
     gasLimit: 140000,
   };
 
-  console.log("!!!!!");
-
   const transaction = await contract.mint(randomSeed, overrides);
   console.log("Tx hash: " + transaction.hash);
 }
@@ -345,7 +343,7 @@ export async function fetchTokenDetails(tokenId) {
       "data:application/json;base64,",
       ""
     );
-    let buffer = new Buffer(metadataJsonBase64Encoded, "base64");
+    let buffer = Buffer.from(metadataJsonBase64Encoded, "base64");
 
     metadataJson = buffer.toString("utf-8");
   }

@@ -1,6 +1,6 @@
 # Cosmic Worlds Web
 
-Cosmic Worlds Web is a [Next.js](https://nextjs.org/) v12 project. It is the web
+Cosmic Worlds Web is a [Next.js](https://nextjs.org/) v16 project (Pages Router). It is the web
 front-end to the Cosmic Worlds generative NFT art project, which can be found at
 https://cosmicworlds.xyz
 
