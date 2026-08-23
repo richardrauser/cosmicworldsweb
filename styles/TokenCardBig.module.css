@@ -21,6 +21,31 @@
   }
   
 
+  /* Traits down the left with the OpenSea button off to their right. */
+  .cardDetail {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  /* Bottom-right of the card: align-self drops it to the foot of the row, which
+     the taller traits list sets the height of. The 16px matches the margin the
+     global .cardTraits rule gives the details, so the two sit equally far in
+     from the card's edges and their bottoms line up. */
+  .cardActions {
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+    margin: 16px;
+  }
+
+  /* .cardButton's margin: auto would soak up the free space and re-centre the
+     button, undoing the right alignment. */
+  .cardActions :global(.cardButton) {
+    margin: 0;
+  }
+
   .spinner {
     margin: 24px;
   }

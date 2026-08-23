@@ -1,5 +1,7 @@
 
 const CosmicWorldsMaxTokensPerUser = 50;
+// CosmicWorlds.sol's TOKEN_LIMIT - the total that will ever exist.
+const CosmicWorldsTokenLimit = 512;
 const CosmicWorldsLocalhostNetwork = "localhost";
 const CosmicWorldsSepoliaNetwork = "sepolia";
 const CosmicWorldsGoerliNetwork = "goerli";
@@ -75,6 +77,7 @@ function networkConfigFor(currentNetwork) {
 }
 
 export { CosmicWorldsMaxTokensPerUser,
+         CosmicWorldsTokenLimit,
          CosmicWorldsCurrentNetworkID, 
          CosmicWorldsCurrentNetworkName, 
          CosmicWorldsCurrentNetworkCurrencySymbol, 

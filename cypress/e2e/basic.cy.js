@@ -19,14 +19,27 @@ describe('home page', () => {
   })
 
   it('offers the mint actions', () => {
-    cy.contains('button', 'Generate');
+    cy.contains('button', 'Shuffle');
     cy.contains('button', 'Mint for free');
   })
 
+  it('describes the world it drew', () => {
+    // Derived from the seed the same way the contract derives them, so these
+    // are the traits the token will carry once minted.
+    cy.get('.cardTraits').first().within(() => {
+      cy.contains(/^Seed: \d+/);
+      cy.contains(/Planets: [0-5]/);
+      cy.contains(/Stars: (sparse|distributed|dense)/);
+      cy.contains(/Mountains: (soft|rugged|rocky)/);
+      cy.contains(/Water: (calm|choppy|rough)/);
+      cy.contains(/Clouds: (stratus|stratocumulus|cumulus)/);
+    })
+  })
+
   it('generates a new world on demand', () => {
-    cy.contains('Random seed:').invoke('text').then((before) => {
-      cy.contains('button', 'Generate').click();
-      cy.contains('Random seed:').invoke('text').should('not.equal', before);
+    cy.get('.cardTraits').first().invoke('text').then((before) => {
+      cy.contains('button', 'Shuffle').click();
+      cy.get('.cardTraits').first().invoke('text').should('not.equal', before);
     })
   })
 })

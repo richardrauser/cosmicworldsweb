@@ -1,7 +1,7 @@
 
 import Button from 'react-bootstrap/Button';
 import React, {useEffect, useState} from "react";
-import buildCosmicWorld from '../utils/worldBuilder.js';
+import buildCosmicWorld, { getWorldTraits } from '../utils/worldBuilder.js';
 import { mintCosmicWorld, mintTenCosmicWorlds } from '../utils/BlockchainAPI.js';
 import { handleError } from 'utils/ErrorHandler.js';
 import { toast } from 'react-toastify';
@@ -10,13 +10,17 @@ import { ArrowRepeat } from 'react-bootstrap-icons';
 import ethereum from '../images/ethereum-white.png';
 import styles from '@styles/CosmicArtboard.module.css';
 import Loading from './Loading.js';
-import { Hearts } from 'react-bootstrap-icons';
+import WorldTraits from './WorldTraits.js';
+import { Dice5Fill } from 'react-bootstrap-icons';
+import { CosmicWorldsTokenLimit } from '../utils/Constants.js';
 
 export default function CosmicArtboard() {
     
     const randomCeiling = 5_000_000;
     const [randomSeed, setRandomSeed] = useState(null);
     const [svg, setSvg] = useState(null);
+    const [traits, setTraits] = useState(null);
+    const [mintCount, setMintCount] = useState(null);
 
     const updateSeed = () => {
         const seed = Math.trunc(Math.random() * randomCeiling);
@@ -24,11 +28,34 @@ export default function CosmicArtboard() {
         const svg = buildCosmicWorld(seed);
         setRandomSeed(seed);
         setSvg(svg);
+        setTraits(getWorldTraits(seed));
     };
 
 
     useEffect(() => {
         updateSeed();
+      }, []);
+
+    useEffect(() => {
+        // Read-only and purely informational, so a failure just shows "?" -
+        // no toast, and it never holds up the world being previewed.
+        const fetchMintCount = async () => {
+            try {
+                const response = await fetch("/api/supply");
+                const body = await response.json();
+
+                if (!response.ok) {
+                    throw Error(body.error);
+                }
+
+                setMintCount(body.totalSupply);
+            } catch (error) {
+                console.log("Error fetching total supply: " + error);
+                setMintCount("?");
+            }
+        };
+
+        fetchMintCount();
       }, []);
 
       const mint = async () => {
@@ -56,37 +83,55 @@ export default function CosmicArtboard() {
 
     return(
         <div>
-        { !randomSeed || !svg ? (
+        { !randomSeed || !svg || !traits ? (
             <Loading/>
         ) : (
             <div>
             <div className={styles.artboard}>
-                <img className={styles.artboardImage} src={svg}></img>	
-            </div>	        
-            <div className={styles.detail}>
-                Random seed: { randomSeed }<br/>
-                <Button variant="primary" className={styles.keyAction} onClick={updateSeed}>    
-                    <div className="buttonIcon">
-                    <ArrowRepeat />
-                    </div>
-                    Generate
-                </Button>
-                <Button variant="primary" className={styles.keyAction} onClick={mint} randomseed={randomSeed}>
-                    <div className="buttonIcon">
-                        <Image src={ethereum} alt="ethereum logo" />
-                    </div>
-                    Mint for free
-                </Button><br/>
-                (only pay gas)<br/>
-                <Button variant="primary" className={styles.keyAction} onClick={mintTen} randomseed={randomSeed}>
-                    <div className="buttonIcon">
-                        <Hearts />
-                    </div>
-                    Mint 10 randoms
-                </Button><br/>
-                (huge savings- 10 NFTs for the gas cost of 3 single mints)<br/>
+                <img className={styles.artboardImage} src={svg}></img>
             </div>
-        </div> 
+            <div className={styles.detailCard}>
+                    <div className={styles.traits}>
+                        <WorldTraits
+                            seed={ traits.seed }
+                            planetCount={ traits.planetCount }
+                            starDensity={ traits.starDensity }
+                            mountainRoughness={ traits.mountainRoughness }
+                            waterChoppiness={ traits.waterChoppiness }
+                            cloudType={ traits.cloudType }
+                        />
+                    </div>
+                    <div className={styles.actions}>
+                        <Button variant="primary" className="keyAction" onClick={updateSeed}>
+                            <div className="buttonIcon">
+                                <ArrowRepeat />
+                            </div>
+                            <span className="keyActionLabel">Shuffle</span>
+                        </Button>
+                        <Button variant="primary" className="keyAction" onClick={mint} randomseed={randomSeed}>
+                            <div className="buttonIcon">
+                                <Image src={ethereum} alt="ethereum logo" />
+                            </div>
+                            <span className="keyActionLabel">
+                                Mint for free
+                                <span className="keyActionNote">only pay gas</span>
+                            </span>
+                        </Button>
+                        <Button variant="primary" className="keyAction" onClick={mintTen} randomseed={randomSeed}>
+                            <div className="buttonIcon">
+                                <Dice5Fill />
+                            </div>
+                            <span className="keyActionLabel">
+                                Mint 10 randoms
+                                <span className="keyActionNote">for gas cost of 3</span>
+                            </span>
+                        </Button>
+                    </div>
+            </div>
+            <div className={styles.mintCount}>
+                Total minted worlds: { mintCount == null ? "Loading.." : String(mintCount) + " / " + CosmicWorldsTokenLimit }
+            </div>
+            </div>
         )}
     </div>
    );

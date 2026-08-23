@@ -6,13 +6,15 @@ import styles from '@styles/TokenCardBig.module.css'
 import { ImageAlt } from 'react-bootstrap-icons';
 import Loading from './Loading';
 import OpenSeaButton from './OpenSeaButton';
+import WorldTraits from './WorldTraits';
 
 export default function TokenCardBig(props) {
 
   const [loading, setLoading] = useState(true);
   const [svg, setSvg] = useState(null);
   const [tokenSvgDataUri, setTokenSvgDataUri] = useState(null);
-  const [traitsText, setTraitsText] = useState(null);
+  const [traits, setTraits] = useState(null);
+  const [traitsError, setTraitsError] = useState(null);
   
   const tokenId = props.id;
   console.log("rendering TokenCardBig for token ID: " + tokenId);
@@ -32,20 +34,22 @@ export default function TokenCardBig(props) {
         setLoading(false);
         setSvg(svg);
         setTokenSvgDataUri(svgDataUri);
-        setTraitsText(`Seed: ${seed}, planet count: ${planetCount}, stars: ${starDensity}, mountains: ${mountainRoughness}, water: ${waterChoppiness}, clouds: ${cloudType}`);
+        setTraits({ seed, planetCount, starDensity, mountainRoughness, waterChoppiness, cloudType });
+        setTraitsError(null);
 
         } catch (error) {
           console.log("Error occurred fetching token metadata: ", error);
           setLoading(false);
           setSvg(null);
           setTokenSvgDataUri(null);
-          setTraitsText("Could not load NFT.");
+          setTraits(null);
+          setTraitsError("Could not load NFT.");
           handleError(error);
         }
       }
 
     fetchMetadata();
-  });
+  }, [tokenId]);
   
   return (
       <Card key={tokenId} className={styles.tokenCard}>
@@ -68,11 +72,24 @@ export default function TokenCardBig(props) {
                     <ImageAlt className="tokenListImage" />
                   )}
               </div>  
-              <div className="cardTraits">
-                { traitsText }
-              </div>
-              <div className="cardButtonArea">
-                <OpenSeaButton tokenid={tokenId}/>
+              <div className={styles.cardDetail}>
+                { traits ? (
+                  <WorldTraits
+                    seed={ traits.seed }
+                    planetCount={ traits.planetCount }
+                    starDensity={ traits.starDensity }
+                    mountainRoughness={ traits.mountainRoughness }
+                    waterChoppiness={ traits.waterChoppiness }
+                    cloudType={ traits.cloudType }
+                  />
+                ) : (
+                  <div className="cardTraits">
+                    { traitsError }
+                  </div>
+                )}
+                <div className={styles.cardActions}>
+                  <OpenSeaButton tokenid={tokenId}/>
+                </div>
               </div>
             </Card.Body>
           )}

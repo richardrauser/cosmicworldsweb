@@ -5,6 +5,7 @@ import TokenList from "@components/TokenList";
 import Loading from "@components/Loading";
 import { handleError } from "utils/ErrorHandler";
 import { showErrorMessage } from "utils/UIUtils";
+import { CosmicWorldsTokenLimit } from "utils/Constants";
 
 export default function Recent() {  
     const [loading, setLoading] = useState(true);
@@ -65,7 +66,7 @@ export default function Recent() {
           <div>
             <div className="contentPanel">
               <h1>Recent Worlds</h1>
-              Total minted worlds: { mintCount == null ? "Loading.." : String(mintCount) + " / 512. These are the most recent 12!" } 
+              Total minted worlds: { mintCount == null ? "Loading.." : String(mintCount) + " / " + CosmicWorldsTokenLimit + ". These are the most recent 12!" } 
             </div>
 
             <TokenList tokens = { tokenIds } />

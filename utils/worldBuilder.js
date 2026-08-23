@@ -330,6 +330,63 @@ function getWater(randomSeed) {
 
 
 
+// ----------- TRAITS --------------
+
+// These mirror WorldBuilder.getTraits and its getStarType/getMountainType/
+// getWaterType/getCloudType helpers in the contract. A token's traits derive
+// from nothing but its immutable seed via the same keccak-based randomInt, so
+// deriving them here lets the pre-mint preview show exactly what the minted
+// token will report on chain - the same values /recent reads back out of
+// tokenURI.
+//
+// Each one draws from the same seed the corresponding drawing function above
+// uses, so the description always matches the artwork being previewed.
+
+function getStarType(seed) {
+    const density = randomInt(seed, 15, 40);
+    if (density < 22) {
+        return "sparse";
+    } else if (density > 33) {
+        return "dense";
+    } else {
+        return "distributed";
+    }
+}
+
+function getMountainType(seed) {
+    const mountainFrequency = randomInt(seed, 10, 30);
+    const mountainScale = randomInt(seed, 1, 3);
+    if (mountainFrequency < 20 && mountainScale < 2) {
+        return "soft";
+    } else if (mountainFrequency > 20 && mountainScale > 2) {
+        return "rocky";
+    } else {
+        return "rugged";
+    }
+}
+
+function getWaterType(seed) {
+    const choppiness = randomInt(seed * 2, 2, 9);
+    if (choppiness < 4) {
+        return "calm";
+    } else if (choppiness > 6) {
+        return "rough";
+    } else {
+        return "choppy";
+    }
+}
+
+function getCloudType(seed) {
+    const cloud = randomInt(seed * 2, 1, 8);
+    if (cloud < 3) {
+        return "stratus";
+    } else if (cloud > 6) {
+        return "cumulus";
+    } else {
+        return "stratocumulus";
+    }
+}
+
 // ----------- RANDOM --------------
 
 // Generate random int, inclusive of min/max, using same method as Solidity code
@@ -410,6 +467,19 @@ function randomColour(randomSeed, tintColour) {
 
 
 // -------------- EXTERNAL ------------------
+
+// Keyed to match the shape fetchTokenDetails returns for a minted token, so
+// the same component can render either.
+export function getWorldTraits(randomSeed) {
+    return {
+        seed: randomSeed,
+        planetCount: getPlanetCount(randomSeed),
+        starDensity: getStarType(randomSeed),
+        mountainRoughness: getMountainType(randomSeed),
+        waterChoppiness: getWaterType(randomSeed),
+        cloudType: getCloudType(randomSeed),
+    };
+}
 
 export default function buildCosmicWorld(randomSeed) {
     console.log(`Generating artboard for alien world with seed: ${randomSeed}`);

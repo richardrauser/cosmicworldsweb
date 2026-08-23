@@ -64,6 +64,12 @@ code {
 
 /* ----  Cards ---- */
 
+:root {
+  /* The face of a card body. Shared so the home screen's own cards match the
+     bootstrap ones on the token and recent pages. */
+  --card-surface: #DDD;
+}
+
 .card {
   background-color: #777777;
   margin: 16px;
@@ -85,8 +91,7 @@ code {
 }
 
 .card-body {
-  background-color:#DDD;
-
+  background-color: var(--card-surface);
 }
 
 .card-header {
@@ -114,6 +119,58 @@ code {
 .cardButton {
   margin: auto;
 }
+
+/* Shared by the home screen's mint actions and the OpenSea button on a token
+   page, so the two can't drift apart: icon pinned at the left edge, label
+   centred on one line, and one width for all of them regardless of label.
+   Qualified with .btn because bootstrap is imported after this file, so a bare
+   .keyAction would lose display:flex to .btn's inline-block. */
+.btn.keyAction {
+  position: relative;
+  width: 220px;
+  /* Tall enough that the small print clears a vertically centred label. */
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* A spacer mirroring the icon, so the label centres on the middle of the button
+   rather than the middle of whatever room is left beside the icon. */
+.btn.keyAction::after {
+  content: '';
+  flex: 0 0 24px;
+}
+
+.btn.keyAction .buttonIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 24px;
+  height: 24px;
+}
+
+/* The label stays centred on the button; the fixed height above means a button
+   carrying small print is still the same size as one without. */
+.btn.keyAction .keyActionLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.15;
+}
+
+/* Small print tucked into the button's bottom-right corner, out of the flex
+   flow so it doesn't pull the label off centre. */
+.btn.keyAction .keyActionNote {
+  position: absolute;
+  right: 8px;
+  bottom: 2px;
+  font-size: 14px;
+  line-height: 1.15;
+}
+
 .buttonIcon {
   /* display: inline-block; */
   /* vertical-align: middle;

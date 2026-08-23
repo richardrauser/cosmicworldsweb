@@ -7,6 +7,7 @@ import { handleError } from '../utils/ErrorHandler';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import styles from "@styles/TokenCard.module.css";
+import WorldTraits from './WorldTraits';
 
 export default function TokenCard(props) {
 
@@ -69,14 +70,14 @@ export default function TokenCard(props) {
                   <img className="tokenListImage" alt={ "Cosmic Worlds token " + tokenId } src={ tokenSvgDataUri } />
                 </a>
               </div>  
-              <div className="cardTraits">
-                Seed: { seed } <br />
-                Planets: { planetCount } <br /> 
-                Stars: { starDensity } <br />
-                Mountains: { mountainRoughness } <br />
-                Water: { waterChoppiness } <br />
-                Clouds: { cloudType } <br />
-              </div>
+              <WorldTraits
+                seed={ seed }
+                planetCount={ planetCount }
+                starDensity={ starDensity }
+                mountainRoughness={ mountainRoughness }
+                waterChoppiness={ waterChoppiness }
+                cloudType={ cloudType }
+              />
             </Card.Body>
           )}
       </Card>        
