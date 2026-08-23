@@ -58,6 +58,29 @@
     margin: 0;
   }
 
+  /* Bootstrap's icon set has no multi-dice glyph, so two are tucked into the
+     24px icon box at opposing angles to read as a roll. */
+  .diceRoll {
+    position: relative;
+    display: block;
+    width: 24px;
+    height: 24px;
+  }
+
+  .diceRoll svg:first-child {
+    position: absolute;
+    left: -1px;
+    top: 3px;
+    transform: rotate(-18deg);
+  }
+
+  .diceRoll svg:last-child {
+    position: absolute;
+    right: -1px;
+    top: -1px;
+    transform: rotate(14deg);
+  }
+
 
   .mintCount {
     max-width: 500px;

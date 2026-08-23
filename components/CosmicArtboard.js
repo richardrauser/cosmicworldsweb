@@ -11,7 +11,7 @@ import ethereum from '../images/ethereum-white.png';
 import styles from '@styles/CosmicArtboard.module.css';
 import Loading from './Loading.js';
 import WorldTraits from './WorldTraits.js';
-import { Dice5Fill } from 'react-bootstrap-icons';
+import { Dice3Fill, Dice5Fill } from 'react-bootstrap-icons';
 import { CosmicWorldsTokenLimit } from '../utils/Constants.js';
 
 export default function CosmicArtboard() {
@@ -119,7 +119,10 @@ export default function CosmicArtboard() {
                         </Button>
                         <Button variant="primary" className="keyAction" onClick={mintTen} randomseed={randomSeed}>
                             <div className="buttonIcon">
-                                <Dice5Fill />
+                                <span className={styles.diceRoll}>
+                                    <Dice3Fill size={15} />
+                                    <Dice5Fill size={15} />
+                                </span>
                             </div>
                             <span className="keyActionLabel">
                                 Mint 10 randoms
